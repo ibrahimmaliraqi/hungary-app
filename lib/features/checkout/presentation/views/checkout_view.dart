@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/shared/custom_text.dart';
 
 class MyWidget extends StatelessWidget {
   const MyWidget({super.key});
@@ -30,7 +32,63 @@ class CheckoutView extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(child: Text("Checkout View")),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CustomText(
+              text: "Order summary",
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+            Gap(20),
+            orderMony(name: "Order", price: "\$18.48"),
+            Gap(10),
+            orderMony(name: "Taxes", price: "\$0.3"),
+            Gap(10),
+            orderMony(name: "Delivery fees", price: "\$1.5"),
+            Gap(14),
+            Divider(),
+            orderMony(name: "Total:", price: "\$18.19", isBold: true),
+            Gap(20),
+
+            orderMony(
+              name: "Estimated delivery time:",
+              price: "15 - 30 mins",
+              size: 13,
+              isBold: true,
+            ),
+          ],
+        ),
+      ),
     );
   }
+}
+
+Widget orderMony({
+  required String name,
+  required String price,
+  bool isBold = false,
+  double? size,
+}) {
+  return Row(
+    children: [
+      CustomText(
+        text: name,
+        fontSize: size ?? 18,
+        color: isBold == true ? Colors.black : Colors.grey,
+        fontWeight: isBold == true ? FontWeight.bold : FontWeight.w400,
+      ),
+      Spacer(),
+      CustomText(
+        text: price,
+        fontSize: size ?? 18,
+
+        color: isBold == true ? Colors.black : Colors.grey,
+
+        fontWeight: isBold == true ? FontWeight.bold : FontWeight.w400,
+      ),
+    ],
+  );
 }
