@@ -3,6 +3,7 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/features/cart/presentation/widgets/custom_cart_item.dart';
+import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
 
 class CartView extends StatefulWidget {
   const CartView({super.key});
@@ -97,7 +98,14 @@ class _CartViewState extends State<CartView> {
               text: "Check Out",
               width: 170,
               hight: 70,
-              onTap: () {},
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CheckoutView(),
+                  ),
+                );
+              },
             ),
           ],
         ),
