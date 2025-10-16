@@ -209,11 +209,55 @@ class _CheckoutViewState extends State<CheckoutView> {
               width: 170,
               hight: 70,
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckoutView(),
-                  ),
+                showDialog(
+                  context: context,
+                  builder: (context) {
+                    return Dialog(
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        height: 350,
+                        child: Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              backgroundColor: AppColors.primary,
+                              child: Icon(
+                                Icons.check,
+                                color: Colors.white,
+                                size: 30,
+                              ),
+                            ),
+                            Gap(28),
+                            CustomText(
+                              text: "Success !",
+                              fontSize: 30,
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            Gap(6),
+                            CustomText(
+                              text:
+                                  "Your payment was successful.\nA receipt for this purchase has\n been sent to your email.",
+                              fontSize: 14,
+                              color: Color(0xffBCBBBB),
+                              fontWeight: FontWeight.w400,
+                            ),
+                            Gap(40),
+                            CustomButton(
+                              text: "Go Back",
+                              width: 220,
+                              hight: 60,
+                              onTap: () => Navigator.pop(context),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  },
                 );
               },
             ),
