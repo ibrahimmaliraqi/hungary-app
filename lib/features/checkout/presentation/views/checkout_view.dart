@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 
 class MyWidget extends StatelessWidget {
@@ -144,6 +145,53 @@ class CheckoutView extends StatelessWidget {
                 groupValue: "Debit",
                 onChanged: (value) {},
               ),
+            ),
+          ],
+        ),
+      ),
+      bottomSheet: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        height: 90,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+        ),
+        child: Row(
+          children: [
+            Column(
+              children: [
+                CustomText(
+                  text: "Total",
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                  color: Color(0xff3C2F2F),
+                ),
+                Gap(5),
+                CustomText(
+                  text: "\$18.19",
+                  fontSize: 32,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff3C2F2F),
+                ),
+              ],
+            ),
+
+            Spacer(),
+            CustomButton(
+              text: "Pay Now",
+              width: 170,
+              hight: 70,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CheckoutView(),
+                  ),
+                );
+              },
             ),
           ],
         ),
