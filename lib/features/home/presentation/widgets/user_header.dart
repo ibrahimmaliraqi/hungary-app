@@ -39,6 +39,17 @@ class UserHeader extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        // CircleAvatar(
+        //   backgroundColor: AppColors.primary,
+        //   radius: 30,
+        //   child: ClipRRect(
+        //     borderRadius: BorderRadiusGeometry.circular(30),
+        //     child: Image.asset(
+        //       "assets/test/self.jpg",
+        //       fit: BoxFit.fill,
+        //     ),
+        //   ),
+        // ),
       ],
     );
   }
