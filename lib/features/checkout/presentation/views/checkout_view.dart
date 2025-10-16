@@ -231,6 +231,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                                 size: 30,
                               ),
                             ),
+
                             Gap(28),
                             CustomText(
                               text: "Success !",

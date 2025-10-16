@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hungry_app/root_view.dart';
+import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
+import 'package:hungry_app/splash_view.dart';
 
 void main() {
   runApp(HungryApp());
@@ -13,7 +14,7 @@ class HungryApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      home: RootView(),
+      home: SignInView(),
     );
   }
 }

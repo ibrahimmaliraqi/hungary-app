@@ -5,6 +5,7 @@ import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/core/shared/custom_text_form_field.dart';
+import 'package:hungry_app/features/auth/presentation/views/sign_up_view.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/custom_auth_button.dart';
 
 class SignInView extends StatefulWidget {
@@ -23,46 +24,103 @@ class _SignInViewState extends State<SignInView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: Colors.white,
         body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Form(
-              key: formKey,
-              child: ListView(
-                children: [
-                  Gap(50),
-                  SvgPicture.asset(Assets.appLogo),
-                  Gap(6),
-                  Center(
-                    child: CustomText(
-                      text: "Delicious food, delivered fast.",
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
+          child: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                Gap(120),
+                SvgPicture.asset(
+                  Assets.appLogo,
+                  color: AppColors.primary,
+                ),
+                Gap(6),
+                Center(
+                  child: CustomText(
+                    text: "Delicious food, delivered fast.",
+                    color: AppColors.primary,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                Gap(80),
+
+                Expanded(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Gap(50),
+                        CustomTextFormField(
+                          controller: emailController,
+                          text: "Email Address",
+                          isPassword: false,
+                        ),
+                        Gap(20),
+                        CustomTextFormField(
+                          controller: passwordController,
+                          text: "Password",
+                          isPassword: true,
+                        ),
+                        Gap(30),
+                        CustomAuthButton(
+                          text: "Sign In",
+                          textColor: Colors.white,
+
+                          color: Colors.transparent,
+                          onTap: () {
+                            if (formKey.currentState!.validate()) {}
+                          },
+                        ),
+                        Gap(20),
+                        CustomAuthButton(
+                          text: "Create Account ",
+                          onTap: () => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpView(),
+                            ),
+                            (route) => false,
+                          ),
+                        ),
+                        Gap(20),
+                        CustomAuthButton(
+                          text: "Continue as a Guest",
+                          textColor: Colors.white,
+                          color: Colors.transparent,
+                          onTap: () => Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => SignUpView(),
+                            ),
+                            (route) => false,
+                          ),
+                        ),
+                        // GestureDetector(
+                        //   onTap: () => Navigator.pushReplacement(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => RootView(),
+                        //     ),
+                        //   ),
+                        //   child: CustomText(
+                        //     text: "Continue as a Guest",
+                        //     color: Colors.white,
+                        //   ),
+                        // ),
+                      ],
                     ),
                   ),
-                  Gap(50),
-                  CustomTextFormField(
-                    controller: emailController,
-                    text: "Email Address",
-                    isPassword: false,
-                  ),
-                  Gap(20),
-                  CustomTextFormField(
-                    controller: passwordController,
-                    text: "Password",
-                    isPassword: true,
-                  ),
-                  Gap(30),
-                  CustomAuthButton(
-                    text: "Sign In",
-                    onTap: () {
-                      if (formKey.currentState!.validate()) {}
-                    },
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
