@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
@@ -25,39 +28,58 @@ class CustomCardItem extends StatelessWidget {
         color: Colors.white,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Stack(
+            clipBehavior: Clip.none,
             children: [
-              Image.asset(
-                image,
-                width: 120,
-                height: 120,
+              Positioned(
+                right: 0,
+                left: -8,
+                top: 95,
+                child: ImageFiltered(
+                  imageFilter: ImageFilter.blur(
+                    sigmaX: 5,
+                    sigmaY: 5,
+                  ),
+                  child: SvgPicture.asset(
+                    "assets/logo/shado.svg",
+                  ),
+                ),
               ),
-              Gap(9),
-              CustomText(
-                text: title,
-                fontSize: 16,
-                color: Color(0xff3C2F2F),
-                fontWeight: FontWeight.w600,
-              ),
-              CustomText(
-                text: subTitle,
-                fontSize: 14,
-                color: Color(0xff3C2F2F),
-                fontWeight: FontWeight.w400,
-              ),
-              Gap(9),
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Image.asset(
+                    image,
+                    width: 120,
+                    height: 120,
+                  ),
+                  Gap(9),
                   CustomText(
-                    text: "⭐ $rating",
+                    text: title,
+                    fontSize: 16,
+                    color: Color(0xff3C2F2F),
+                    fontWeight: FontWeight.w600,
+                  ),
+                  CustomText(
+                    text: subTitle,
                     fontSize: 14,
-
                     color: Color(0xff3C2F2F),
                     fontWeight: FontWeight.w400,
                   ),
-                  Spacer(),
-                  Icon(CupertinoIcons.heart_fill, color: AppColors.primary),
+                  Gap(9),
+                  Row(
+                    children: [
+                      CustomText(
+                        text: "⭐ $rating",
+                        fontSize: 14,
+
+                        color: Color(0xff3C2F2F),
+                        fontWeight: FontWeight.w400,
+                      ),
+                      Spacer(),
+                      Icon(CupertinoIcons.heart_fill, color: AppColors.primary),
+                    ],
+                  ),
                 ],
               ),
             ],

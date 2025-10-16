@@ -30,26 +30,26 @@ class UserHeader extends StatelessWidget {
           ],
         ),
         Spacer(),
-        CircleAvatar(
-          backgroundColor: AppColors.primary,
-          radius: 30,
-          child: Icon(
-            Icons.person,
-            size: 30,
-            color: Colors.white,
+        Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(300),
+            border: Border.all(
+              color: AppColors.primary,
+
+              width: 3,
+            ),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadiusGeometry.circular(300),
+
+            child: Image.asset(
+              "assets/test/test.jpg",
+              width: 60,
+              height: 60,
+              fit: BoxFit.cover,
+            ),
           ),
         ),
-        // CircleAvatar(
-        //   backgroundColor: AppColors.primary,
-        //   radius: 30,
-        //   child: ClipRRect(
-        //     borderRadius: BorderRadiusGeometry.circular(30),
-        //     child: Image.asset(
-        //       "assets/test/self.jpg",
-        //       fit: BoxFit.fill,
-        //     ),
-        //   ),
-        // ),
       ],
     );
   }

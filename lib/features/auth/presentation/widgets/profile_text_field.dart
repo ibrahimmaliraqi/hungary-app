@@ -18,7 +18,7 @@ class ProfileTextField extends StatelessWidget {
         color: Colors.white,
       ),
       decoration: InputDecoration(
-        labelText: "Name",
+        labelText: label,
         labelStyle: TextStyle(
           color: Colors.white,
         ),

@@ -18,6 +18,14 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController email = TextEditingController();
   TextEditingController address = TextEditingController();
   @override
+  void initState() {
+    name.text = "Ibrahim";
+    email.text = "Ibrahim@gmail.com";
+    address.text = "22 Mosul, Iraq";
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +33,7 @@ class _ProfileViewState extends State<ProfileView> {
         forceMaterialTransparency: true,
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 8),
+            padding: const EdgeInsets.only(right: 12),
             child: Icon(
               Icons.settings,
               color: Colors.white,
