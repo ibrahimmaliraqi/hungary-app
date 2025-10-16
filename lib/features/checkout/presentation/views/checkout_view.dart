@@ -13,9 +13,15 @@ class MyWidget extends StatelessWidget {
   }
 }
 
-class CheckoutView extends StatelessWidget {
+class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
 
+  @override
+  State<CheckoutView> createState() => _CheckoutViewState();
+}
+
+class _CheckoutViewState extends State<CheckoutView> {
+  String selectedMetho = 'Cash';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +74,13 @@ class CheckoutView extends StatelessWidget {
               fontWeight: FontWeight.w600,
             ),
             Gap(20),
+            //cash
             ListTile(
+              onTap: () {
+                setState(() {
+                  selectedMetho = "Cash";
+                });
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(20),
               ),
@@ -96,16 +108,25 @@ class CheckoutView extends StatelessWidget {
                     if (states.contains(WidgetState.selected)) {
                       return Colors.white;
                     }
-                    return Colors.blue;
+                    return AppColors.primary;
                   },
                 ),
                 value: "Cash",
-                groupValue: "Cash",
-                onChanged: (value) {},
+                groupValue: selectedMetho,
+                onChanged: (value) {
+                  selectedMetho = value!;
+                  setState(() {});
+                },
               ),
             ),
             Gap(20),
+            //debit
             ListTile(
+              onTap: () {
+                setState(() {
+                  selectedMetho = "debit";
+                });
+              },
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadiusGeometry.circular(20),
               ),
@@ -138,12 +159,15 @@ class CheckoutView extends StatelessWidget {
                     if (states.contains(WidgetState.selected)) {
                       return Colors.white;
                     }
-                    return Colors.blue;
+                    return AppColors.primary;
                   },
                 ),
-                value: "Debit",
-                groupValue: "Debit",
-                onChanged: (value) {},
+                value: "debit",
+                groupValue: selectedMetho,
+                onChanged: (value) {
+                  selectedMetho = value!;
+                  setState(() {});
+                },
               ),
             ),
           ],
