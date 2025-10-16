@@ -59,6 +59,92 @@ class CheckoutView extends StatelessWidget {
               size: 13,
               isBold: true,
             ),
+
+            Gap(60),
+            CustomText(
+              text: "Payment methods",
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+            ),
+            Gap(20),
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(20),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              tileColor: Color(0xff3C2F2F),
+              title: CustomText(
+                text: "Cash on Delivery",
+                fontSize: 20,
+                fontWeight: FontWeight.w400,
+                color: Colors.white,
+              ),
+              leading: Image.asset(
+                "assets/payout/image.png",
+                width: 50,
+              ),
+              trailing: Radio(
+                fillColor: WidgetStateProperty.resolveWith<Color?>(
+                  (states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Colors.grey;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Colors.white;
+                    }
+                    return Colors.blue;
+                  },
+                ),
+                value: "Cash",
+                groupValue: "Cash",
+                onChanged: (value) {},
+              ),
+            ),
+            Gap(20),
+            ListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadiusGeometry.circular(20),
+              ),
+              contentPadding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              tileColor: Colors.blue.shade100,
+              title: CustomText(
+                text: "Debit card",
+
+                fontSize: 17,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
+              subtitle: CustomText(
+                text: "3566 **** **** 0505",
+                fontSize: 13,
+              ),
+              leading: Image.asset(
+                "assets/payout/visa.png",
+                width: 50,
+              ),
+              trailing: Radio(
+                fillColor: WidgetStateProperty.resolveWith<Color?>(
+                  (states) {
+                    if (states.contains(WidgetState.disabled)) {
+                      return Colors.grey;
+                    }
+                    if (states.contains(WidgetState.selected)) {
+                      return Colors.white;
+                    }
+                    return Colors.blue;
+                  },
+                ),
+                value: "Debit",
+                groupValue: "Debit",
+                onChanged: (value) {},
+              ),
+            ),
           ],
         ),
       ),
