@@ -37,6 +37,9 @@ dependencies:
   flutter_svg: ^2.2.1
   gap: ^3.0.1
   google_fonts: ^6.3.2
+  dia: ^0.1.5
+  dio: ^5.9.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:
