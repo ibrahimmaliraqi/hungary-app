@@ -1,11 +1,11 @@
-class UserNodel {
+class UserModel {
   String? code;
   String? message;
   Data? data;
 
-  UserNodel({this.code, this.message, this.data});
+  UserModel({this.code, this.message, this.data});
 
-  UserNodel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
