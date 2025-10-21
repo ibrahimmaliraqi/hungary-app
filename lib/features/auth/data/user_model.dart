@@ -1,5 +1,5 @@
 class UserModel {
-  String? code;
+  int? code;
   String? message;
   Data? data;
 
