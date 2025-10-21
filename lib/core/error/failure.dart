@@ -37,8 +37,8 @@ class ServerFailure extends Failure {
           return ServerFailure("no internet connection");
         }
         return ServerFailure("Unexcpected error, please try later");
-      default:
-        return ServerFailure("Opps, there is an error ,please try again later");
+      // default:
+      //   return ServerFailure("Opps, there is an error ,please try again later");
     }
   }
   factory ServerFailure.fromResponse(int statusCode, dynamic resopnse) {
