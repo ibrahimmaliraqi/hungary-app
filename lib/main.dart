@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hungry_app/observer.dart';
 import 'package:hungry_app/splash_view.dart';
 
 void main() async {
@@ -7,6 +9,7 @@ void main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  Bloc.observer = MyBlocObserver();
   runApp(HungryApp());
 }
 
