@@ -48,4 +48,18 @@ class AuthRepoImpl implements AuthRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, UserModel>> getProfileData() async {
+    try {
+      final res = await apiService.get("/profile");
+      UserModel user = UserModel.fromJson(res);
+      return right(user);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }
