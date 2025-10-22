@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
-import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
+import 'package:hungry_app/core/utils/app_router.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -18,12 +19,7 @@ class _SplashViewState extends State<SplashView> {
     Future.delayed(
       Duration(seconds: 2),
       () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignInView(),
-          ),
-        );
+        GoRouter.of(context).push(AppRouter.login);
       },
     );
     super.initState();

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/observer.dart';
-import 'package:hungry_app/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,10 +18,13 @@ class HungryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
-      home: SplashView(),
+      theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
+        splashColor: Colors.transparent,
+      ),
+      routerConfig: AppRouter.router,
     );
   }
 }

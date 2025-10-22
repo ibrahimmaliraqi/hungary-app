@@ -64,7 +64,7 @@ class _RootViewState extends State<RootView> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_restaurant_sharp),
-              label: "Order History",
+              label: "History",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.profile_circled),

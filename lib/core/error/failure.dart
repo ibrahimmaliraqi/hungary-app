@@ -1,55 +1,76 @@
 import 'package:dio/dio.dart';
 
+/// ✅ Base abstract class for all types of failures.
 abstract class Failure {
   final String errMessage;
-
   const Failure(this.errMessage);
 }
 
+/// 💥 Handles all server-related exceptions coming from Dio.
 class ServerFailure extends Failure {
-  ServerFailure(super.errMessage);
+  const ServerFailure(super.errMessage);
+
+  /// 🧩 Factory constructor to map Dio exceptions to user-friendly messages.
   factory ServerFailure.fromDioException(DioException dioException) {
     switch (dioException.type) {
       case DioExceptionType.connectionTimeout:
-        return ServerFailure("Api coneecion is timeout");
+        return const ServerFailure("⏱ Connection timeout. Please try again.");
+
       case DioExceptionType.sendTimeout:
-        return ServerFailure("Api coneecion is sendtimeout");
+        return const ServerFailure(
+          "📡 Sending timeout. Please check your network.",
+        );
 
       case DioExceptionType.receiveTimeout:
-        return ServerFailure("Api coneecion is receivedTimeout");
+        return const ServerFailure("⏳ Server took too long to respond.");
 
       case DioExceptionType.badCertificate:
-        return ServerFailure("Api coneecion is badCertificate");
+        return const ServerFailure(
+          "⚠️ Invalid server certificate. Please try later.",
+        );
 
       case DioExceptionType.badResponse:
         return ServerFailure.fromResponse(
-          dioException.response!.statusCode!,
-          dioException.response!.data,
+          dioException.response?.statusCode ?? 0,
+          dioException.response?.data,
         );
+
       case DioExceptionType.cancel:
-        return ServerFailure("Api coneecion was cancled");
+        return const ServerFailure("❌ Request was cancelled.");
 
       case DioExceptionType.connectionError:
-        return ServerFailure("Api coneecion was connectionError");
+        return const ServerFailure(
+          "🌐 Network connection error. Check your internet.",
+        );
 
       case DioExceptionType.unknown:
-        if (dioException.message!.contains("SocketException")) {
-          return ServerFailure("no internet connection");
+        if (dioException.message?.contains("SocketException") ?? false) {
+          return const ServerFailure("📶 No internet connection.");
         }
-        return ServerFailure("Unexcpected error, please try later");
-      // default:
-      //   return ServerFailure("Opps, there is an error ,please try again later");
+        return const ServerFailure(
+          "🚨 Unexpected error. Please try again later.",
+        );
     }
   }
-  factory ServerFailure.fromResponse(int statusCode, dynamic resopnse) {
-    if (statusCode == 400 || statusCode == 401 || statusCode == 403) {
-      return ServerFailure(resopnse["error"]['message']);
-    } else if (statusCode == 404) {
-      return ServerFailure("your request not found ,please try again!");
+
+  /// 🧾 Factory constructor to handle API response errors.
+  factory ServerFailure.fromResponse(int statusCode, dynamic response) {
+    if (statusCode == 400 ||
+        statusCode == 401 ||
+        statusCode == 403 ||
+        statusCode == 404) {
+      final message = response is Map && response['message'] != null
+          ? response['message'].toString()
+          : "⚠️ Request error ($statusCode). Please check your input.";
+      return ServerFailure(message);
     } else if (statusCode == 500) {
-      return ServerFailure("internal error ,please try again later!");
+      return const ServerFailure(
+        "💥 Internal server error. Please try again later.",
+      );
     } else {
-      return ServerFailure("Opps, there is an error ,please try again later");
+      return const ServerFailure(
+        "❗ Oops! Something went wrong. Please try again.",
+      );
     }
   }
 }

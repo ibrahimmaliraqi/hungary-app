@@ -17,7 +17,8 @@ class AuthRepoImpl implements AuthRepo {
         "email": email,
         "password": password,
       });
-      return right(res);
+      UserModel user = UserModel.fromJson(res);
+      return right(user);
     } catch (e) {
       if (e is DioException) {
         return left(ServerFailure.fromDioException(e));
