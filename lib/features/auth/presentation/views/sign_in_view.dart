@@ -25,9 +25,9 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +60,8 @@ class _SignInViewState extends State<SignInView> {
 
                   Expanded(
                     child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 20),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      decoration: const BoxDecoration(
                         color: AppColors.primary,
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(30),
@@ -84,14 +84,15 @@ class _SignInViewState extends State<SignInView> {
                               isPassword: true,
                             ),
                             Gap(30),
+
+                            // BlocListener + BlocBuilder للزر
                             BlocListener<LoginCubit, LoginState>(
                               listener: (context, state) {
                                 if (state is LoginSuccess) {
                                   PrefHelpers.saveToken(
                                     state.user.data!.token!,
                                   );
-
-                                  // الانتقال للـ RootView
+                                  // الانتقال بعد تسجيل الدخول بنجاح
                                   GoRouter.of(context).push(AppRouter.rootView);
                                 } else if (state is LoginFailure) {
                                   Snack.show(
@@ -102,33 +103,28 @@ class _SignInViewState extends State<SignInView> {
                               },
                               child: BlocBuilder<LoginCubit, LoginState>(
                                 builder: (context, state) {
-                                  return Column(
-                                    children: [
-                                      if (state is LoginLoading)
-                                        Center(
-                                          child: CupertinoActivityIndicator(
-                                            radius: 19,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-
-                                      CustomAuthButton(
-                                        text: "Sign In",
-                                        textColor: Colors.white,
-                                        color: Colors.transparent,
-                                        onTap: () {
-                                          if (formKey.currentState!
-                                              .validate()) {
-                                            BlocProvider.of<LoginCubit>(
-                                              context,
-                                            ).login(
-                                              email: emailController.text,
-                                              password: passwordController.text,
-                                            );
-                                          }
-                                        },
+                                  if (state is LoginLoading) {
+                                    return const Center(
+                                      child: CupertinoActivityIndicator(
+                                        radius: 19,
+                                        color: Colors.white,
                                       ),
-                                    ],
+                                    );
+                                  }
+                                  return CustomAuthButton(
+                                    text: "Sign In",
+                                    textColor: Colors.white,
+                                    color: Colors.transparent,
+                                    onTap: () {
+                                      if (formKey.currentState!.validate()) {
+                                        BlocProvider.of<LoginCubit>(
+                                          context,
+                                        ).login(
+                                          email: emailController.text,
+                                          password: passwordController.text,
+                                        );
+                                      }
+                                    },
                                   );
                                 },
                               ),
@@ -136,7 +132,7 @@ class _SignInViewState extends State<SignInView> {
 
                             Gap(20),
                             CustomAuthButton(
-                              text: "Create Account ",
+                              text: "Create Account",
                               onTap: () => Navigator.pushAndRemoveUntil(
                                 context,
                                 MaterialPageRoute(
