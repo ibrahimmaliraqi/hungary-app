@@ -26,4 +26,26 @@ class AuthRepoImpl implements AuthRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, UserModel>> register(
+    String name,
+    String email,
+    String password,
+  ) async {
+    try {
+      final res = await apiService.post("/register", {
+        "name": name,
+        "email": email,
+        "password": password,
+      });
+      UserModel user = UserModel.fromJson(res);
+      return right(user);
+    } catch (e) {
+      if (e is DioException) {
+        return left(ServerFailure.fromDioException(e));
+      }
+      return left(ServerFailure(e.toString()));
+    }
+  }
 }

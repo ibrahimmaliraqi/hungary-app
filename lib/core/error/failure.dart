@@ -58,7 +58,8 @@ class ServerFailure extends Failure {
     if (statusCode == 400 ||
         statusCode == 401 ||
         statusCode == 403 ||
-        statusCode == 404) {
+        statusCode == 404 ||
+        statusCode == 422) {
       final message = response is Map && response['message'] != null
           ? response['message'].toString()
           : "⚠️ Request error ($statusCode). Please check your input.";
@@ -68,8 +69,8 @@ class ServerFailure extends Failure {
         "💥 Internal server error. Please try again later.",
       );
     } else {
-      return const ServerFailure(
-        "❗ Oops! Something went wrong. Please try again.",
+      return ServerFailure(
+        "❗ Oops! Something went wrong. Please try again. $statusCode",
       );
     }
   }

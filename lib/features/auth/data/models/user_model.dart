@@ -1,12 +1,10 @@
 class UserModel {
-  int? code;
   String? message;
   Data? data;
 
-  UserModel({this.code, this.message, this.data});
+  UserModel({this.message, this.data});
 
   UserModel.fromJson(Map<String, dynamic> json) {
-    code = json['code'];
     message = json['message'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
   }
