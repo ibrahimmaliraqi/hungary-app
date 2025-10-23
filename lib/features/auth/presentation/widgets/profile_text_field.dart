@@ -3,15 +3,18 @@ import 'package:flutter/material.dart';
 class ProfileTextField extends StatelessWidget {
   final String label;
   final TextEditingController controller;
+  final TextInputType? type;
   const ProfileTextField({
     super.key,
     required this.label,
     required this.controller,
+    this.type,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      keyboardType: type,
       controller: controller,
       cursorColor: Colors.white,
       style: TextStyle(

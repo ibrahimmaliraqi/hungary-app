@@ -27,6 +27,12 @@ class _SignInViewState extends State<SignInView> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    emailController.text = "ibrahim1@gmail.com";
+    passwordController.text = "123456789";
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
