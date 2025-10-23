@@ -10,7 +10,7 @@ import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/core/shared/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
-import 'package:hungry_app/features/auth/data/manager/cubit/get_profile_data_cubit.dart';
+import 'package:hungry_app/features/auth/data/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/profile_text_field.dart';
 import 'package:hungry_app/root_view.dart';
 import 'package:image_picker/image_picker.dart';
