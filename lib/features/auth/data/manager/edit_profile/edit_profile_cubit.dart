@@ -11,15 +11,17 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   editProfileData({
     required String name,
     required String imagePath,
+    required String email,
     required String address,
     required String visa,
   }) async {
     emit(EditProfileLoading());
     final result = await authRepo.updateProfileData(
-      name,
-      imagePath,
-      address,
-      visa,
+      visa: visa,
+      imagePath: imagePath,
+      email: email,
+      address: address,
+      name: name,
     );
     result.fold(
       (fail) {
