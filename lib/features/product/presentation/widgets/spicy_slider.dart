@@ -5,38 +5,30 @@ import 'package:hungry_app/core/shared/custom_text.dart';
 
 class SpicySlider extends StatelessWidget {
   final double value;
+  final String image;
   final void Function(double val)? onChanged;
 
-  const SpicySlider({super.key, required this.value, this.onChanged});
+  const SpicySlider({
+    super.key,
+    required this.value,
+    this.onChanged,
+    required this.image,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Image.asset(
-          "assets/product/image.jpg",
-          width: 120,
+          image,
           height: 240,
         ),
         Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            CustomText(
-              text:
-                  "Customize Your Burger\n to Your Tastes.\n  UltimateExperience",
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-            ),
-            Gap(18),
-            CustomText(
-              text: "Spicy",
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-            ),
-            Gap(4),
+            Gap(20),
             Slider(
+              padding: EdgeInsets.all(0),
               activeColor: AppColors.primary,
               min: 0,
               max: 1,
@@ -46,10 +38,8 @@ class SpicySlider extends StatelessWidget {
             ),
             Row(
               children: [
-                Gap(20),
-
                 CustomText(text: "🥶"),
-                Gap(110),
+                Spacer(),
 
                 CustomText(text: "🌶️"),
               ],

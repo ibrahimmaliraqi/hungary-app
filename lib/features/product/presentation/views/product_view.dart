@@ -52,6 +52,7 @@ class _ProductViewState extends State<ProductView> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SpicySlider(
+                  image: "assets/splash/splash.png",
                   value: value,
                   onChanged: (val) {
                     setState(() {
