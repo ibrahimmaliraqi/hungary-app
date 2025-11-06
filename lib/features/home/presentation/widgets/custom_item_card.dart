@@ -48,7 +48,7 @@ class CustomCardItem extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
+                  Image.network(
                     image,
                     width: 120,
                     height: 120,
@@ -61,6 +61,7 @@ class CustomCardItem extends StatelessWidget {
                     fontWeight: FontWeight.w600,
                   ),
                   CustomText(
+                    isCaption: true,
                     text: subTitle,
                     fontSize: 14,
                     color: Color(0xff3C2F2F),

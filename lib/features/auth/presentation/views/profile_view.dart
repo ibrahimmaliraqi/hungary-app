@@ -111,7 +111,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   : (userImage != null && userImage!.isNotEmpty)
                                   ? NetworkImage(userImage!)
                                   : const NetworkImage(
-                                          "https://via.placeholder.com/150",
+                                          "https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png",
                                         )
                                         as ImageProvider,
                             ),
