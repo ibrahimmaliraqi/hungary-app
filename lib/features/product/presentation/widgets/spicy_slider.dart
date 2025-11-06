@@ -20,7 +20,7 @@ class SpicySlider extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.asset(
+        Image.network(
           image,
           height: 240,
         ),

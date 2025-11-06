@@ -89,7 +89,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => ProductView(),
+                                builder: (context) => ProductView(
+                                  image: state.products[index].image!,
+                                ),
                               ),
                             );
                           },

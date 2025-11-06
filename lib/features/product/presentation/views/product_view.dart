@@ -8,10 +8,11 @@ import 'package:hungry_app/features/checkout/presentation/views/checkout_view.da
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 import 'package:hungry_app/features/product/presentation/widgets/spicy_slider.dart';
-import 'package:hungry_app/features/product/presentation/widgets/topping_card.dart';
+import 'package:hungry_app/features/product/presentation/widgets/toppings_card..dart';
 
 class ProductView extends StatefulWidget {
-  const ProductView({super.key});
+  final String image;
+  const ProductView({super.key, required this.image});
 
   @override
   State<ProductView> createState() => _ProductViewState();
@@ -48,44 +49,66 @@ class _ProductViewState extends State<ProductView> {
             horizontal: 20,
           ),
           child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SpicySlider(
-                  image: "assets/splash/splash.png",
-                  value: value,
-                  onChanged: (val) {
-                    setState(() {
-                      value = val;
-                    });
-                  },
-                ),
-                Gap(40),
-                CustomText(
-                  text: "Toppings",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                Gap(9),
-                ToppingCard(
-                  text: "Tomato",
-                  onTap: () {},
-                ),
-                Gap(40),
-                CustomText(
-                  text: "Side options",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                ),
-                Gap(9),
+            child: BlocBuilder<ToppingsCubit, ToppingsState>(
+              builder: (context, state) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SpicySlider(
+                      image: widget.image,
+                      value: value,
+                      onChanged: (val) {
+                        setState(() {
+                          value = val;
+                        });
+                      },
+                    ),
+                    Gap(40),
+                    CustomText(
+                      text: "Toppings",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    Gap(9),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...List.generate(
+                            5,
+                            (index) {
+                              return ToppingsCard();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    Gap(40),
+                    CustomText(
+                      text: "Side options",
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                    Gap(9),
 
-                ToppingCard(
-                  text: "Potato",
-                  onTap: () {},
-                ),
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          ...List.generate(
+                            5,
+                            (index) {
+                              return ToppingsCard();
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
 
-                Gap(110),
-              ],
+                    Gap(110),
+                  ],
+                );
+              },
             ),
           ),
         ),
