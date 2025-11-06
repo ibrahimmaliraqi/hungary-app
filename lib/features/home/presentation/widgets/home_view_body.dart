@@ -90,6 +90,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                               context,
                               MaterialPageRoute(
                                 builder: (context) => ProductView(
+                                  price: state.products[index].price!,
+
                                   image: state.products[index].image!,
                                 ),
                               ),

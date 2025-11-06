@@ -3,8 +3,12 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 
 class ToppingsCard extends StatelessWidget {
+  final String image;
+  final String text;
   const ToppingsCard({
     super.key,
+    required this.image,
+    required this.text,
   });
 
   @override
@@ -23,15 +27,15 @@ class ToppingsCard extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Image.asset(
-                "assets/test/to.png",
+              Image.network(
+                image,
 
                 width: 60,
                 height: 60,
               ),
               Gap(7),
               CustomText(
-                text: "Tomato",
+                text: text,
                 fontWeight: FontWeight.w500,
               ),
             ],
