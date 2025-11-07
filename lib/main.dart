@@ -5,6 +5,7 @@ import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/features/auth/data/manager/edit_profile/edit_profile_cubit.dart';
 import 'package:hungry_app/features/auth/data/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 import 'package:hungry_app/observer.dart';
@@ -33,6 +34,9 @@ class HungryApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => ToppingsCubit(ProductDetilsRepoImpl()),
+        ),
+        BlocProvider(
+          create: (context) => SideOptionsCubit(ProductDetilsRepoImpl()),
         ),
       ],
       child: MaterialApp.router(

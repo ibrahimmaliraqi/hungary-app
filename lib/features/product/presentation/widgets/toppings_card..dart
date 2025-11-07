@@ -4,11 +4,13 @@ import 'package:hungry_app/core/shared/custom_text.dart';
 
 class ToppingsCard extends StatelessWidget {
   final String image;
+  final void Function()? onTap;
   final String text;
   const ToppingsCard({
     super.key,
     required this.image,
     required this.text,
+    this.onTap,
   });
 
   @override
@@ -19,26 +21,29 @@ class ToppingsCard extends StatelessWidget {
         elevation: 8,
 
         borderRadius: BorderRadius.circular(15),
-        child: Container(
-          padding: EdgeInsets.all(7),
-          decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 126, 158, 125),
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Column(
-            children: [
-              Image.network(
-                image,
+        child: GestureDetector(
+          onTap: onTap,
+          child: Container(
+            padding: EdgeInsets.all(7),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 126, 158, 125),
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: Column(
+              children: [
+                Image.network(
+                  image,
 
-                width: 60,
-                height: 60,
-              ),
-              Gap(7),
-              CustomText(
-                text: text,
-                fontWeight: FontWeight.w500,
-              ),
-            ],
+                  width: 60,
+                  height: 60,
+                ),
+                Gap(7),
+                CustomText(
+                  text: text,
+                  fontWeight: FontWeight.w500,
+                ),
+              ],
+            ),
           ),
         ),
       ),

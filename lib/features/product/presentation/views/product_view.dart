@@ -5,6 +5,7 @@ import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
+import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/presentation/widgets/spicy_slider.dart';
 import 'package:hungry_app/features/product/presentation/widgets/toppings_card..dart';
@@ -21,9 +22,12 @@ class ProductView extends StatefulWidget {
 
 class _ProductViewState extends State<ProductView> {
   double value = 0.5;
+  int? selectedTopping;
+  int? selectedSideOption;
   @override
   void initState() {
     BlocProvider.of<ToppingsCubit>(context).getToppings();
+    BlocProvider.of<SideOptionsCubit>(context).getSideOptions();
     super.initState();
   }
 
@@ -83,6 +87,11 @@ class _ProductViewState extends State<ProductView> {
                             (index) {
                               if (state is ToppingsSuccess) {
                                 return ToppingsCard(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedTopping = index + 1;
+                                    });
+                                  },
                                   image: state.toppings[index].image!,
                                   text: state.toppings[index].name!,
                                 );
@@ -113,19 +122,50 @@ class _ProductViewState extends State<ProductView> {
                   ),
                   Gap(9),
 
-                  // SingleChildScrollView(
-                  //   scrollDirection: Axis.horizontal,
-                  //   child: Row(
-                  //     children: [
-                  //       ...List.generate(
-                  //         5,
-                  //         (index) {
-                  //           return ToppingsCard();
-                  //         },
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  BlocBuilder<SideOptionsCubit, SideOptionsState>(
+                    builder: (context, state) {
+                      return Skeletonizer(
+                        enabled: state is SideOptionsLoading,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              ...List.generate(
+                                state is SideOptionsSuccess
+                                    ? state.sideOption.length
+                                    : 5,
+                                (index) {
+                                  if (state is SideOptionsSuccess) {
+                                    return ToppingsCard(
+                                      onTap: () {
+                                        setState(() {
+                                          selectedSideOption = index + 1;
+                                        });
+                                      },
+                                      image: state.sideOption[index].image!,
+                                      text: state.sideOption[index].name!,
+                                    );
+                                  }
+                                  if (state is SideOptionsSuccess) {
+                                    return ToppingsCard(
+                                      image:
+                                          'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
+                                      text: 'Tomato',
+                                    );
+                                  }
+                                  return ToppingsCard(
+                                    image:
+                                        'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
+                                    text: 'Tomato',
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
                   Gap(110),
                 ],
               );
@@ -176,6 +216,9 @@ class _ProductViewState extends State<ProductView> {
               width: 170,
               hight: 70,
               onTap: () {
+                print(selectedSideOption);
+                print(value);
+                print(selectedTopping);
                 Navigator.push(
                   context,
                   MaterialPageRoute(
