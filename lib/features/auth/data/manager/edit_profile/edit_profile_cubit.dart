@@ -13,10 +13,12 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     required String imagePath,
     required String email,
     required String address,
+    required String uId,
     required String visa,
   }) async {
     emit(EditProfileLoading());
     final result = await authRepo.updateProfileData(
+      uId: uId,
       visa: visa,
       imagePath: imagePath,
       email: email,
@@ -25,7 +27,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
     );
     result.fold(
       (fail) {
-        emit(EditProfileFailure(fail.errMessage));
+        emit(EditProfileFailure(fail.message));
       },
       (user) {
         emit(EditProfileSuccess(user!));

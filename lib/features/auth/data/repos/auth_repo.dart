@@ -15,11 +15,12 @@ abstract class AuthRepo {
     String uId,
   );
   Future<Either<Failure, UserModel?>> getProfileData({required String uId});
-  // Future<Either<Failure, UserModel?>> updateProfileData({
-  //   required String name,
-  //   required String email,
-  //   required String address,
-  //   String? visa,
-  //   String? imagePath,
-  // });
+  Future<Either<Failure, dynamic>> updateProfileData({
+    required String name,
+    required String uId,
+    required String email,
+    required String address,
+    String? visa,
+    String? imagePath,
+  });
 }

@@ -215,15 +215,18 @@ class _ProfileViewState extends State<ProfileView> {
                             );
                             return;
                           }
-                          await BlocProvider.of<EditProfileCubit>(
-                            context,
-                          ).editProfileData(
-                            name: name.text,
-                            email: email.text,
-                            imagePath: selectedImage!,
-                            address: address.text,
-                            visa: visaCon.text,
-                          );
+                          getId().then((uId) async {
+                            await BlocProvider.of<EditProfileCubit>(
+                              context,
+                            ).editProfileData(
+                              uId: uId,
+                              name: name.text,
+                              email: email.text,
+                              imagePath: selectedImage!,
+                              address: address.text,
+                              visa: visaCon.text,
+                            );
+                          });
                           getId().then((id) async {
                             await BlocProvider.of<GetProfileDataCubit>(
                               context,

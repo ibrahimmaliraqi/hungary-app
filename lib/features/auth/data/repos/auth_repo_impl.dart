@@ -72,4 +72,28 @@ class AuthRepoImpl implements AuthRepo {
       return left(SupabaseAuthError.from(e));
     }
   }
+
+  @override
+  Future<Either<Failure, dynamic>> updateProfileData({
+    required String name,
+    required String uId,
+    required String email,
+    required String address,
+    String? visa,
+    String? imagePath,
+  }) async {
+    try {
+      await supabase.from('users').insert({
+        'name': name,
+        'email': email,
+        'address': address,
+        'image': imagePath,
+        'visa': visa,
+        "id": uId,
+      });
+      return right("تم تحديث البيانات بنجاح");
+    } catch (e) {
+      return left(SupabaseAuthError.from(e));
+    }
+  }
 }
