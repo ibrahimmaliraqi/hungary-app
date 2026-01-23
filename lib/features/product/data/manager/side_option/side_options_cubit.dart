@@ -13,7 +13,7 @@ class SideOptionsCubit extends Cubit<SideOptionsState> {
     final result = await productDetils.getSideOption();
     result.fold(
       (fail) {
-        emit(SideOptionsFailure(fail.errMessage));
+        emit(SideOptionsFailure(fail.message));
       },
       (sideOption) {
         emit(SideOptionsSuccess(sideOption));

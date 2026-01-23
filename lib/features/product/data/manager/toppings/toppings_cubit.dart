@@ -14,7 +14,7 @@ class ToppingsCubit extends Cubit<ToppingsState> {
     final result = await productDetilsRepo.getToppings();
     result.fold(
       (fail) {
-        emit(ToppingsFailure(fail.errMessage));
+        emit(ToppingsFailure(fail.message));
       },
       (topping) {
         emit(ToppingsSuccess(topping));
