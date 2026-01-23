@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:hungry_app/core/error/supabsae_failure.dart';
+import 'package:hungry_app/features/auth/data/models/user_model.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo.dart';
 import 'package:hungry_app/main.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -36,5 +37,26 @@ class AuthRepoImpl implements AuthRepo {
       'email': email,
       "id": uId,
     });
+  }
+
+  @override
+  Future<Either<Failure, dynamic>> login(String email, String password) async {
+    try {
+      final AuthResponse res = await supabase.auth.signInWithPassword(
+        email: email,
+        password: password,
+      );
+      final info = res.user;
+
+      return right(info!.id);
+    } catch (e) {
+      return left(SupabaseAuthError.from(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, UserModel?>> getProfileData() {
+    // TODO: implement getProfileData
+    throw UnimplementedError();
   }
 }

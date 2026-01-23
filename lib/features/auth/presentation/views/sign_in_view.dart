@@ -90,14 +90,10 @@ class _SignInViewState extends State<SignInView> {
                             ),
                             Gap(30),
 
-                            // BlocListener + BlocBuilder للزر
                             BlocListener<LoginCubit, LoginState>(
                               listener: (context, state) {
                                 if (state is LoginSuccess) {
-                                  PrefHelpers.saveToken(
-                                    state.user.data!.token!,
-                                  );
-                                  // الانتقال بعد تسجيل الدخول بنجاح
+                                  PrefHelpers.saveToken(state.user);
                                   GoRouter.of(context).push(AppRouter.rootView);
                                 } else if (state is LoginFailure) {
                                   Snack.show(

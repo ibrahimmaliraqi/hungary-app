@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:hungry_app/features/auth/data/models/user_model.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo.dart';
 import 'package:meta/meta.dart';
 
@@ -13,7 +12,7 @@ class LoginCubit extends Cubit<LoginState> {
     final result = await authRepo.login(email, password);
     result.fold(
       (fail) {
-        emit(LoginFailure(fail.errMessage));
+        emit(LoginFailure(fail.message));
       },
       (user) {
         emit(LoginSuccess(user));
