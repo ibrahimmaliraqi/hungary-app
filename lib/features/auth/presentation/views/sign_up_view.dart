@@ -72,7 +72,7 @@ class _SignUpViewState extends State<SignUpView> {
                         child: BlocListener<RegisterCubit, RegisterState>(
                           listener: (context, state) {
                             if (state is RegisterSuccess) {
-                              PrefHelpers.saveToken(state.user.data!.token!);
+                              PrefHelpers.saveToken(state.uId);
                               GoRouter.of(context).push(AppRouter.login);
                             }
                             if (state is RegisterFailure) {

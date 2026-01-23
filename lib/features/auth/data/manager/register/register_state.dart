@@ -8,9 +8,9 @@ final class RegisterInitial extends RegisterState {}
 final class RegisterLoading extends RegisterState {}
 
 final class RegisterSuccess extends RegisterState {
-  final UserModel user;
+  final String uId;
 
-  RegisterSuccess(this.user);
+  RegisterSuccess(this.uId);
 }
 
 final class RegisterFailure extends RegisterState {
