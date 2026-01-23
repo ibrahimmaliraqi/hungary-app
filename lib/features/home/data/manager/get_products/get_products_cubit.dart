@@ -13,7 +13,7 @@ class GetProductsCubit extends Cubit<GetProductsState> {
     final result = await homeRepo.getProducts();
     result.fold(
       (fail) {
-        emit(GetProductsFailure(fail.errMessage));
+        emit(GetProductsFailure(fail.message));
       },
       (products) {
         emit(GetProductsSuccess(products));
