@@ -3,8 +3,8 @@ class ProductsModel {
   String? name;
   String? description;
   String? image;
-  String? rating;
-  String? price;
+  num? rating;
+  num? price;
 
   ProductsModel({
     this.id,

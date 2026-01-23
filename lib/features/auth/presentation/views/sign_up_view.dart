@@ -76,6 +76,7 @@ class _SignUpViewState extends State<SignUpView> {
                               GoRouter.of(context).push(AppRouter.login);
                             }
                             if (state is RegisterFailure) {
+                              print(state.errMessage);
                               Snack.show(context, message: state.errMessage);
                             }
                           },

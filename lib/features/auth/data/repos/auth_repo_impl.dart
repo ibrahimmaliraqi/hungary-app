@@ -35,7 +35,7 @@ class AuthRepoImpl implements AuthRepo {
     await supabase.from('users').insert({
       'name': name,
       'email': email,
-      "id": uId,
+      "uid": uId,
     });
   }
 

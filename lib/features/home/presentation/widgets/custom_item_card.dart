@@ -9,7 +9,8 @@ import 'package:hungry_app/core/shared/custom_text.dart';
 
 class CustomCardItem extends StatelessWidget {
   final void Function()? onTap;
-  final String image, title, subTitle, rating;
+  final String image, title, subTitle;
+  final num rating;
   const CustomCardItem({
     super.key,
     required this.image,

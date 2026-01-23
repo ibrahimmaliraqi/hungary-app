@@ -26,7 +26,12 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<GetProductsCubit, GetProductsState>(
+    return BlocConsumer<GetProductsCubit, GetProductsState>(
+      listener: (context, state) {
+        if (state is GetProductsFailure) {
+          print(state.errMessage);
+        }
+      },
       builder: (context, state) {
         return RefreshIndicator(
           color: AppColors.primary,
@@ -106,7 +111,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                       return CustomCardItem(
                         image:
                             "http://sonic-zdi0.onrender.com/storage/products/fried.jpg",
-                        rating: "4.9",
+                        rating: 4.9,
                         subTitle: "Loading...",
                         title: "Loading...",
                       );

@@ -13,7 +13,7 @@ import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductView extends StatefulWidget {
   final String image;
-  final String price;
+  final num price;
   const ProductView({super.key, required this.image, required this.price});
 
   @override
