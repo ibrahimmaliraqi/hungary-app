@@ -11,6 +11,7 @@ import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/core/shared/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/utils/pref_helpers.dart';
 import 'package:hungry_app/features/auth/data/manager/edit_profile/edit_profile_cubit.dart';
 import 'package:hungry_app/features/auth/data/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/profile_text_field.dart';
@@ -37,11 +38,18 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<GetProfileDataCubit>(context).getProfileData();
+    getId().then((id) {
+      BlocProvider.of<GetProfileDataCubit>(context).getProfileData(uId: id);
+    });
 
     name.text = "NO NAME";
     email.text = "NO EMAIL";
     address.text = "NO ADDRESS";
+  }
+
+  Future<String> getId() async {
+    String? id = await PrefHelpers.getToken();
+    return id ?? "";
   }
 
   Future<void> pickImage() async {
@@ -64,16 +72,22 @@ class _ProfileViewState extends State<ProfileView> {
         }
 
         if (state is GetProfileDataSuccess) {
-          name.text = state.user?.data?.name ?? "";
-          email.text = state.user?.data?.email ?? "";
-          address.text = state.user?.data?.address ?? "ADD YOUR ADDRESS";
-          userImage = state.user?.data?.image;
-          visa = state.user?.data?.visa;
+          name.text = state.user?.name ?? "";
+          email.text = state.user?.email ?? "";
+          address.text = state.user?.address ?? "ADD YOUR ADDRESS";
+          userImage = state.user?.image;
+          visa = state.user?.visa;
         }
 
         return RefreshIndicator(
-          onRefresh: () =>
-              BlocProvider.of<GetProfileDataCubit>(context).getProfileData(),
+          onRefresh: () {
+            getId().then((id) {
+              BlocProvider.of<GetProfileDataCubit>(
+                context,
+              ).getProfileData(uId: id);
+            });
+            return Future.value();
+          },
           child: Scaffold(
             appBar: AppBar(
               scrolledUnderElevation: 0,
@@ -210,9 +224,11 @@ class _ProfileViewState extends State<ProfileView> {
                             address: address.text,
                             visa: visaCon.text,
                           );
-                          await BlocProvider.of<GetProfileDataCubit>(
-                            context,
-                          ).getProfileData();
+                          getId().then((id) async {
+                            await BlocProvider.of<GetProfileDataCubit>(
+                              context,
+                            ).getProfileData(uId: id);
+                          });
                         },
                         child: state is EditProfileLoading
                             ? const Center(

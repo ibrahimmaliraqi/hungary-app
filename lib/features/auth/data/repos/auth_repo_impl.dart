@@ -55,8 +55,21 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserModel?>> getProfileData() {
-    // TODO: implement getProfileData
-    throw UnimplementedError();
+  Future<Either<Failure, UserModel?>> getProfileData({
+    required String uId,
+  }) async {
+    try {
+      final data = await supabase
+          .from('users')
+          .select()
+          .eq('uId', uId)
+          .single();
+
+      final user = UserModel.fromJson(data);
+
+      return right(user);
+    } catch (e) {
+      return left(SupabaseAuthError.from(e));
+    }
   }
 }

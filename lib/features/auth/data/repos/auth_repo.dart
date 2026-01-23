@@ -14,7 +14,7 @@ abstract class AuthRepo {
     String email,
     String uId,
   );
-  Future<Either<Failure, UserModel?>> getProfileData();
+  Future<Either<Failure, UserModel?>> getProfileData({required String uId});
   // Future<Either<Failure, UserModel?>> updateProfileData({
   //   required String name,
   //   required String email,

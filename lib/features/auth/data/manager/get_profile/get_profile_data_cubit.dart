@@ -8,12 +8,12 @@ part 'get_profile_data_state.dart';
 class GetProfileDataCubit extends Cubit<GetProfileDataState> {
   GetProfileDataCubit(this.authRepo) : super(GetProfileDataInitial());
   AuthRepo authRepo;
-  getProfileData() async {
+  getProfileData({required String uId}) async {
     emit(GetProfileDataLoading());
-    final result = await authRepo.getProfileData();
+    final result = await authRepo.getProfileData(uId: uId);
     result.fold(
       (fail) {
-        emit(GetProfileDataFailure(fail.errMessage));
+        emit(GetProfileDataFailure(fail.message));
       },
       (user) {
         emit(GetProfileDataSuccess(user));
