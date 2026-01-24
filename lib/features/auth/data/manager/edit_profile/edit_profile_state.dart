@@ -8,7 +8,7 @@ final class EditProfileInitial extends EditProfileState {}
 final class EditProfileLoading extends EditProfileState {}
 
 final class EditProfileSuccess extends EditProfileState {
-  final UserModel user;
+  final String user;
 
   EditProfileSuccess(this.user);
 }

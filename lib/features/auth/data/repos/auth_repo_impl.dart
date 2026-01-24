@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:hungry_app/core/error/supabsae_failure.dart';
 import 'package:hungry_app/features/auth/data/models/user_model.dart';
@@ -62,7 +64,7 @@ class AuthRepoImpl implements AuthRepo {
       final data = await supabase
           .from('users')
           .select()
-          .eq('uId', uId)
+          .eq('uid', uId)
           .single();
 
       final user = UserModel.fromJson(data);
@@ -83,14 +85,28 @@ class AuthRepoImpl implements AuthRepo {
     String? imagePath,
   }) async {
     try {
-      await supabase.from('users').insert({
-        'name': name,
-        'email': email,
-        'address': address,
-        'image': imagePath,
-        'visa': visa,
-        "id": uId,
-      });
+      final avatarFile = File(imagePath!);
+      await supabase.storage
+          .from('profile')
+          .upload(
+            'profileImages/$uId.png',
+            avatarFile,
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+          );
+      final String publicUrl = supabase.storage
+          .from('profile')
+          .getPublicUrl('profileImages/$uId.png');
+      await supabase
+          .from('users')
+          .update({
+            'name': name,
+            'email': email,
+            'address': address,
+            'image': publicUrl,
+            'visa': visa,
+          })
+          .eq('uid', uId);
+
       return right("تم تحديث البيانات بنجاح");
     } catch (e) {
       return left(SupabaseAuthError.from(e));

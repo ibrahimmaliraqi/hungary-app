@@ -30,7 +30,7 @@ class _SignInViewState extends State<SignInView> {
   @override
   void initState() {
     emailController.text = "ibrahim1@gmail.com";
-    passwordController.text = "123456789";
+    passwordController.text = "07700770";
     super.initState();
   }
 

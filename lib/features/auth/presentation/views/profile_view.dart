@@ -68,6 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
     return BlocBuilder<GetProfileDataCubit, GetProfileDataState>(
       builder: (context, state) {
         if (state is GetProfileDataFailure) {
+          print(state.errMessage);
           Snack.show(context, message: state.errMessage);
         }
 
@@ -155,7 +156,9 @@ class _ProfileViewState extends State<ProfileView> {
                         const Divider(),
                         const Gap(10),
 
-                        (visa == null || visa!.isEmpty)
+                        const Gap(10),
+
+                        (visa == null || visa!.trim().isEmpty)
                             ? ProfileTextField(
                                 label: "ADD VISA CARD",
                                 type: TextInputType.number,
@@ -176,7 +179,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   color: Colors.black,
                                 ),
                                 subtitle: CustomText(
-                                  text: visa!,
+                                  text: visa!.trim(),
                                   fontSize: 13,
                                 ),
                                 leading: Image.asset(
@@ -189,6 +192,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   fontSize: 13,
                                 ),
                               ),
+
                         const Gap(100),
                       ],
                     ),
@@ -204,7 +208,12 @@ class _ProfileViewState extends State<ProfileView> {
               decoration: const BoxDecoration(color: Colors.white),
               child: Row(
                 children: [
-                  BlocBuilder<EditProfileCubit, EditProfileState>(
+                  BlocConsumer<EditProfileCubit, EditProfileState>(
+                    listener: (context, state) {
+                      if (state is EditProfileFailure) {
+                        print(state.errMessage);
+                      }
+                    },
                     builder: (context, state) {
                       return GestureDetector(
                         onTap: () async {
