@@ -21,6 +21,6 @@ class UserModel {
     email = json['email'];
     image = json['image'];
     address = json['address'];
-    visa = json['Visa'];
+    visa = json['visa'];
   }
 }

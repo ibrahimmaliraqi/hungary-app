@@ -91,7 +91,7 @@ class AuthRepoImpl implements AuthRepo {
           .upload(
             'profileImages/$uId.png',
             avatarFile,
-            fileOptions: const FileOptions(cacheControl: '3600', upsert: false),
+            fileOptions: const FileOptions(cacheControl: '3600', upsert: true),
           );
       final String publicUrl = supabase.storage
           .from('profile')
