@@ -22,8 +22,9 @@ class ProductView extends StatefulWidget {
 
 class _ProductViewState extends State<ProductView> {
   double value = 0.5;
-  int? selectedTopping;
-  int? selectedSideOption;
+  List<int> selectedTopping = [];
+  List<int> selectedSideOption = [];
+
   @override
   void initState() {
     BlocProvider.of<ToppingsCubit>(context).getToppings();
@@ -88,9 +89,19 @@ class _ProductViewState extends State<ProductView> {
                               if (state is ToppingsSuccess) {
                                 return ToppingsCard(
                                   onTap: () {
-                                    setState(() {
-                                      selectedTopping = index + 1;
-                                    });
+                                    if (selectedTopping.contains(
+                                      index + 1,
+                                    )) {
+                                      setState(() {
+                                        selectedTopping.remove(
+                                          index + 1,
+                                        );
+                                      });
+                                    } else {
+                                      setState(() {
+                                        selectedTopping.add(index + 1);
+                                      });
+                                    }
                                   },
                                   image: state.toppings[index].image!,
                                   text: state.toppings[index].name!,
@@ -138,9 +149,19 @@ class _ProductViewState extends State<ProductView> {
                                   if (state is SideOptionsSuccess) {
                                     return ToppingsCard(
                                       onTap: () {
-                                        setState(() {
-                                          selectedSideOption = index + 1;
-                                        });
+                                        if (selectedSideOption.contains(
+                                          index + 1,
+                                        )) {
+                                          setState(() {
+                                            selectedSideOption.remove(
+                                              index + 1,
+                                            );
+                                          });
+                                        } else {
+                                          setState(() {
+                                            selectedSideOption.add(index + 1);
+                                          });
+                                        }
                                       },
                                       image: state.sideOption[index].image!,
                                       text: state.sideOption[index].name!,
