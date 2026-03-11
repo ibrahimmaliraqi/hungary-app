@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/functions/get_it.dart';
 import 'package:hungry_app/core/shared/custom_button.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
+import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
+import 'package:hungry_app/features/product/data/models/cart_model.dart';
 import 'package:hungry_app/features/product/presentation/widgets/spicy_slider.dart';
 import 'package:hungry_app/features/product/presentation/widgets/toppings_card..dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -14,7 +17,13 @@ import 'package:skeletonizer/skeletonizer.dart';
 class ProductView extends StatefulWidget {
   final String image;
   final num price;
-  const ProductView({super.key, required this.image, required this.price});
+  final int productId;
+  const ProductView({
+    super.key,
+    required this.image,
+    required this.price,
+    required this.productId,
+  });
 
   @override
   State<ProductView> createState() => _ProductViewState();
@@ -232,19 +241,48 @@ class _ProductViewState extends State<ProductView> {
             ),
 
             Spacer(),
-            CustomButton(
-              text: "Check Out",
-              width: 170,
-              hight: 70,
-              onTap: () {
-                print(selectedSideOption);
-                print(value);
-                print(selectedTopping);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CheckoutView(),
-                  ),
+            BlocConsumer<CartCubit, CartState>(
+              listener: (context, state) {
+                if (state is CartFailure) {
+                  print(state.errMessage);
+                }
+                if (state is CartLoaded) {
+                  SnackBar(content: CustomText(text: "تمت الاضافه"));
+                }
+              },
+              builder: (context, state) {
+                return CustomButton(
+                  text: "Check Out",
+                  width: 170,
+                  hight: 70,
+                  onTap: () {
+                    print(selectedSideOption);
+                    print(value);
+                    print(selectedTopping);
+                    getId().then((uid) {
+                      final cart = CartModel(
+                        items: [
+                          CartItemModel(
+                            productId: widget.productId,
+                            quantity: 1,
+                            toppings: selectedTopping,
+                            sideOptions: selectedSideOption,
+                          ),
+                        ],
+                      );
+
+                      context.read<CartCubit>().addItem(
+                        cart: cart,
+                        uid: uid,
+                      );
+                    });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CheckoutView(),
+                      ),
+                    );
+                  },
                 );
               },
             ),
