@@ -38,7 +38,7 @@ dependencies:
   gap: ^3.0.1
   google_fonts: ^6.3.2
   dia: ^0.1.5
-  dio: ^5.9.0
+  dio: ^5.11.1
   shared_preferences: ^2.5.3
   flutter_bloc: ^9.1.1
   dartz: ^0.10.1
