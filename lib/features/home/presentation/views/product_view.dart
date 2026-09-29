@@ -8,11 +8,11 @@ import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
-import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
-import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/side_option/side_options_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/data/models/cart_model.dart';
-import 'package:hungry_app/features/product/presentation/widgets/spicy_slider.dart';
-import 'package:hungry_app/features/product/presentation/widgets/toppings_card..dart';
+import 'package:hungry_app/features/home/presentation/widgets/spicy_slider.dart';
+import 'package:hungry_app/features/home/presentation/widgets/toppings_card..dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductView extends StatefulWidget {

@@ -7,8 +7,10 @@ plugins {
 
 android {
     namespace = "com.example.hungry_app"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion =  "29.0.14206865"
+    compileSdk = 36
+    ndkVersion =  "28.2.13676358"
+        buildToolsVersion = "36.0.0"
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

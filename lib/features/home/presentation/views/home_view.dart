@@ -6,7 +6,7 @@ import 'package:hungry_app/features/home/domain/use_case/get_products_usecase.da
 import 'package:hungry_app/features/home/presentation/manager/get_categories/get_categories_cubit.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_products/get_products_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/home_view_body.dart';
-import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 
 class HomeView extends StatelessWidget {

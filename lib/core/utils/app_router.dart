@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_up_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
-import 'package:hungry_app/features/product/presentation/views/product_view.dart';
+import 'package:hungry_app/features/home/presentation/views/product_view.dart';
 import 'package:hungry_app/root_view.dart';
 import 'package:hungry_app/splash_view.dart';
 

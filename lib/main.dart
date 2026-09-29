@@ -9,8 +9,8 @@ import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_
 import 'package:hungry_app/features/auth/presentation/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
-import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
-import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/side_option/side_options_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/toppings/toppings_cubit.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 import 'package:hungry_app/observer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
