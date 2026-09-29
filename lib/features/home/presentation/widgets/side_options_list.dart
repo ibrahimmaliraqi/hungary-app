@@ -17,8 +17,9 @@ class ProductOptionList extends StatelessWidget {
       child: Row(
         children: options.map((option) {
           return ToppingsCard(
-            image: option.image,
-            text: option.name,
+            imageUrl: option.image,
+            title: option.name,
+            onAdd: () {},
           );
         }).toList(),
       ),
