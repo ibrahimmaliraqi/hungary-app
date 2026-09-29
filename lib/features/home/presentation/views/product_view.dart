@@ -2,39 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
-import 'package:hungry_app/core/functions/get_it.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
-import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/presentation/widgets/product_details_view_body.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
-import 'package:hungry_app/features/home/presentation/manager/side_option/side_options_cubit.dart';
-import 'package:hungry_app/features/home/presentation/manager/toppings/toppings_cubit.dart';
-import 'package:hungry_app/features/product/data/models/cart_model.dart';
-import 'package:hungry_app/features/home/presentation/widgets/spicy_slider.dart';
-import 'package:hungry_app/features/home/presentation/widgets/toppings_card..dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductView extends StatefulWidget {
+class ProductDetailsView extends StatefulWidget {
   final ProductEntity productEntity;
-  const ProductView({
+  const ProductDetailsView({
     super.key,
     required this.productEntity,
   });
 
   @override
-  State<ProductView> createState() => _ProductViewState();
+  State<ProductDetailsView> createState() => _ProductDetailsViewState();
 }
 
-class _ProductViewState extends State<ProductView> {
-  double value = 0.5;
-  List<int> selectedTopping = [];
-  List<int> selectedSideOption = [];
-
+class _ProductDetailsViewState extends State<ProductDetailsView> {
   @override
   void initState() {
-    BlocProvider.of<ToppingsCubit>(context).getToppings();
-    BlocProvider.of<SideOptionsCubit>(context).getSideOptions();
     super.initState();
   }
 
@@ -55,150 +43,8 @@ class _ProductViewState extends State<ProductView> {
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 20,
-        ),
-        child: SingleChildScrollView(
-          child: BlocBuilder<ToppingsCubit, ToppingsState>(
-            builder: (context, state) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SpicySlider(
-                    image: widget.productEntity.image,
-                    value: value,
-                    onChanged: (val) {
-                      setState(() {
-                        value = val;
-                      });
-                    },
-                  ),
-                  Gap(40),
-                  CustomText(
-                    text: "Toppings",
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  Gap(9),
-                  Skeletonizer(
-                    enabled: state is ToppingsLoading,
-                    child: SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          ...List.generate(
-                            state is ToppingsSuccess
-                                ? state.toppings.length
-                                : 5,
-                            (index) {
-                              if (state is ToppingsSuccess) {
-                                return ToppingsCard(
-                                  onTap: () {
-                                    if (selectedTopping.contains(
-                                      index + 1,
-                                    )) {
-                                      setState(() {
-                                        selectedTopping.remove(
-                                          index + 1,
-                                        );
-                                      });
-                                    } else {
-                                      setState(() {
-                                        selectedTopping.add(index + 1);
-                                      });
-                                    }
-                                  },
-                                  image: state.toppings[index].image!,
-                                  text: state.toppings[index].name!,
-                                );
-                              }
-                              if (state is ToppingsLoading) {
-                                return ToppingsCard(
-                                  image:
-                                      'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
-                                  text: 'Tomato',
-                                );
-                              }
-                              return ToppingsCard(
-                                image:
-                                    'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
-                                text: 'Tomato',
-                              );
-                            },
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Gap(40),
-                  CustomText(
-                    text: "Side options",
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                  ),
-                  Gap(9),
-
-                  BlocBuilder<SideOptionsCubit, SideOptionsState>(
-                    builder: (context, state) {
-                      return Skeletonizer(
-                        enabled: state is SideOptionsLoading,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: [
-                              ...List.generate(
-                                state is SideOptionsSuccess
-                                    ? state.sideOption.length
-                                    : 5,
-                                (index) {
-                                  if (state is SideOptionsSuccess) {
-                                    return ToppingsCard(
-                                      onTap: () {
-                                        if (selectedSideOption.contains(
-                                          index + 1,
-                                        )) {
-                                          setState(() {
-                                            selectedSideOption.remove(
-                                              index + 1,
-                                            );
-                                          });
-                                        } else {
-                                          setState(() {
-                                            selectedSideOption.add(index + 1);
-                                          });
-                                        }
-                                      },
-                                      image: state.sideOption[index].image!,
-                                      text: state.sideOption[index].name!,
-                                    );
-                                  }
-                                  if (state is SideOptionsSuccess) {
-                                    return ToppingsCard(
-                                      image:
-                                          'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
-                                      text: 'Tomato',
-                                    );
-                                  }
-                                  return ToppingsCard(
-                                    image:
-                                        'https://sonic-zdi0.onrender.com/storage/toppings/tomato.png',
-                                    text: 'Tomato',
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  Gap(110),
-                ],
-              );
-            },
-          ),
-        ),
+      body: ProductDetailsViewBody(
+        productEntity: widget.productEntity,
       ),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -252,34 +98,6 @@ class _ProductViewState extends State<ProductView> {
                   text: "Check Out",
                   width: 170,
                   hight: 70,
-                  onTap: () {
-                    print(selectedSideOption);
-                    print(value);
-                    print(selectedTopping);
-                    getId().then((uid) {
-                      final cart = CartModel(
-                        items: [
-                          CartItemModel(
-                            productId: widget.productEntity.id,
-                            quantity: 1,
-                            toppings: selectedTopping,
-                            sideOptions: selectedSideOption,
-                          ),
-                        ],
-                      );
-
-                      context.read<CartCubit>().addItem(
-                        cart: cart,
-                        uid: uid,
-                      );
-                    });
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CheckoutView(),
-                      ),
-                    );
-                  },
                 );
               },
             ),

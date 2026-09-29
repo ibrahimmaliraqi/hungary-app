@@ -34,7 +34,7 @@ class AppRouter {
         path: productView,
         builder: (context, state) {
           final ProductEntity data = state.extra as ProductEntity;
-          return ProductView(
+          return ProductDetailsView(
             productEntity: data,
           );
         },
