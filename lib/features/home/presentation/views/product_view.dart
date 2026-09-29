@@ -7,24 +7,13 @@ import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/widgets/product_details_view_body.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
-import 'package:skeletonizer/skeletonizer.dart';
 
-class ProductDetailsView extends StatefulWidget {
+class ProductDetailsView extends StatelessWidget {
   final ProductEntity productEntity;
   const ProductDetailsView({
     super.key,
     required this.productEntity,
   });
-
-  @override
-  State<ProductDetailsView> createState() => _ProductDetailsViewState();
-}
-
-class _ProductDetailsViewState extends State<ProductDetailsView> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +33,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         ),
       ),
       body: ProductDetailsViewBody(
-        productEntity: widget.productEntity,
+        productEntity: productEntity,
       ),
       bottomSheet: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
@@ -66,18 +55,20 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         child: Row(
           children: [
             Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: "Total",
-                  fontSize: 18,
+                  text: "السعر الكلي",
+                  fontSize: 15,
                   fontWeight: FontWeight.w600,
                   color: Color(0xff3C2F2F),
                 ),
                 Gap(5),
                 CustomText(
-                  text: "\$${widget.productEntity.price}",
-                  fontSize: 32,
-                  fontWeight: FontWeight.w400,
+                  text: "${productEntity.price} دينار عراقي",
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold,
                   color: Color(0xff3C2F2F),
                 ),
               ],
@@ -95,7 +86,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               },
               builder: (context, state) {
                 return CustomButton(
-                  text: "Check Out",
+                  text: "اضف للسلة",
                   width: 170,
                   hight: 70,
                 );
