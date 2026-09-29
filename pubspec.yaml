@@ -50,6 +50,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cached_network_image: ^4.0.2
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:

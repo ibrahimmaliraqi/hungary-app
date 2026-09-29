@@ -19,9 +19,9 @@ Future<void> main() async {
     DeviceOrientation.portraitUp,
   ]);
   await Supabase.initialize(
-    url: 'https://bttsdojxvucpzaqczsga.supabase.co',
+    url: 'https://ihlcguvkkmghordsncsp.supabase.co',
     anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0dHNkb2p4dnVjcHphcWN6c2dhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2NTY3MzAsImV4cCI6MjA4NDIzMjczMH0.Q0GgaYgqqfq1Xvkgb63z450sIlsaDh0wPXZCZmtsLVA',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobGNndXZra21naG9yZHNuY3NwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzAzNzEzNiwiZXhwIjoyMDc4NjEzMTM2fQ.aR7jGVFyGnO46ZdtXGdLu0PidsmUyZ51W4pL-nST-OM',
   );
   setupLocator();
 

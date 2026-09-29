@@ -1,0 +1,33 @@
+
+[functions.create-wayl-payment]
+enabled = true
+verify_jwt = false
+import_map = "./functions/create-wayl-payment/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/create-wayl-payment/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/create-wayl-payment/*.html" ]
+
+[functions.wayl-webhook]
+enabled = true
+verify_jwt = false
+import_map = "./functions/wayl-webhook/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/wayl-webhook/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/wayl-webhook/*.html" ]
+
+[functions.create-test-wayl-invoice]
+enabled = true
+verify_jwt = false
+import_map = "./functions/create-test-wayl-invoice/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/create-test-wayl-invoice/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/create-test-wayl-invoice/*.html" ]
