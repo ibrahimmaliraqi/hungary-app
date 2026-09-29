@@ -79,6 +79,7 @@ flutter:
     - assets/logo/
     - assets/splash/
     - assets/product/
+    - assets/images/
     - assets/test/
     - assets/payout/
   #   - images/a_dot_ham.jpeg
@@ -109,6 +110,9 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+flutter_assets:
+  assets_path: assets/images/
+  output_path: lib/core/assets/
+  filename: assets.dart
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
