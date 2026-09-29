@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
-import 'package:hungry_app/core/shared/custom_button.dart';
-import 'package:hungry_app/core/shared/custom_text.dart';
+import 'package:hungry_app/core/widgets/custom_button.dart';
+import 'package:hungry_app/core/widgets/custom_text.dart';
 
 class CustomCartItem extends StatelessWidget {
   const CustomCartItem({

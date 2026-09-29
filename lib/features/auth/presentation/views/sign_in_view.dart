@@ -7,9 +7,9 @@ import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
-import 'package:hungry_app/core/shared/custom_text.dart';
-import 'package:hungry_app/core/shared/custom_text_form_field.dart';
-import 'package:hungry_app/core/shared/snack.dart';
+import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/custom_text_form_field.dart';
+import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/core/utils/pref_helpers.dart';
 import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
@@ -107,6 +107,7 @@ class _SignInViewState extends State<SignInView> {
                                   Snack.show(
                                     context,
                                     message: state.errMessage,
+                                    isError: true,
                                   );
                                 }
                               },

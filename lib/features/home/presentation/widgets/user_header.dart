@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
-import 'package:hungry_app/core/shared/custom_text.dart';
+import 'package:hungry_app/core/widgets/custom_text.dart';
 
 class UserHeader extends StatelessWidget {
   const UserHeader({super.key});

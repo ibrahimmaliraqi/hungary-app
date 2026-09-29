@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hungry_app/core/shared/custom_button.dart';
-import 'package:hungry_app/core/shared/custom_text.dart';
+import 'package:hungry_app/core/widgets/custom_button.dart';
+import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/cart/presentation/widgets/custom_cart_item.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
 

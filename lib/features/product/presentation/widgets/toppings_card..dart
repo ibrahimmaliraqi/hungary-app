@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hungry_app/core/shared/custom_text.dart';
+import 'package:hungry_app/core/widgets/custom_text.dart';
 
 class ToppingsCard extends StatelessWidget {
   final String image;
