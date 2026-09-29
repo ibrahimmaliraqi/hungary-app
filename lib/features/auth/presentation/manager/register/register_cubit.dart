@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:hungry_app/features/auth/data/repos/auth_repo.dart';
+import 'package:hungry_app/features/auth/domain/entities/user_entity.dart';
+import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 
 part 'register_state.dart';

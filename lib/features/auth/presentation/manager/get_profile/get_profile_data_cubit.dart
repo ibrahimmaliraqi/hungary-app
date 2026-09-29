@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:hungry_app/features/auth/data/models/user_model.dart';
-import 'package:hungry_app/features/auth/data/repos/auth_repo.dart';
+import 'package:hungry_app/features/auth/domain/entities/user_entity.dart';
+import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 
 part 'get_profile_data_state.dart';
@@ -10,7 +10,7 @@ class GetProfileDataCubit extends Cubit<GetProfileDataState> {
   AuthRepo authRepo;
   getProfileData({required String uId}) async {
     emit(GetProfileDataLoading());
-    final result = await authRepo.getProfileData(uId: uId);
+    final result = await authRepo.getProfileData(id: uId);
     result.fold(
       (fail) {
         emit(GetProfileDataFailure(fail.message));

@@ -3,7 +3,7 @@ import 'package:hungry_app/features/product/data/models/cart_model.dart';
 import 'package:hungry_app/features/product/data/models/toppings_model.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo.dart';
 
-import '../../../../core/error/supabsae_failure.dart';
+import '../../../../core/error/failure.dart';
 import '../../../../main.dart';
 
 class ProductDetilsRepoImpl implements ProductDetilsRepo {

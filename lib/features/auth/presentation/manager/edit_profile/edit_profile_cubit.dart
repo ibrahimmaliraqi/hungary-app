@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
-import 'package:hungry_app/features/auth/data/repos/auth_repo.dart';
+import 'package:hungry_app/features/auth/domain/entities/user_entity.dart';
+import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:meta/meta.dart';
 
 part 'edit_profile_state.dart';
@@ -17,7 +18,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
   }) async {
     emit(EditProfileLoading());
     final result = await authRepo.updateProfileData(
-      uId: uId,
+      id: uId,
       visa: visa,
       imagePath: imagePath,
       email: email,
@@ -29,7 +30,7 @@ class EditProfileCubit extends Cubit<EditProfileState> {
         emit(EditProfileFailure(fail.message));
       },
       (user) {
-        emit(EditProfileSuccess(user!));
+        emit(EditProfileSuccess(user));
       },
     );
   }

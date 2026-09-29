@@ -6,12 +6,14 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
+import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/core/shared/custom_text_form_field.dart';
 import 'package:hungry_app/core/shared/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/core/utils/pref_helpers.dart';
-import 'package:hungry_app/features/auth/data/manager/register/register_cubit.dart';
+import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
+import 'package:hungry_app/features/auth/presentation/manager/register/register_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/custom_auth_button.dart';
 
@@ -34,7 +36,8 @@ class _SignUpViewState extends State<SignUpView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: BlocProvider(
-        create: (context) => RegisterCubit(AuthRepoImpl()),
+        create: (context) =>
+            RegisterCubit(AuthRepoImpl(authRemote: getIt.get<AuthRemote>())),
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
@@ -72,7 +75,7 @@ class _SignUpViewState extends State<SignUpView> {
                         child: BlocListener<RegisterCubit, RegisterState>(
                           listener: (context, state) {
                             if (state is RegisterSuccess) {
-                              PrefHelpers.saveToken(state.uId);
+                              PrefHelpers.saveToken(state.user.id!.toString());
                               GoRouter.of(context).push(AppRouter.login);
                             }
                             if (state is RegisterFailure) {

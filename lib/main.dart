@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
-import 'package:hungry_app/features/auth/data/manager/edit_profile/edit_profile_cubit.dart';
-import 'package:hungry_app/features/auth/data/manager/get_profile/get_profile_data_cubit.dart';
+import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
+import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_profile_cubit.dart';
+import 'package:hungry_app/features/auth/presentation/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
@@ -22,6 +24,8 @@ Future<void> main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0dHNkb2p4dnVjcHphcWN6c2dhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg2NTY3MzAsImV4cCI6MjA4NDIzMjczMH0.Q0GgaYgqqfq1Xvkgb63z450sIlsaDh0wPXZCZmtsLVA',
   );
+  setupLocator();
+
   Bloc.observer = MyBlocObserver();
 
   runApp(HungryApp());
@@ -37,10 +41,14 @@ class HungryApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => GetProfileDataCubit(AuthRepoImpl()),
+          create: (context) => GetProfileDataCubit(
+            AuthRepoImpl(authRemote: getIt.get<AuthRemote>()),
+          ),
         ),
         BlocProvider(
-          create: (context) => EditProfileCubit(AuthRepoImpl()),
+          create: (context) => EditProfileCubit(
+            AuthRepoImpl(authRemote: getIt.get<AuthRemote>()),
+          ),
         ),
         BlocProvider(
           create: (context) => ToppingsCubit(ProductDetilsRepoImpl()),

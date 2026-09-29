@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:hungry_app/features/home/data/models/products_model.dart';
 import 'package:hungry_app/features/home/data/repos/home_repo.dart';
 
-import '../../../../core/error/supabsae_failure.dart';
+import '../../../../core/error/failure.dart';
 import '../../../../main.dart';
 
 class HomeRepoImpl implements HomeRepo {

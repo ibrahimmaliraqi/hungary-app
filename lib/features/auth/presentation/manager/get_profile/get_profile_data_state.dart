@@ -8,7 +8,7 @@ final class GetProfileDataInitial extends GetProfileDataState {}
 final class GetProfileDataLoading extends GetProfileDataState {}
 
 final class GetProfileDataSuccess extends GetProfileDataState {
-  final UserModel? user;
+  final UserEntity? user;
 
   GetProfileDataSuccess(this.user);
 }

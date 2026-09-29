@@ -6,12 +6,14 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
+import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/shared/custom_text.dart';
 import 'package:hungry_app/core/shared/custom_text_form_field.dart';
 import 'package:hungry_app/core/shared/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/core/utils/pref_helpers.dart';
-import 'package:hungry_app/features/auth/data/manager/login/login_cubit.dart';
+import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
+import 'package:hungry_app/features/auth/presentation/manager/login/login_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/custom_auth_button.dart';
 import 'package:hungry_app/root_view.dart';
@@ -39,7 +41,8 @@ class _SignInViewState extends State<SignInView> {
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: BlocProvider(
-        create: (context) => LoginCubit(AuthRepoImpl()),
+        create: (context) =>
+            LoginCubit(AuthRepoImpl(authRemote: getIt.get<AuthRemote>())),
         child: Scaffold(
           backgroundColor: Colors.white,
           body: SafeArea(
@@ -91,9 +94,14 @@ class _SignInViewState extends State<SignInView> {
                             Gap(30),
 
                             BlocListener<LoginCubit, LoginState>(
-                              listener: (context, state) {
+                              listener: (context, state) async {
                                 if (state is LoginSuccess) {
-                                  PrefHelpers.saveToken(state.user);
+                                  PrefHelpers.saveToken(
+                                    state.user.id!.toString(),
+                                  );
+                                  final res = await PrefHelpers.getToken();
+                                  print(res);
+
                                   GoRouter.of(context).push(AppRouter.rootView);
                                 } else if (state is LoginFailure) {
                                   Snack.show(

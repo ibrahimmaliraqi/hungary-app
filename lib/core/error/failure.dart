@@ -5,23 +5,28 @@ import 'package:http/http.dart';
 
 class Failure {
   final String message;
-  const Failure(this.message);
+
+  Failure({required this.message});
+}
+
+class ServerFailure extends Failure {
+  ServerFailure({required super.message});
 }
 
 class SupabaseAuthError extends Failure {
-  const SupabaseAuthError(super.message);
+  SupabaseAuthError({required super.message});
 
   factory SupabaseAuthError.from(Object error) {
     /// ---------------- NETWORK ERRORS ----------------
     if (error is SocketException) {
-      return const SupabaseAuthError(
-        "لا يوجد اتصال بالإنترنت 🌐",
+      return SupabaseAuthError(
+        message: "لا يوجد اتصال بالإنترنت 🌐",
       );
     }
 
     if (error is ClientException) {
-      return const SupabaseAuthError(
-        "فشل الاتصال بالخادم، تحقق من الإنترنت 📡",
+      return SupabaseAuthError(
+        message: "فشل الاتصال بالخادم، تحقق من الإنترنت 📡",
       );
     }
 
@@ -29,8 +34,8 @@ class SupabaseAuthError extends Failure {
     if (txt.contains("no route to host") ||
         txt.contains("failed host lookup") ||
         txt.contains("network")) {
-      return const SupabaseAuthError(
-        "الإنترنت مقطوع، حاول مرة أخرى 🌍",
+      return SupabaseAuthError(
+        message: "الإنترنت مقطوع، حاول مرة أخرى 🌍",
       );
     }
 
@@ -39,38 +44,38 @@ class SupabaseAuthError extends Failure {
       final msg = error.message.toLowerCase();
 
       if (msg.contains("invalid login credentials")) {
-        return const SupabaseAuthError(
-          "الايميل او كلمة المرور غير صحيحة ❌",
+        return SupabaseAuthError(
+          message: "الايميل او كلمة المرور غير صحيحة ❌",
         );
       }
 
       if (msg.contains("email not confirmed")) {
-        return const SupabaseAuthError(
-          "يرجى تفعيل البريد الإلكتروني أولاً ✅",
+        return SupabaseAuthError(
+          message: "يرجى تفعيل البريد الإلكتروني أولاً ✅",
         );
       }
 
       if (msg.contains("user already registered")) {
-        return const SupabaseAuthError(
-          "هذا الحساب مسجل مسبقاً ⚠️",
+        return SupabaseAuthError(
+          message: "هذا الحساب مسجل مسبقاً ⚠️",
         );
       }
 
       if (msg.contains("weak password") ||
           msg.contains("password should be at least")) {
-        return const SupabaseAuthError(
-          "كلمة المرور ضعيفة 😅",
+        return SupabaseAuthError(
+          message: "كلمة المرور ضعيفة 😅",
         );
       }
 
       if (msg.contains("too many requests") || msg.contains("rate limit")) {
-        return const SupabaseAuthError(
-          "محاولات كثيرة، حاول لاحقاً ⏳",
+        return SupabaseAuthError(
+          message: "محاولات كثيرة، حاول لاحقاً ⏳",
         );
       }
 
       return SupabaseAuthError(
-        "خطأ في تسجيل الدخول: ${error.message}",
+        message: "خطأ في تسجيل الدخول: ${error.message}",
       );
     }
 
@@ -80,44 +85,45 @@ class SupabaseAuthError extends Failure {
 
       if (msg.contains("column") && msg.contains("does not exist")) {
         return SupabaseAuthError(
-          // "اسم الحقل غير صحيح ❌",
-          error.message,
+          message:
+              // "اسم الحقل غير صحيح ❌",
+              error.message,
         );
       }
 
       if (msg.contains("relation") && msg.contains("does not exist")) {
-        return const SupabaseAuthError(
-          "اسم الجدول غير موجود ❌",
+        return SupabaseAuthError(
+          message: "اسم الجدول غير موجود ❌",
         );
       }
 
       if (msg.contains("duplicate key") || msg.contains("already exists")) {
-        return const SupabaseAuthError(
-          "البيانات مسجلة مسبقاً ⚠️",
+        return SupabaseAuthError(
+          message: "البيانات مسجلة مسبقاً ⚠️",
         );
       }
 
       if (msg.contains("null value") && msg.contains("not-null")) {
-        return const SupabaseAuthError(
-          "يرجى تعبئة جميع الحقول المطلوبة ❗",
+        return SupabaseAuthError(
+          message: "يرجى تعبئة جميع الحقول المطلوبة ❗",
         );
       }
 
       if (msg.contains("foreign key")) {
-        return const SupabaseAuthError(
-          "البيانات مرتبطة بجدول آخر 🔗",
+        return SupabaseAuthError(
+          message: "البيانات مرتبطة بجدول آخر 🔗",
         );
       }
 
       if (msg.contains("row level security") ||
           msg.contains("permission denied")) {
-        return const SupabaseAuthError(
-          "لا تملك صلاحية تنفيذ هذه العملية 🔒",
+        return SupabaseAuthError(
+          message: "لا تملك صلاحية تنفيذ هذه العملية 🔒",
         );
       }
 
       return SupabaseAuthError(
-        "خطأ قاعدة البيانات: ${error.message}",
+        message: "خطأ قاعدة البيانات: ${error.message}",
       );
     }
 
@@ -125,7 +131,7 @@ class SupabaseAuthError extends Failure {
     debugPrint("SUPABASE ERROR: $error");
 
     return SupabaseAuthError(
-      "حدث خطأ غير متوقع ❗",
+      message: "حدث خطأ غير متوقع ❗",
     );
   }
 }

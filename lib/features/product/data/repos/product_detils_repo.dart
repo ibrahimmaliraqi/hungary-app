@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hungry_app/features/product/data/models/toppings_model.dart';
 
-import '../../../../core/error/supabsae_failure.dart';
+import '../../../../core/error/failure.dart';
 import '../models/cart_model.dart';
 
 abstract class ProductDetilsRepo {
