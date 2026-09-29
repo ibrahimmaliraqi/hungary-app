@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/features/home/presentation/manager/get_categories/get_categories_cubit.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_products/get_products_cubit.dart';
+import 'package:hungry_app/features/home/presentation/widgets/FoodCategoryListbloc.dart';
 import 'package:hungry_app/features/home/presentation/widgets/ProductListViewBloc.dart';
 import 'package:hungry_app/features/home/presentation/widgets/custom_text_field.dart';
-import 'package:hungry_app/features/home/presentation/widgets/food_category.dart';
 import 'package:hungry_app/features/home/presentation/widgets/user_header.dart';
 
 class HomeViewBody extends StatefulWidget {
@@ -18,6 +19,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   void initState() {
     context.read<GetProductsCubit>().getProduct();
+    context.read<GetCategoriesCubit>().getCategories();
 
     super.initState();
   }
@@ -25,7 +27,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: () => context.read<GetProductsCubit>().getProduct(),
+      onRefresh: () async {
+        context.read<GetProductsCubit>().getProduct();
+      },
       child: Column(
         children: [
           Gap(10),
@@ -33,7 +37,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           Gap(20),
           HomeSearch(),
           Gap(15),
-          FoodCategory(),
+          FoodCategoryListBloc(),
           Gap(15),
           Expanded(child: ProductListViewBloc()),
         ],

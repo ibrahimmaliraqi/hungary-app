@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:hungry_app/core/error/app_exceptions.dart';
 import 'package:hungry_app/features/home/data/data_source/home_remote.dart';
+import 'package:hungry_app/features/home/domain/entities/category_entity.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/domain/repo/home_repo.dart';
 
@@ -14,6 +15,17 @@ class HomeRepoImpl implements HomeRepo {
   Future<Either<Failure, List<ProductEntity>>> getProducts() async {
     try {
       final res = await homeRemote.getProducts();
+
+      return right(res.map((e) => e.toEntity()).toList());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<CategoryEntity>>> getCategories() async {
+    try {
+      final res = await homeRemote.getCategories();
 
       return right(res.map((e) => e.toEntity()).toList());
     } on AppExceptions catch (e) {

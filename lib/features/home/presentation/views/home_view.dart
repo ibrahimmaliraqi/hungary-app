@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
+import 'package:hungry_app/features/home/domain/use_case/get_categories_usecase.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_products_usecase.dart';
+import 'package:hungry_app/features/home/presentation/manager/get_categories/get_categories_cubit.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_products/get_products_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/home_view_body.dart';
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
@@ -19,6 +21,11 @@ class HomeView extends StatelessWidget {
           BlocProvider(
             create: (context) => GetProductsCubit(
               getProductsUsecase: getIt.get<GetProductsUsecase>(),
+            ),
+          ),
+          BlocProvider(
+            create: (context) => GetCategoriesCubit(
+              getCategoriesUsecase: getIt.get<GetCategoriesUsecase>(),
             ),
           ),
           BlocProvider(
