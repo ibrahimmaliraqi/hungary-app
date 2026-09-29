@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
@@ -75,7 +76,8 @@ class ProductDetailsView extends StatelessWidget {
                   ),
                   Gap(5),
                   CustomText(
-                    text: "${productEntity.price} دينار عراقي",
+                    text:
+                        "${AppPrice.currentPrice(product: productEntity)} دينار عراقي",
                     fontSize: 15,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff3C2F2F),
