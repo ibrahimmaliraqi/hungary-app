@@ -10,11 +10,11 @@ class FoodCategory extends StatefulWidget {
 }
 
 class _FoodCategoryState extends State<FoodCategory> {
-  List categories = [
-    "All",
-    "Combos",
-    "Sliders",
-    "Classic",
+  List<String> categories = [
+    "الكل",
+    "الوجبات",
+    "البرجر",
+    "البيتزا",
   ];
   int selectedIndex = 0;
   @override

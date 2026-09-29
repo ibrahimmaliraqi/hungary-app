@@ -7,16 +7,11 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
-class CustomCardItem extends StatelessWidget {
+class ProductCard extends StatelessWidget {
   final void Function()? onTap;
-  final String image, title, subTitle;
-  final num rating;
-  const CustomCardItem({
+  const ProductCard({
     super.key,
-    required this.image,
-    required this.title,
-    required this.subTitle,
-    required this.rating,
+
     this.onTap,
   });
 
@@ -50,20 +45,20 @@ class CustomCardItem extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Image.network(
-                    image,
+                    "https://i.pinimg.com/736x/26/13/9c/26139cc85f59683e8e953eb161215f2c.jpg",
                     width: 120,
                     height: 120,
                   ),
                   Gap(9),
                   CustomText(
-                    text: title,
+                    text: "برغر",
                     fontSize: 16,
                     color: Color(0xff3C2F2F),
                     fontWeight: FontWeight.w600,
                   ),
                   CustomText(
                     isCaption: true,
-                    text: subTitle,
+                    text: "برغر طيب ولذيذ",
                     fontSize: 14,
                     color: Color(0xff3C2F2F),
                     fontWeight: FontWeight.w400,
@@ -72,13 +67,14 @@ class CustomCardItem extends StatelessWidget {
                   Row(
                     children: [
                       CustomText(
-                        text: "⭐ $rating",
+                        text: "⭐ 4.9",
                         fontSize: 14,
 
                         color: Color(0xff3C2F2F),
                         fontWeight: FontWeight.w400,
                       ),
                       Spacer(),
+
                       Icon(CupertinoIcons.heart_fill, color: AppColors.primary),
                     ],
                   ),

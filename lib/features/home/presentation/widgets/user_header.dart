@@ -22,7 +22,7 @@ class UserHeader extends StatelessWidget {
             ),
             Gap(5),
             CustomText(
-              text: "Hello, Ibrahim Mohammed",
+              text: "مرحباً، إبراهيم محمد",
               fontSize: 15,
               fontWeight: FontWeight.w400,
               color: Colors.blueGrey.shade500,

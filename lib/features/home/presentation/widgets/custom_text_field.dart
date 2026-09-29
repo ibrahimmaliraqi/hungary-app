@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key});
+class HomeSearch extends StatelessWidget {
+  const HomeSearch({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class CustomTextField extends StatelessWidget {
           filled: true,
           fillColor: Colors.white,
           prefixIcon: Icon(CupertinoIcons.search),
-          hintText: "Find your food",
+          hintText: "ابحث عن طعامك",
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide.none,

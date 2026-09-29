@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
@@ -61,8 +62,15 @@ class HungryApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
+        locale: Locale("ar"),
+        localizationsDelegates: GlobalMaterialLocalizations.delegates,
+        supportedLocales: [
+          Locale('en'), // English
+          Locale('ar'), // Spanish
+        ],
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
+          fontFamily: "Cairo",
           scaffoldBackgroundColor: Colors.white,
           splashColor: Colors.transparent,
         ),

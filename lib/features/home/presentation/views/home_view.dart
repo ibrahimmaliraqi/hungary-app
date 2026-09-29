@@ -23,7 +23,12 @@ class HomeView extends StatelessWidget {
           ),
         ],
         child: Scaffold(
-          body: HomeViewBody(),
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: HomeViewBody(),
+            ),
+          ),
         ),
       ),
     );
