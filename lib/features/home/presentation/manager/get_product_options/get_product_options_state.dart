@@ -5,16 +5,22 @@ sealed class GetProductOptionsState {}
 
 final class GetProductOptionsInitial extends GetProductOptionsState {}
 
-final class GetProductOptionsSuccess extends GetProductOptionsState {
-  final List<ProductOptionEntity> options;
+final class GetProductOptionsLoading extends GetProductOptionsState {}
 
-  GetProductOptionsSuccess({required this.options});
+final class GetProductOptionsSuccess extends GetProductOptionsState {
+  final List<ProductOptionEntity> toppings;
+  final List<ProductOptionEntity> sideOptions;
+
+  GetProductOptionsSuccess({
+    required this.toppings,
+    required this.sideOptions,
+  });
 }
 
 final class GetProductOptionsFailure extends GetProductOptionsState {
   final String errMessage;
 
-  GetProductOptionsFailure({required this.errMessage});
+  GetProductOptionsFailure({
+    required this.errMessage,
+  });
 }
-
-final class GetProductOptionsLoading extends GetProductOptionsState {}

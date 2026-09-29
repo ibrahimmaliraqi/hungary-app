@@ -14,28 +14,61 @@ class GetProductOptionsCubit extends Cubit<GetProductOptionsState> {
     required this.getToppingsUsecase,
     required this.getSideOptionUsecase,
   }) : super(GetProductOptionsInitial());
-  Future getToppings({required int productId}) async {
-    emit(GetProductOptionsLoading());
-    final result = await getToppingsUsecase.call(productId: productId);
-    result.fold(
-      (fail) {
-        emit(GetProductOptionsFailure(errMessage: fail.message));
-      },
-      (topping) {
-        emit(GetProductOptionsSuccess(options: topping));
-      },
-    );
-  }
 
-  Future getSideOptions({required int productId}) async {
+  List<ProductOptionEntity> toppings = [];
+  List<ProductOptionEntity> sideOptions = [];
+
+  Future<void> getProductOptions({
+    required int productId,
+  }) async {
     emit(GetProductOptionsLoading());
-    final result = await getSideOptionUsecase.call(productId: productId);
-    result.fold(
+
+    final toppingsResult = await getToppingsUsecase.call(
+      productId: productId,
+    );
+
+    final sideOptionsResult = await getSideOptionUsecase.call(
+      productId: productId,
+    );
+
+    toppingsResult.fold(
       (fail) {
-        emit(GetProductOptionsFailure(errMessage: fail.message));
+        print("Toppings Error: ${fail.message}");
+
+        emit(
+          GetProductOptionsFailure(
+            errMessage: fail.message,
+          ),
+        );
       },
-      (sideOption) {
-        emit(GetProductOptionsSuccess(options: sideOption));
+      (toppingsData) {
+        print("Toppings Success: ${toppingsData.length}");
+
+        toppings = toppingsData;
+
+        sideOptionsResult.fold(
+          (fail) {
+            print("Side Options Error: ${fail.message}");
+
+            emit(
+              GetProductOptionsFailure(
+                errMessage: fail.message,
+              ),
+            );
+          },
+          (sideOptionsData) {
+            print("Side Options Success: ${sideOptionsData.length}");
+
+            sideOptions = sideOptionsData;
+
+            emit(
+              GetProductOptionsSuccess(
+                toppings: toppings,
+                sideOptions: sideOptions,
+              ),
+            );
+          },
+        );
       },
     );
   }

@@ -81,8 +81,9 @@ class ApiHomeRemoteImpl implements HomeRemote {
     required int productId,
   }) async {
     try {
-      final res = await dioClient.get(
+      final res = await dioClient.post(
         "products/get_side_options.php",
+        data: {"product_id": productId},
       );
 
       if (res['success'] == true) {
@@ -108,8 +109,9 @@ class ApiHomeRemoteImpl implements HomeRemote {
   @override
   Future<List<ProductOptionModel>> getToppings({required int productId}) async {
     try {
-      final res = await dioClient.get(
+      final res = await dioClient.post(
         "products/get_toppings.php",
+        data: {"product_id": productId},
       );
 
       if (res['success'] == true) {

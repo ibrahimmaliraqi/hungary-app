@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/presentation/manager/get_product_options/get_product_options_cubit.dart';
+import 'package:hungry_app/features/home/presentation/widgets/size_options_bloc.dart';
 import 'package:hungry_app/features/home/presentation/widgets/spicy_slider.dart';
+import 'package:hungry_app/features/home/presentation/widgets/toppins_bloc.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductDetailsViewBody extends StatefulWidget {
@@ -14,6 +18,14 @@ class ProductDetailsViewBody extends StatefulWidget {
 }
 
 class _ProductDetailsViewBodyState extends State<ProductDetailsViewBody> {
+  @override
+  void initState() {
+    context.read<GetProductOptionsCubit>().getProductOptions(
+      productId: widget.productEntity.id,
+    );
+    super.initState();
+  }
+
   double value = 0.5;
   List<int> selectedTopping = [];
   List<int> selectedSideOption = [];
@@ -38,20 +50,20 @@ class _ProductDetailsViewBodyState extends State<ProductDetailsViewBody> {
             ),
             Gap(40),
             CustomText(
-              text: "Toppings",
+              text: "الإضافات",
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
             Gap(9),
-            Text("هسه"),
+            ToppingsListBloc(),
             Gap(40),
             CustomText(
-              text: "Side options",
+              text: "الخيارات الجانبية",
               fontSize: 18,
               fontWeight: FontWeight.w600,
             ),
             Gap(9),
-            Text("هسه"),
+            SizeOptionListBloc(),
 
             Gap(110),
           ],

@@ -10,6 +10,8 @@ import 'package:hungry_app/features/home/data/repos/home_repo_impl.dart';
 import 'package:hungry_app/features/home/domain/repo/home_repo.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_categories_usecase.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_products_usecase.dart';
+import 'package:hungry_app/features/home/domain/use_case/get_side_option_usecase.dart';
+import 'package:hungry_app/features/home/domain/use_case/get_toppings_usecase.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -44,5 +46,11 @@ void setupLocator() {
   );
   getIt.registerSingleton<GetCategoriesUsecase>(
     GetCategoriesUsecase(homeRepo: getIt.get<HomeRepo>()),
+  );
+  getIt.registerSingleton<GetSideOptionUsecase>(
+    GetSideOptionUsecase(homeRepo: getIt.get<HomeRepo>()),
+  );
+  getIt.registerSingleton<GetToppingsUsecase>(
+    GetToppingsUsecase(homeRepo: getIt.get<HomeRepo>()),
   );
 }

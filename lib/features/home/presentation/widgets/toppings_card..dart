@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
 
 class ToppingsCard extends StatelessWidget {
   final String image;
@@ -31,9 +32,8 @@ class ToppingsCard extends StatelessWidget {
             ),
             child: Column(
               children: [
-                Image.network(
-                  image,
-
+                NetImage(
+                  imageUrl: image,
                   width: 60,
                   height: 60,
                 ),
