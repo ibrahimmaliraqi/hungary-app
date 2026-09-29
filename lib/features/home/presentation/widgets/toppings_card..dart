@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
 
 class ToppingsCard extends StatelessWidget {
   final String title;
@@ -41,8 +42,8 @@ class ToppingsCard extends StatelessWidget {
               left: 12,
               right: 12,
               bottom: 70, // ترك مساحة كافية للجزء السفلي
-              child: Image.network(
-                imageUrl,
+              child: NetImage(
+                imageUrl: imageUrl,
                 fit: BoxFit.contain,
               ),
             ),
