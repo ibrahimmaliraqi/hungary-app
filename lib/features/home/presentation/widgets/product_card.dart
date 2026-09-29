@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 
 class ProductCard extends StatelessWidget {
+  final ProductEntity product;
   final void Function()? onTap;
   const ProductCard({
     super.key,
 
     this.onTap,
+    required this.product,
   });
 
   @override
@@ -44,38 +49,69 @@ class ProductCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.network(
-                    "https://i.pinimg.com/736x/26/13/9c/26139cc85f59683e8e953eb161215f2c.jpg",
-                    width: 120,
-                    height: 120,
+                  Center(
+                    child: NetImage(
+                      height: 120,
+                      width: 120,
+                      imageUrl: product.image,
+                    ),
                   ),
                   Gap(9),
                   CustomText(
-                    text: "برغر",
+                    text: product.name,
                     fontSize: 16,
                     color: Color(0xff3C2F2F),
                     fontWeight: FontWeight.w600,
                   ),
+                  Gap(9),
+
                   CustomText(
-                    isCaption: true,
-                    text: "برغر طيب ولذيذ",
+                    text:
+                        "${AppPrice.currentPrice(product: product)} دينار عراقي",
                     fontSize: 14,
-                    color: Color(0xff3C2F2F),
-                    fontWeight: FontWeight.w400,
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.bold,
                   ),
+                  Gap(2),
+                  product.disCount != 0 || product.disCount == null
+                      ? CustomText(
+                          isCaption: true,
+                          lineThrough: true,
+                          text: "${product.price} دينار عراقي",
+                          fontSize: 12,
+                          color: AppColors.discount,
+                          fontWeight: FontWeight.w500,
+                        )
+                      : const SizedBox(
+                          height: 18,
+                        ),
                   Gap(9),
                   Row(
                     children: [
-                      CustomText(
-                        text: "⭐ 4.9",
-                        fontSize: 14,
+                      Row(
+                        children: [
+                          Image.asset(
+                            "assets/product/star.png",
+                            width: 17,
+                            height: 17,
+                          ),
+                          Gap(8),
 
-                        color: Color(0xff3C2F2F),
-                        fontWeight: FontWeight.w400,
+                          CustomText(
+                            text: "${product.rating}",
+                            fontSize: 14,
+
+                            color: Color(0xff3C2F2F),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ],
                       ),
                       Spacer(),
 
-                      Icon(CupertinoIcons.heart_fill, color: AppColors.primary),
+                      Icon(
+                        CupertinoIcons.heart,
+                        color: AppColors.primary,
+                      ),
                     ],
                   ),
                 ],

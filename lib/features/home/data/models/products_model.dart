@@ -1,26 +1,43 @@
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+
 class ProductsModel {
-  int? id;
-  String? name;
-  String? description;
-  String? image;
-  num? rating;
-  num? price;
-
+  int id;
+  String name;
+  String description;
+  String image;
+  num rating;
+  num price;
+  num? disCount;
   ProductsModel({
-    this.id,
-    this.name,
-    this.description,
-    this.image,
-    this.rating,
-    this.price,
+    required this.id,
+    this.disCount,
+    required this.name,
+    required this.description,
+    required this.image,
+    required this.rating,
+    required this.price,
   });
+  ProductEntity toEntity() {
+    return ProductEntity(
+      disCount: disCount,
+      id: id,
+      name: name,
+      description: description,
+      image: image,
+      rating: rating,
+      price: price,
+    );
+  }
 
-  ProductsModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    description = json['description'];
-    image = json['image'];
-    rating = json['rating'];
-    price = json['price'];
+  factory ProductsModel.fromMap(Map<String, dynamic> map) {
+    return ProductsModel(
+      disCount: map['discount'],
+      id: map['id'] as int,
+      name: map['name'] as String,
+      description: map['description'] as String,
+      image: map['image'] as String,
+      rating: map['rating'] as num,
+      price: map['price'] as num,
+    );
   }
 }

@@ -6,6 +6,7 @@ import 'package:hungry_app/core/functions/get_it.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/side_option/side_options_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/toppings/toppings_cubit.dart';
@@ -15,14 +16,10 @@ import 'package:hungry_app/features/product/presentation/widgets/toppings_card..
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductView extends StatefulWidget {
-  final String image;
-  final num price;
-  final int productId;
+  final ProductEntity productEntity;
   const ProductView({
     super.key,
-    required this.image,
-    required this.price,
-    required this.productId,
+    required this.productEntity,
   });
 
   @override
@@ -69,7 +66,7 @@ class _ProductViewState extends State<ProductView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SpicySlider(
-                    image: widget.image,
+                    image: widget.productEntity.image,
                     value: value,
                     onChanged: (val) {
                       setState(() {
@@ -232,7 +229,7 @@ class _ProductViewState extends State<ProductView> {
                 ),
                 Gap(5),
                 CustomText(
-                  text: "\$${widget.price}",
+                  text: "\$${widget.productEntity.price}",
                   fontSize: 32,
                   fontWeight: FontWeight.w400,
                   color: Color(0xff3C2F2F),
@@ -263,7 +260,7 @@ class _ProductViewState extends State<ProductView> {
                       final cart = CartModel(
                         items: [
                           CartItemModel(
-                            productId: widget.productId,
+                            productId: widget.productEntity.id,
                             quantity: 1,
                             toppings: selectedTopping,
                             sideOptions: selectedSideOption,

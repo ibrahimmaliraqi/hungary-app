@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class CustomText extends StatelessWidget {
   final String text;
   final Color? color;
+  final bool? lineThrough;
   final double? fontSize;
   final bool? isCaption;
   final FontWeight? fontWeight;
@@ -13,6 +14,7 @@ class CustomText extends StatelessWidget {
     this.fontSize,
     this.fontWeight,
     this.isCaption,
+    this.lineThrough,
   });
 
   @override
@@ -22,6 +24,10 @@ class CustomText extends StatelessWidget {
       text,
       maxLines: 2,
       style: TextStyle(
+        decoration: lineThrough == true
+            ? TextDecoration.lineThrough
+            : TextDecoration.none,
+
         color: color,
         overflow: isCaption == true
             ? TextOverflow.ellipsis

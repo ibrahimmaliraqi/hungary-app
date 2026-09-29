@@ -1,23 +1,23 @@
 import 'package:dartz/dartz.dart';
-import 'package:hungry_app/features/home/data/models/products_model.dart';
-import 'package:hungry_app/features/home/data/repos/home_repo.dart';
+import 'package:hungry_app/core/error/app_exceptions.dart';
+import 'package:hungry_app/features/home/data/data_source/home_remote.dart';
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/domain/repo/home_repo.dart';
 
 import '../../../../core/error/failure.dart';
-import '../../../../main.dart';
 
 class HomeRepoImpl implements HomeRepo {
-  @override
-  Future<Either<Failure, List<ProductsModel>>> getProducts() async {
-    try {
-      final data = await supabase.from('products').select();
-      List<ProductsModel> items = [];
-      for (var item in data) {
-        items.add(ProductsModel.fromJson(item));
-      }
+  final HomeRemote homeRemote;
 
-      return right(items);
-    } catch (e) {
-      return left(SupabaseAuthError.from(e));
+  HomeRepoImpl({required this.homeRemote});
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getProducts() async {
+    try {
+      final res = await homeRemote.getProducts();
+
+      return right(res.map((e) => e.toEntity()).toList());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
     }
   }
 }

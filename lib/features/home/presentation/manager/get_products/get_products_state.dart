@@ -8,7 +8,7 @@ final class GetProductsInitial extends GetProductsState {}
 final class GetProductsLoading extends GetProductsState {}
 
 final class GetProductsSuccess extends GetProductsState {
-  final List<ProductsModel> products;
+  final List<ProductEntity> products;
 
   GetProductsSuccess(this.products);
 }

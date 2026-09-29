@@ -1,16 +1,17 @@
 import 'package:bloc/bloc.dart';
-import 'package:hungry_app/features/home/data/models/products_model.dart';
-import 'package:hungry_app/features/home/data/repos/home_repo.dart';
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/domain/use_case/get_products_usecase.dart';
 import 'package:meta/meta.dart';
 
 part 'get_products_state.dart';
 
 class GetProductsCubit extends Cubit<GetProductsState> {
-  GetProductsCubit(this.homeRepo) : super(GetProductsInitial());
-  HomeRepo homeRepo;
+  final GetProductsUsecase getProductsUsecase;
+  GetProductsCubit({required this.getProductsUsecase})
+    : super(GetProductsInitial());
   Future getProduct() async {
     emit(GetProductsLoading());
-    final result = await homeRepo.getProducts();
+    final result = await getProductsUsecase.call();
     result.fold(
       (fail) {
         emit(GetProductsFailure(fail.message));
