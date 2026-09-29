@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/core/assets/assets.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
@@ -20,9 +21,12 @@ class SpicySlider extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.network(
-          image,
-          height: 240,
+        ClipRRect(
+          borderRadius: BorderRadiusGeometry.circular(20),
+          child: Image.network(
+            image,
+            height: 240,
+          ),
         ),
         Column(
           children: [
@@ -38,10 +42,18 @@ class SpicySlider extends StatelessWidget {
             ),
             Row(
               children: [
-                CustomText(text: "🥶"),
+                Image.asset(
+                  Assets.assetsImagesColdIcon,
+                  width: 25,
+                  height: 25,
+                ),
                 Spacer(),
 
-                CustomText(text: "🌶️"),
+                Image.asset(
+                  Assets.assetsImagesHotIcon,
+                  width: 25,
+                  height: 25,
+                ),
               ],
             ),
           ],

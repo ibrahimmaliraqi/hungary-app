@@ -56,19 +56,19 @@ class _RootViewState extends State<RootView> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: "Home",
+              label: "الرئيسية",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.cart),
-              label: "Cart",
+              label: "السلة",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.local_restaurant_sharp),
-              label: "History",
+              label: "الطلبات",
             ),
             BottomNavigationBarItem(
               icon: Icon(CupertinoIcons.profile_circled),
-              label: "Profile",
+              label: "الحساب",
             ),
           ],
           currentIndex: currentIndex,

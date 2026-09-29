@@ -17,16 +17,19 @@ class NetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CachedNetworkImage(
-      imageUrl: imageUrl,
-      width: width,
-      height: height,
-      fit: fit,
-      placeholder: (context, url) => const Center(
-        child: CircularProgressIndicator(),
-      ),
-      errorWidget: (context, url, error) => const Icon(
-        Icons.image_not_supported_outlined,
+    return ClipRRect(
+      borderRadius: BorderRadiusGeometry.circular(20),
+      child: CachedNetworkImage(
+        imageUrl: imageUrl,
+        width: width,
+        height: height,
+        fit: fit,
+        placeholder: (context, url) => const Center(
+          child: CircularProgressIndicator(),
+        ),
+        errorWidget: (context, url, error) => const Icon(
+          Icons.image_not_supported_outlined,
+        ),
       ),
     );
   }
