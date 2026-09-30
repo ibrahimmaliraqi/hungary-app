@@ -45,4 +45,14 @@ class CartRepoImpl implements CartRepo {
       return left(ServerFailure(message: e.errMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> clearCart({required int userId}) async {
+    try {
+      await cartDataSource.clearCart(userId: userId);
+      return right(null);
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
 }

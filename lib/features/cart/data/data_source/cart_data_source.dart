@@ -7,6 +7,7 @@ abstract class CartDataSource {
   Future<void> addToCart({required CartModel cart});
   Future<List<CartModel>> getCartItems({required int userId});
   Future<void> deleteItemFromCart({required int itemId});
+  Future<void> clearCart({required int userId});
 }
 
 class ApiCartDataSourceImpl implements CartDataSource {
@@ -102,6 +103,32 @@ class ApiCartDataSourceImpl implements CartDataSource {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء حذف العنصر",
+      );
+    }
+  }
+
+  @override
+  Future<void> clearCart({required int userId}) async {
+    try {
+      final res = await dioClient.post(
+        "cart/clear_cart.php",
+        data: {"user_id": userId},
+      );
+
+      if (res['success'] == true) {
+        return;
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء حذف السلة",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCartItems error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء حذف السلة",
       );
     }
   }

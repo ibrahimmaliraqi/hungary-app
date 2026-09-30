@@ -9,6 +9,7 @@ import 'package:hungry_app/features/cart/data/data_source/cart_data_source.dart'
 import 'package:hungry_app/features/cart/data/repo/cart_repo_impl.dart';
 import 'package:hungry_app/features/cart/domain/repo/cart_repo.dart';
 import 'package:hungry_app/features/cart/domain/use_cases/add_to_cart_usecase.dart';
+import 'package:hungry_app/features/cart/domain/use_cases/clear_cart_usecase.dart';
 import 'package:hungry_app/features/cart/domain/use_cases/delete_item_from_cart_usecase.dart';
 import 'package:hungry_app/features/cart/domain/use_cases/get_cart_items_usecase.dart';
 import 'package:hungry_app/features/home/data/data_source/home_remote.dart';
@@ -73,5 +74,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<DeleteItemFromCartUsecase>(
     DeleteItemFromCartUsecase(cartRepo: getIt.get<CartRepo>()),
+  );
+  getIt.registerSingleton<ClearCartUsecase>(
+    ClearCartUsecase(cartRepo: getIt.get<CartRepo>()),
   );
 }
