@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/features/home/presentation/views/wayl.dart';
 
 class UserHeader extends StatelessWidget {
   const UserHeader({super.key});
@@ -42,11 +43,21 @@ class UserHeader extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadiusGeometry.circular(300),
 
-            child: Image.asset(
-              "assets/test/test.jpg",
-              width: 60,
-              height: 60,
-              fit: BoxFit.cover,
+            child: InkWell(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => WaylPaymentPage(),
+                  ),
+                );
+              },
+              child: Image.asset(
+                "assets/test/test.jpg",
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
