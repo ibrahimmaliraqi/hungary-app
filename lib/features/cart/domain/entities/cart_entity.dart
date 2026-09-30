@@ -4,12 +4,14 @@ import 'package:hungry_app/features/home/domain/entities/product_option_entity.d
 class CartEntity {
   final ProductEntity product;
   final int quantity;
+  final int productId;
   final num? spicy;
   final num? totalPrice;
   final List<ProductOptionEntity> productOptions;
 
   CartEntity({
     required this.product,
+    required this.productId,
     required this.quantity,
     required this.spicy,
     required this.totalPrice,

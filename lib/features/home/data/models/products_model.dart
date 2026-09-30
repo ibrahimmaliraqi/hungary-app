@@ -21,6 +21,7 @@ class ProductsModel {
     return ProductEntity(
       disCount: disCount,
       id: id,
+
       name: name,
       description: description,
       image: image,
@@ -29,6 +30,17 @@ class ProductsModel {
     );
   }
 
+  factory ProductsModel.fromEntity(ProductEntity entity) {
+    return ProductsModel(
+      id: entity.id,
+      name: entity.name,
+      description: entity.description,
+      image: entity.image,
+      rating: entity.rating,
+      price: entity.price,
+      disCount: entity.disCount,
+    );
+  }
   factory ProductsModel.fromMap(Map<String, dynamic> map) {
     return ProductsModel(
       id: map['id'] as int,
@@ -37,7 +49,7 @@ class ProductsModel {
       image: map['image'] as String,
       rating: map['rating'] as num,
       price: map['price'] as num,
-      disCount: map['disCount'] != null ? map['disCount'] as num : null,
+      disCount: map['discount'],
     );
   }
 

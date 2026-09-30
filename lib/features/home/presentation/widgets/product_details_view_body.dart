@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_product_options/get_product_options_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/size_options_bloc.dart';
 import 'package:hungry_app/features/home/presentation/widgets/spicy_slider.dart';
@@ -46,6 +47,7 @@ class _ProductDetailsViewBodyState extends State<ProductDetailsViewBody> {
               onChanged: (val) {
                 setState(() {
                   value = val;
+                  context.read<AddProductCubit>().addSpicy(spicy: value);
                 });
               },
             ),

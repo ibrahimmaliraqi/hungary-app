@@ -1,8 +1,9 @@
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_up_view.dart';
+import 'package:hungry_app/features/cart/presentation/views/cart_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
-import 'package:hungry_app/features/home/presentation/views/product_view.dart';
+import 'package:hungry_app/features/home/presentation/views/product_details_view.dart';
 import 'package:hungry_app/root_view.dart';
 import 'package:hungry_app/splash_view.dart';
 
@@ -12,6 +13,7 @@ class AppRouter {
   static const rootView = '/rootView';
   static const register = '/register';
   static const productView = '/productView';
+  static const cartView = '/cartView';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -29,6 +31,10 @@ class AppRouter {
       GoRoute(
         path: register,
         builder: (context, state) => SignUpView(),
+      ),
+      GoRoute(
+        path: cartView,
+        builder: (context, state) => CartView(),
       ),
       GoRoute(
         path: productView,

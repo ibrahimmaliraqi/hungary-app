@@ -5,6 +5,10 @@ import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:hungry_app/features/auth/domain/use_case/login_user_usecase.dart';
 import 'package:hungry_app/features/auth/domain/use_case/register_user_usecase.dart';
+import 'package:hungry_app/features/cart/data/data_source/cart_data_source.dart';
+import 'package:hungry_app/features/cart/data/repo/cart_repo_impl.dart';
+import 'package:hungry_app/features/cart/domain/repo/cart_repo.dart';
+import 'package:hungry_app/features/cart/domain/use_cases/add_to_cart_usecase.dart';
 import 'package:hungry_app/features/home/data/data_source/home_remote.dart';
 import 'package:hungry_app/features/home/data/repos/home_repo_impl.dart';
 import 'package:hungry_app/features/home/domain/repo/home_repo.dart';
@@ -25,6 +29,9 @@ void setupLocator() {
   getIt.registerSingleton<HomeRemote>(
     ApiHomeRemoteImpl(dioClient: getIt.get<DioClient>()),
   );
+  getIt.registerSingleton<CartDataSource>(
+    ApiCartDataSourceImpl(dioClient: getIt.get<DioClient>()),
+  );
 
   //repo
   getIt.registerSingleton<AuthRepo>(
@@ -32,6 +39,9 @@ void setupLocator() {
   );
   getIt.registerSingleton<HomeRepo>(
     HomeRepoImpl(homeRemote: getIt.get<HomeRemote>()),
+  );
+  getIt.registerSingleton<CartRepo>(
+    CartRepoImpl(cartDataSource: getIt.get<CartDataSource>()),
   );
 
   //use case
@@ -52,5 +62,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<GetToppingsUsecase>(
     GetToppingsUsecase(homeRepo: getIt.get<HomeRepo>()),
+  );
+  getIt.registerSingleton<AddToCartUsecase>(
+    AddToCartUsecase(cartRepo: getIt.get<CartRepo>()),
   );
 }
