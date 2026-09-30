@@ -5,6 +5,7 @@ import 'package:hungry_app/features/cart/data/model/cart_model.dart';
 
 abstract class CartDataSource {
   Future<void> addToCart({required CartModel cart});
+  Future<List<CartModel>> getCartItems({required int userId});
 }
 
 class ApiCartDataSourceImpl implements CartDataSource {
@@ -40,6 +41,42 @@ class ApiCartDataSourceImpl implements CartDataSource {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء إضافة المنتج للسلة",
+      );
+    }
+  }
+
+  @override
+  Future<List<CartModel>> getCartItems({
+    required int userId,
+  }) async {
+    try {
+      final user = PrefsHelper.getUser();
+
+      if (user?.id == null) {
+        throw ServerException(
+          errMessage: "المستخدم غير مسجل الدخول",
+        );
+      }
+      final res = await dioClient.post(
+        "cart/get_cart.php",
+        data: {"user_id": userId},
+      );
+
+      if (res['success'] == true) {
+        final dataList = res["data"] as List;
+        return dataList.map((e) => CartModel.fromMap(e)).toList();
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء جلب السلة",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCartItems error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء جلب السلة",
       );
     }
   }

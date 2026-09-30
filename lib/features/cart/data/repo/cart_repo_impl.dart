@@ -21,4 +21,16 @@ class CartRepoImpl implements CartRepo {
       return left(ServerFailure(message: e.errMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<CartEntity>>> getCartItems({
+    required int userId,
+  }) async {
+    try {
+      final res = await cartDataSource.getCartItems(userId: userId);
+      return right(res.map((e) => e.toEntity()).toList());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
 }
