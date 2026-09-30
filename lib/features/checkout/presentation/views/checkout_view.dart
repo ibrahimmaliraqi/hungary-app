@@ -4,15 +4,6 @@ import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
-class MyWidget extends StatelessWidget {
-  const MyWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
-
 class CheckoutView extends StatefulWidget {
   const CheckoutView({super.key});
 
@@ -21,277 +12,473 @@ class CheckoutView extends StatefulWidget {
 }
 
 class _CheckoutViewState extends State<CheckoutView> {
-  String selectedMetho = 'Cash';
+  String selectedMethod = 'Cash';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        forceMaterialTransparency: true,
-
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFF8F9FA),
         elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(
-            Icons.arrow_back_rounded,
-            color: AppColors.primary,
+        centerTitle: true,
+        title: const CustomText(
+          text: "إتمام الطلب", // Checkout
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InkWell(
+            onTap: () => Navigator.pop(context),
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 10,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(
+                Icons
+                    .arrow_forward_ios_rounded, // أيقونة السهم متوافقة مع اللغة العربية
+                color: AppColors.primary,
+                size: 18,
+              ),
+            ),
           ),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.only(
+          left: 20,
+          right: 20,
+          top: 10,
+          bottom: 120,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            CustomText(
-              text: "Order summary",
+            const CustomText(
+              text: "ملخص الطلب", // Order Summary
               fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w800,
             ),
-            Gap(20),
-            orderMony(name: "Order", price: "\$18.48"),
-            Gap(10),
-            orderMony(name: "Taxes", price: "\$0.3"),
-            Gap(10),
-            orderMony(name: "Delivery fees", price: "\$1.5"),
-            Gap(14),
-            Divider(),
-            orderMony(name: "Total:", price: "\$18.19", isBold: true),
-            Gap(20),
+            const Gap(16),
 
-            orderMony(
-              name: "Estimated delivery time:",
-              price: "15 - 30 mins",
-              size: 13,
-              isBold: true,
-            ),
-
-            Gap(60),
-            CustomText(
-              text: "Payment methods",
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
-            Gap(20),
-            //cash
-            ListTile(
-              onTap: () {
-                setState(() {
-                  selectedMetho = "Cash";
-                });
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(20),
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              tileColor: Color(0xff3C2F2F),
-              title: CustomText(
-                text: "Cash on Delivery",
-                fontSize: 20,
-                fontWeight: FontWeight.w400,
+            // بطاقة الفاتورة (Receipt Card)
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
                 color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.04),
+                    blurRadius: 24,
+                    offset: const Offset(0, 8),
+                  ),
+                ],
               ),
-              leading: Image.asset(
-                "assets/payout/image.png",
-                width: 50,
-              ),
-              trailing: Radio(
-                fillColor: WidgetStateProperty.resolveWith<Color?>(
-                  (states) {
-                    if (states.contains(WidgetState.disabled)) {
-                      return Colors.grey;
-                    }
-                    if (states.contains(WidgetState.selected)) {
-                      return Colors.white;
-                    }
-                    return AppColors.primary;
-                  },
-                ),
-                value: "Cash",
-                groupValue: selectedMetho,
-                onChanged: (value) {
-                  selectedMetho = value!;
-                  setState(() {});
-                },
+              child: Column(
+                children: [
+                  _orderMoneyRow(name: "الطلب", price: "18.48 دينار"),
+                  const Gap(12),
+                  _orderMoneyRow(name: "الضرائب", price: "0.30 دينار"),
+                  const Gap(12),
+                  _orderMoneyRow(name: "رسوم التوصيل", price: "1.50 دينار"),
+                  const Gap(16),
+
+                  // خط متقطع (Dashed Divider)
+                  Row(
+                    children: List.generate(
+                      30,
+                      (index) => Expanded(
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 2),
+                          height: 1.5,
+                          color: Colors.grey.shade300,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  const Gap(16),
+                  _orderMoneyRow(
+                    name: "الإجمالي",
+                    price: "18.19 دينار",
+                    isBold: true,
+                    size: 20,
+                  ),
+
+                  const Gap(16),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.08),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.timer_outlined,
+                          color: AppColors.primary,
+                          size: 18,
+                        ),
+                        const Gap(8),
+                        CustomText(
+                          text: "الوقت المتوقع للتوصيل: ",
+                          fontSize: 13,
+                          color: Colors.grey.shade700,
+                        ),
+                        CustomText(
+                          text: "15 - 30 دقيقة",
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primary,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-            Gap(20),
-            //debit
-            ListTile(
-              onTap: () {
-                setState(() {
-                  selectedMetho = "debit";
-                });
-              },
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(20),
-              ),
-              contentPadding: EdgeInsets.symmetric(
-                horizontal: 10,
-                vertical: 10,
-              ),
-              tileColor: Colors.blue.shade100,
-              title: CustomText(
-                text: "Debit card",
 
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
-              subtitle: CustomText(
-                text: "3566 **** **** 0505",
-                fontSize: 13,
-              ),
-              leading: Image.asset(
-                "assets/payout/visa.png",
-                width: 50,
-              ),
-              trailing: Radio(
-                fillColor: WidgetStateProperty.resolveWith<Color?>(
-                  (states) {
-                    if (states.contains(WidgetState.disabled)) {
-                      return Colors.grey;
-                    }
-                    if (states.contains(WidgetState.selected)) {
-                      return Colors.white;
-                    }
-                    return AppColors.primary;
-                  },
-                ),
-                value: "debit",
-                groupValue: selectedMetho,
-                onChanged: (value) {
-                  selectedMetho = value!;
-                  setState(() {});
-                },
-              ),
+            const Gap(32),
+
+            const CustomText(
+              text: "طرق الدفع", // Payment Methods
+              fontSize: 20,
+              fontWeight: FontWeight.w800,
+            ),
+            const Gap(16),
+
+            // خيار الدفع كاش
+            _buildPaymentCard(
+              title: "الدفع عند الاستلام",
+              subtitle: "ادفع نقداً عند استلام طلبك",
+              value: "Cash",
+              imagePath: "assets/payout/image.png",
+              icon: Icons.payments_rounded,
+            ),
+
+            const Gap(16),
+
+            // خيار بطاقة الدفع
+            _buildPaymentCard(
+              title: "بطاقة الدفع",
+              subtitle: "3566 **** **** 0505",
+              value: "debit",
+              imagePath: "assets/payout/visa.png",
+              icon: Icons.credit_card_rounded,
             ),
           ],
         ),
       ),
+
+      // شريط الدفع السفلي
       bottomSheet: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        height: 90,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(32),
+            topRight: Radius.circular(32),
           ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.06),
+              blurRadius: 20,
+              offset: const Offset(0, -5),
+            ),
+          ],
         ),
-        child: Row(
-          children: [
-            Column(
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(
-                  text: "Total",
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xff3C2F2F),
+                Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(
+                      text: "المجموع الكلي",
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey.shade600,
+                    ),
+                    const Gap(4),
+                    const CustomText(
+                      text: "18.19 دينار",
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black,
+                    ),
+                  ],
                 ),
-                Gap(5),
-                CustomText(
-                  text: "\$18.19",
-                  fontSize: 32,
-                  fontWeight: FontWeight.w400,
-                  color: Color(0xff3C2F2F),
+
+                // زر ادفع الآن
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => _showSuccessDialog(context),
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 28,
+                        vertical: 16,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.primary,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withOpacity(0.3),
+                            blurRadius: 12,
+                            offset: const Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: const Row(
+                        children: [
+                          CustomText(
+                            text: "ادفع الآن",
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          Gap(8),
+                          Icon(
+                            Icons.lock_outline_rounded,
+                            color: Colors.white,
+                            size: 18,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
 
-            Spacer(),
-            CustomButton(
-              text: "Pay Now",
-              width: 170,
-              hight: 70,
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Dialog(
-                      child: Container(
-                        padding: EdgeInsets.all(20),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        height: 350,
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              backgroundColor: AppColors.primary,
-                              child: Icon(
-                                Icons.check,
-                                color: Colors.white,
-                                size: 30,
-                              ),
-                            ),
+  // --- Helper Widgets ---
 
-                            Gap(28),
-                            CustomText(
-                              text: "Success !",
-                              fontSize: 30,
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            Gap(6),
-                            CustomText(
-                              text:
-                                  "Your payment was successful.\nA receipt for this purchase has\n been sent to your email.",
-                              fontSize: 14,
-                              color: Color(0xffBCBBBB),
-                              fontWeight: FontWeight.w400,
-                            ),
-                            Gap(40),
-                            CustomButton(
-                              text: "Go Back",
-                              width: 220,
-                              hight: 60,
-                              onTap: () => Navigator.pop(context),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-                  },
-                );
-              },
+  // تصميم بطاقات الدفع
+  Widget _buildPaymentCard({
+    required String title,
+    required String subtitle,
+    required String value,
+    required String imagePath,
+    required IconData icon,
+  }) {
+    bool isSelected = selectedMethod == value;
+
+    return GestureDetector(
+      onTap: () => setState(() => selectedMethod = value),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primary.withOpacity(0.05)
+              : Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isSelected ? AppColors.primary : Colors.grey.shade200,
+            width: 2,
+          ),
+          boxShadow: [
+            if (!isSelected)
+              BoxShadow(
+                color: Colors.black.withOpacity(0.02),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+          ],
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Center(
+                child: Icon(icon, color: Colors.grey.shade700, size: 24),
+              ),
+            ),
+            const Gap(16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(
+                    text: title,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black87,
+                  ),
+                  const Gap(4),
+                  CustomText(
+                    text: subtitle,
+                    fontSize: 13,
+                    color: Colors.grey.shade600,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 24,
+              height: 24,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: isSelected ? AppColors.primary : Colors.grey.shade400,
+                  width: 2,
+                ),
+                color: isSelected ? AppColors.primary : Colors.transparent,
+              ),
+              child: isSelected
+                  ? const Icon(Icons.check, size: 14, color: Colors.white)
+                  : null,
             ),
           ],
         ),
       ),
     );
   }
-}
 
-Widget orderMony({
-  required String name,
-  required String price,
-  bool isBold = false,
-  double? size,
-}) {
-  return Row(
-    children: [
-      CustomText(
-        text: name,
-        fontSize: size ?? 18,
-        color: isBold == true ? Colors.black : Colors.grey,
-        fontWeight: isBold == true ? FontWeight.bold : FontWeight.w400,
-      ),
-      Spacer(),
-      CustomText(
-        text: price,
-        fontSize: size ?? 18,
+  // صف لترتيب تفاصيل الفاتورة
+  Widget _orderMoneyRow({
+    required String name,
+    required String price,
+    bool isBold = false,
+    double? size,
+  }) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        CustomText(
+          text: name,
+          fontSize: size ?? 15,
+          color: isBold ? Colors.black : Colors.grey.shade600,
+          fontWeight: isBold ? FontWeight.w800 : FontWeight.w500,
+        ),
+        CustomText(
+          text: price,
+          fontSize: size ?? 15,
+          color: isBold ? Colors.black : Colors.black87,
+          fontWeight: isBold ? FontWeight.w900 : FontWeight.w600,
+        ),
+      ],
+    );
+  }
 
-        color: isBold == true ? Colors.black : Colors.grey,
+  // نافذة النجاح ثلاثية الأبعاد (Pop-out effect)
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.topCenter,
+            children: [
+              Container(
+                margin: const EdgeInsets.only(top: 30),
+                padding: const EdgeInsets.only(
+                  top: 50,
+                  left: 24,
+                  right: 24,
+                  bottom: 24,
+                ),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(28),
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const CustomText(
+                      text: "تمت العملية بنجاح!",
+                      fontSize: 24,
+                      fontWeight: FontWeight.w900,
+                      color: Colors.black87,
+                    ),
+                    const Gap(12),
+                    CustomText(
+                      text:
+                          "تم دفع طلبك بنجاح.\nلقد أرسلنا إيصال الشراء إلى\nبريدك الإلكتروني.",
+                      fontSize: 14,
+                      color: Colors.grey.shade600,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Gap(32),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomButton(
+                        width: double.infinity,
+                        text: "العودة للرئيسية",
+                        hight: 55,
+                        onTap: () {
+                          Navigator.pop(context); // يغلق النافذة
+                          Navigator.pop(context); // يعود للصفحة السابقة
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-        fontWeight: isBold == true ? FontWeight.bold : FontWeight.w400,
-      ),
-    ],
-  );
+              // أيقونة الصح البارزة من أعلى النافذة
+              Positioned(
+                top: -15,
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.primary.withOpacity(0.4),
+                        blurRadius: 16,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                    border: Border.all(color: Colors.white, width: 4),
+                  ),
+                  child: const Icon(
+                    Icons.check_rounded,
+                    color: Colors.white,
+                    size: 40,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 }

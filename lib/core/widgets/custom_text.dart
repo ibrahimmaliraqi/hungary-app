@@ -6,6 +6,7 @@ class CustomText extends StatelessWidget {
   final bool? lineThrough;
   final double? fontSize;
   final bool? isCaption;
+  final TextAlign? textAlign;
   final FontWeight? fontWeight;
   const CustomText({
     super.key,
@@ -15,11 +16,13 @@ class CustomText extends StatelessWidget {
     this.fontWeight,
     this.isCaption,
     this.lineThrough,
+    this.textAlign,
   });
 
   @override
   Widget build(BuildContext context) {
     return Text(
+      textAlign: textAlign,
       textScaler: TextScaler.linear(1.0),
       text,
       maxLines: 2,
