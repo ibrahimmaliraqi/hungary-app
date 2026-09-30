@@ -9,9 +9,9 @@ class GetCartItemsCubit extends Cubit<GetCartItemsState> {
   final GetCartItemsUsecase getCartItemsUsecase;
   GetCartItemsCubit({required this.getCartItemsUsecase})
     : super(GetCartItemsInitial());
-  Future getCartItem({required int userId}) async {
+  Future getCartItem() async {
     emit(GetCartItemsLoading());
-    final res = await getCartItemsUsecase.call(userId: userId);
+    final res = await getCartItemsUsecase.call();
     res.fold(
       (l) => emit(GetCartItemsFailure(errMessage: l.message)),
       (r) => emit(GetCartItemsSuccess(carts: r)),

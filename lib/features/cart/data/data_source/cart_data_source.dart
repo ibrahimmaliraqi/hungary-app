@@ -5,7 +5,7 @@ import 'package:hungry_app/features/cart/data/model/cart_model.dart';
 
 abstract class CartDataSource {
   Future<void> addToCart({required CartModel cart});
-  Future<List<CartModel>> getCartItems({required int userId});
+  Future<List<CartModel>> getCartItems();
 }
 
 class ApiCartDataSourceImpl implements CartDataSource {
@@ -46,9 +46,7 @@ class ApiCartDataSourceImpl implements CartDataSource {
   }
 
   @override
-  Future<List<CartModel>> getCartItems({
-    required int userId,
-  }) async {
+  Future<List<CartModel>> getCartItems() async {
     try {
       final user = PrefsHelper.getUser();
 
@@ -59,7 +57,7 @@ class ApiCartDataSourceImpl implements CartDataSource {
       }
       final res = await dioClient.post(
         "cart/get_cart.php",
-        data: {"user_id": userId},
+        data: {"user_id": user!.id},
       );
 
       if (res['success'] == true) {
