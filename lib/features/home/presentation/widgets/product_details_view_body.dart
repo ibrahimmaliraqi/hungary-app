@@ -23,6 +23,7 @@ class _ProductDetailsViewBodyState extends State<ProductDetailsViewBody> {
     context.read<GetProductOptionsCubit>().getProductOptions(
       productId: widget.productEntity.id,
     );
+
     super.initState();
   }
 

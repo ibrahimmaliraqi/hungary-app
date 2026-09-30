@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/assets/assets.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
 
 class SpicySlider extends StatelessWidget {
   final double value;
@@ -37,7 +39,9 @@ class SpicySlider extends StatelessWidget {
               max: 1,
 
               value: value,
-              onChanged: onChanged,
+              onChanged: (value) {
+                context.read<AddProductCubit>().addSpicy(spicy: value);
+              },
             ),
             Row(
               children: [

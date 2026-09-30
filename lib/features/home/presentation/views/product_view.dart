@@ -2,23 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
-import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_side_option_usecase.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_toppings_usecase.dart';
+import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
+import 'package:hungry_app/features/home/presentation/manager/add_product_state.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_product_options/get_product_options_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/product_details_view_body.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 
-class ProductDetailsView extends StatelessWidget {
+class ProductDetailsView extends StatefulWidget {
   final ProductEntity productEntity;
   const ProductDetailsView({
     super.key,
     required this.productEntity,
   });
+
+  @override
+  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+}
+
+class _ProductDetailsViewState extends State<ProductDetailsView> {
+  @override
+  void initState() {
+    context.read<AddProductCubit>().setProductPrice(
+      widget.productEntity,
+    );
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +57,7 @@ class ProductDetailsView extends StatelessWidget {
           ),
         ),
         body: ProductDetailsViewBody(
-          productEntity: productEntity,
+          productEntity: widget.productEntity,
         ),
         bottomSheet: Container(
           padding: EdgeInsets.symmetric(horizontal: 20),
@@ -75,12 +89,16 @@ class ProductDetailsView extends StatelessWidget {
                     color: Color(0xff3C2F2F),
                   ),
                   Gap(5),
-                  CustomText(
-                    text:
-                        "${AppPrice.currentPrice(product: productEntity)} دينار عراقي",
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff3C2F2F),
+                  BlocBuilder<AddProductCubit, AddProductState>(
+                    builder: (context, state) {
+                      return CustomText(
+                        text:
+                            "${context.read<AddProductCubit>().totalPrice} دينار عراقي",
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xff3C2F2F),
+                      );
+                    },
                   ),
                 ],
               ),

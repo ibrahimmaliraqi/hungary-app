@@ -8,6 +8,7 @@ import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
 import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_profile_cubit.dart';
 import 'package:hungry_app/features/auth/presentation/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
 import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 import 'package:hungry_app/observer.dart';
@@ -39,6 +40,9 @@ class HungryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        BlocProvider(
+          create: (context) => AddProductCubit(),
+        ),
         BlocProvider(
           create: (context) => GetProfileDataCubit(
             AuthRepoImpl(authRemote: getIt.get<AuthRemote>()),

@@ -6,12 +6,14 @@ class ToppingsCard extends StatelessWidget {
   final String title;
   final String imageUrl;
   final VoidCallback onAdd;
+  final bool isSelected;
 
   const ToppingsCard({
     super.key,
     required this.title,
     required this.imageUrl,
     required this.onAdd,
+    required this.isSelected,
   });
 
   @override
@@ -89,13 +91,15 @@ class ToppingsCard extends StatelessWidget {
                           width: 28,
                           height: 28,
                           decoration: BoxDecoration(
-                            color: const Color(
-                              0xFFE53935,
-                            ), // اللون الأحمر المطابق
+                            color: isSelected
+                                ? AppColors.primary
+                                : const Color(
+                                    0xFFE53935,
+                                  ), // اللون الأحمر المطابق
                             borderRadius: BorderRadius.circular(8), // حواف الزر
                           ),
-                          child: const Icon(
-                            Icons.add,
+                          child: Icon(
+                            isSelected ? Icons.check : Icons.add,
                             color: Colors.white,
                             size: 18,
                           ),
