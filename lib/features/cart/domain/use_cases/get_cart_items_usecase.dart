@@ -7,7 +7,7 @@ class GetCartItemsUsecase {
   final CartRepo cartRepo;
 
   GetCartItemsUsecase({required this.cartRepo});
-  Future<Either<Failure, List<CartEntity>>> call() {
-    return cartRepo.getCartItems();
+  Future<Either<Failure, List<CartEntity>>> call({required int userId}) {
+    return cartRepo.getCartItems(userId: userId);
   }
 }
