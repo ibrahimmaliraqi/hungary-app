@@ -12,7 +12,6 @@ import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.
 import 'package:hungry_app/features/home/presentation/manager/add_product_state.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_product_options/get_product_options_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/product_details_view_body.dart';
-import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
 
 class ProductDetailsView extends StatefulWidget {
   final ProductEntity productEntity;
@@ -104,22 +103,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               ),
 
               Spacer(),
-              BlocConsumer<CartCubit, CartState>(
-                listener: (context, state) {
-                  if (state is CartFailure) {
-                    print(state.errMessage);
-                  }
-                  if (state is CartLoaded) {
-                    SnackBar(content: CustomText(text: "تمت الاضافه"));
-                  }
-                },
-                builder: (context, state) {
-                  return CustomButton(
-                    text: "اضف للسلة",
-                    width: 170,
-                    hight: 70,
-                  );
-                },
+              CustomButton(
+                text: "اضف للسلة",
+                width: 170,
+                hight: 70,
               ),
             ],
           ),

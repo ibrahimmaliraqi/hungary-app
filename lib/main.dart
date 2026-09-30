@@ -9,8 +9,6 @@ import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_
 import 'package:hungry_app/features/auth/presentation/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
-import 'package:hungry_app/features/product/data/manager/cart/cart_cubit.dart';
-import 'package:hungry_app/features/product/data/repos/product_detils_repo_impl.dart';
 import 'package:hungry_app/observer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -52,10 +50,6 @@ class HungryApp extends StatelessWidget {
           create: (context) => EditProfileCubit(
             AuthRepoImpl(authRemote: getIt.get<AuthRemote>()),
           ),
-        ),
-
-        BlocProvider(
-          create: (context) => CartCubit(ProductDetilsRepoImpl()),
         ),
       ],
       child: MaterialApp.router(

@@ -31,13 +31,25 @@ class ProductsModel {
 
   factory ProductsModel.fromMap(Map<String, dynamic> map) {
     return ProductsModel(
-      disCount: map['discount'],
       id: map['id'] as int,
       name: map['name'] as String,
       description: map['description'] as String,
       image: map['image'] as String,
       rating: map['rating'] as num,
       price: map['price'] as num,
+      disCount: map['disCount'] != null ? map['disCount'] as num : null,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'name': name,
+      'description': description,
+      'image': image,
+      'rating': rating,
+      'price': price,
+      'disCount': disCount,
+    };
   }
 }

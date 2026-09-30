@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:hungry_app/features/home/domain/entities/product_option_entity.dart';
 
 class ProductOptionModel {
@@ -26,10 +28,20 @@ class ProductOptionModel {
   factory ProductOptionModel.fromMap(Map<String, dynamic> map) {
     return ProductOptionModel(
       id: map['id'] as int,
-      productId: map['product_id'] as int,
+      productId: map['productId'] as int,
       name: map['name'] as String,
       image: map['image'] as String,
       price: map['price'] as int,
     );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'productId': productId,
+      'name': name,
+      'image': image,
+      'price': price,
+    };
   }
 }
