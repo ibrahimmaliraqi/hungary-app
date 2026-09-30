@@ -6,6 +6,7 @@ import 'package:hungry_app/features/cart/data/model/cart_model.dart';
 abstract class CartDataSource {
   Future<void> addToCart({required CartModel cart});
   Future<List<CartModel>> getCartItems({required int userId});
+  Future<void> deleteItemFromCart({required int itemId});
 }
 
 class ApiCartDataSourceImpl implements CartDataSource {
@@ -75,6 +76,32 @@ class ApiCartDataSourceImpl implements CartDataSource {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء جلب السلة",
+      );
+    }
+  }
+
+  @override
+  Future<void> deleteItemFromCart({required int itemId}) async {
+    try {
+      final res = await dioClient.post(
+        "cart/delete_item_from_cart.php",
+        data: {"id": itemId},
+      );
+
+      if (res['success'] == true) {
+        return;
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء حذف العنصر",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCartItems error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء حذف العنصر",
       );
     }
   }

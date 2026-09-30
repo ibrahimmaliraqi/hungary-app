@@ -33,4 +33,16 @@ class CartRepoImpl implements CartRepo {
       return left(ServerFailure(message: e.errMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, void>> deleteItemFromCart({
+    required int itemId,
+  }) async {
+    try {
+      await cartDataSource.deleteItemFromCart(itemId: itemId);
+      return right(null);
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
 }
