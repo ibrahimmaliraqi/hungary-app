@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
+import 'package:hungry_app/main.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CheckoutView extends StatefulWidget {
-  const CheckoutView({super.key});
+  final List<CartEntity> carts;
+  const CheckoutView({super.key, required this.carts});
 
   @override
   State<CheckoutView> createState() => _CheckoutViewState();
@@ -89,11 +94,15 @@ class _CheckoutViewState extends State<CheckoutView> {
               ),
               child: Column(
                 children: [
-                  _orderMoneyRow(name: "الطلب", price: "18.48 دينار"),
+                  _orderMoneyRow(
+                    name: "الطلب",
+                    price:
+                        "${AppPrice.cartTotalPrice(product: widget.carts)} دينار",
+                  ),
                   const Gap(12),
-                  _orderMoneyRow(name: "الضرائب", price: "0.30 دينار"),
+                  _orderMoneyRow(name: "الضرائب", price: "لا يوجد"),
                   const Gap(12),
-                  _orderMoneyRow(name: "رسوم التوصيل", price: "1.50 دينار"),
+                  _orderMoneyRow(name: "رسوم التوصيل", price: "2000 دينار"),
                   const Gap(16),
 
                   // خط متقطع (Dashed Divider)
@@ -113,7 +122,8 @@ class _CheckoutViewState extends State<CheckoutView> {
                   const Gap(16),
                   _orderMoneyRow(
                     name: "الإجمالي",
-                    price: "18.19 دينار",
+                    price:
+                        "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
                     isBold: true,
                     size: 20,
                   ),
@@ -143,7 +153,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                           color: Colors.grey.shade700,
                         ),
                         CustomText(
-                          text: "15 - 30 دقيقة",
+                          text: "30 دقيقة - ساعة",
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: AppColors.primary,
@@ -220,8 +230,10 @@ class _CheckoutViewState extends State<CheckoutView> {
                       color: Colors.grey.shade600,
                     ),
                     const Gap(4),
-                    const CustomText(
-                      text: "18.19 دينار",
+                    CustomText(
+                      text:
+                          "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
+
                       fontSize: 24,
                       fontWeight: FontWeight.w900,
                       color: Colors.black,
@@ -233,7 +245,28 @@ class _CheckoutViewState extends State<CheckoutView> {
                 Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () => _showSuccessDialog(context),
+                    onTap: () async {
+                      if (selectedMethod == "debit") {
+                        final res = await supabase.functions.invoke(
+                          "create-wayl-payment",
+                          body: {
+                            'amount':
+                                AppPrice.cartTotalPrice(product: widget.carts) +
+                                2000,
+
+                            'customerName': 'ابراهيم علي',
+
+                            'customerPhone': '964770543214',
+                          },
+                        );
+                        final data = res.data;
+                        final checkoutUrl = data['checkoutUrl'];
+                        launchUrl(Uri.parse(checkoutUrl));
+                      } else {
+                        _showSuccessDialog(context);
+                      }
+                      print(selectedMethod);
+                    },
                     borderRadius: BorderRadius.circular(20),
                     child: Container(
                       padding: const EdgeInsets.symmetric(
