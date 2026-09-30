@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
-import 'package:hungry_app/core/demo/demo_cart.dart';
 import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
@@ -29,11 +28,10 @@ class _CartViewState extends State<CartView> {
         getCartItemsUsecase: getIt.get<GetCartItemsUsecase>(),
       ),
       child: Scaffold(
-        body: SafeArea(
+        body: const SafeArea(
           child: CartViewBody(),
         ),
         bottomSheet: Container(
-          // Removed fixed height to let padding and content dictate the size dynamically
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: const BorderRadius.only(
@@ -42,32 +40,90 @@ class _CartViewState extends State<CartView> {
             ),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.05), // Soft, modern shadow
+                color: Colors.black.withOpacity(0.05),
                 blurRadius: 20,
                 spreadRadius: 5,
-                offset: const Offset(0, -5), // Shadow casts upwards
+                offset: const Offset(0, -5),
               ),
             ],
           ),
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24,
+                vertical: 20,
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Price Details Section
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  // الصف الأول: عنوان المجموع وزر الحذف بتصميم إبداعي
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       CustomText(
                         text: "مجموع السلة",
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color:
-                            Colors.grey.shade600, // Subdued color for subtitle
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.grey.shade600,
                       ),
-                      const Gap(4),
+                      BlocBuilder<GetCartItemsCubit, GetCartItemsState>(
+                        builder: (context, state) {
+                          if (state is! GetCartItemsSuccess ||
+                              state.carts.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return Material(
+                            color: Colors.transparent,
+                            child: InkWell(
+                              onTap: () {
+                                // أضف كود حذف السلة هنا
+                              },
+                              borderRadius: BorderRadius.circular(30),
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 12,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.red.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(30),
+                                  border: Border.all(
+                                    color: Colors.red.withOpacity(0.3),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.remove_shopping_cart_rounded,
+                                      color: Colors.red.shade700,
+                                      size: 16,
+                                    ),
+                                    const Gap(6),
+                                    CustomText(
+                                      text: "إفراغ السلة",
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: Colors.red.shade700,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+
+                  const Gap(8),
+
+                  // الصف الثاني: السعر الإجمالي وزر إتمام الطلب
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // السعر
                       BlocBuilder<GetCartItemsCubit, GetCartItemsState>(
                         builder: (context, state) {
                           if (state is GetCartItemsLoading) {
@@ -75,7 +131,7 @@ class _CartViewState extends State<CartView> {
                               enabled: true,
                               child: CustomText(
                                 text: "00000 دينار",
-                                fontSize: 22,
+                                fontSize: 24,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primary,
                               ),
@@ -86,30 +142,30 @@ class _CartViewState extends State<CartView> {
                             return CustomText(
                               text:
                                   "${AppPrice.cartTotalPrice(product: state.carts)} دينار",
-                              fontSize: 22, // Larger, prominent price
+                              fontSize: 24,
                               fontWeight: FontWeight.w900,
-                              color: AppColors.primary, // Make price pop
+                              color: AppColors.primary,
                             );
                           }
 
                           return CustomText(
                             text: "0 دينار",
-                            fontSize: 22,
+                            fontSize: 24,
                             fontWeight: FontWeight.w900,
                             color: AppColors.primary,
                           );
                         },
                       ),
-                    ],
-                  ),
 
-                  // Creative Premium Checkout Button
-                  BlocBuilder<GetCartItemsCubit, GetCartItemsState>(
-                    builder: (context, state) {
-                      if (state is GetCartItemsLoading) {
-                        return Skeletonizer(
-                          enabled: true,
-                          child: Material(
+                      // زر إتمام الطلب
+                      BlocBuilder<GetCartItemsCubit, GetCartItemsState>(
+                        builder: (context, state) {
+                          if (state is! GetCartItemsSuccess ||
+                              state.carts.isEmpty) {
+                            return const SizedBox.shrink();
+                          }
+
+                          return Material(
                             color: Colors.transparent,
                             child: InkWell(
                               onTap: () {
@@ -117,7 +173,7 @@ class _CartViewState extends State<CartView> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => CheckoutView(
-                                      carts: demoCarts,
+                                      carts: state.carts,
                                     ),
                                   ),
                                 );
@@ -133,11 +189,9 @@ class _CartViewState extends State<CartView> {
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: AppColors.primary.withOpacity(
-                                        0.3,
-                                      ), // Glowing button effect
-                                      blurRadius: 12,
-                                      offset: const Offset(0, 6),
+                                      color: AppColors.primary.withOpacity(0.3),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
                                     ),
                                   ],
                                 ),
@@ -145,14 +199,12 @@ class _CartViewState extends State<CartView> {
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     const CustomText(
-                                      text:
-                                          "إتمام الطلب", // Arabic to match the context
+                                      text: "إتمام الطلب",
                                       color: Colors.white,
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
                                     ),
                                     const Gap(10),
-                                    // Small elegant arrow indicator
                                     Container(
                                       padding: const EdgeInsets.all(4),
                                       decoration: BoxDecoration(
@@ -160,8 +212,7 @@ class _CartViewState extends State<CartView> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: const Icon(
-                                        Icons
-                                            .arrow_forward_ios_rounded, // Use arrow_back_ios_rounded if your app is strictly RTL
+                                        Icons.arrow_forward_ios_rounded,
                                         color: Colors.white,
                                         size: 14,
                                       ),
@@ -170,136 +221,10 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ),
                             ),
-                          ),
-                        );
-                      }
-                      if (state is GetCartItemsSuccess) {
-                        return Material(
-                          color: Colors.transparent,
-                          child: InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => CheckoutView(
-                                    carts: state.carts,
-                                  ),
-                                ),
-                              );
-                            },
-                            borderRadius: BorderRadius.circular(20),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 20,
-                                vertical: 14,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary,
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.primary.withOpacity(
-                                      0.3,
-                                    ), // Glowing button effect
-                                    blurRadius: 12,
-                                    offset: const Offset(0, 6),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const CustomText(
-                                    text:
-                                        "إتمام الطلب", // Arabic to match the context
-                                    color: Colors.white,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  const Gap(10),
-                                  // Small elegant arrow indicator
-                                  Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Icon(
-                                      Icons
-                                          .arrow_forward_ios_rounded, // Use arrow_back_ios_rounded if your app is strictly RTL
-                                      color: Colors.white,
-                                      size: 14,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                      return Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => CheckoutView(
-                                  carts: demoCarts,
-                                ),
-                              ),
-                            );
-                          },
-                          borderRadius: BorderRadius.circular(20),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 14,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppColors.primary,
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: AppColors.primary.withOpacity(
-                                    0.3,
-                                  ), // Glowing button effect
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const CustomText(
-                                  text:
-                                      "إتمام الطلب", // Arabic to match the context
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                                const Gap(10),
-                                // Small elegant arrow indicator
-                                Container(
-                                  padding: const EdgeInsets.all(4),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white.withOpacity(0.2),
-                                    shape: BoxShape.circle,
-                                  ),
-                                  child: const Icon(
-                                    Icons
-                                        .arrow_forward_ios_rounded, // Use arrow_back_ios_rounded if your app is strictly RTL
-                                    color: Colors.white,
-                                    size: 14,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
