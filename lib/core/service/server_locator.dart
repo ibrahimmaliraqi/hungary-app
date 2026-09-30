@@ -9,6 +9,7 @@ import 'package:hungry_app/features/cart/data/data_source/cart_data_source.dart'
 import 'package:hungry_app/features/cart/data/repo/cart_repo_impl.dart';
 import 'package:hungry_app/features/cart/domain/repo/cart_repo.dart';
 import 'package:hungry_app/features/cart/domain/use_cases/add_to_cart_usecase.dart';
+import 'package:hungry_app/features/cart/domain/use_cases/get_cart_items_usecase.dart';
 import 'package:hungry_app/features/home/data/data_source/home_remote.dart';
 import 'package:hungry_app/features/home/data/repos/home_repo_impl.dart';
 import 'package:hungry_app/features/home/domain/repo/home_repo.dart';
@@ -65,5 +66,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<AddToCartUsecase>(
     AddToCartUsecase(cartRepo: getIt.get<CartRepo>()),
+  );
+  getIt.registerSingleton<GetCartItemsUsecase>(
+    GetCartItemsUsecase(cartRepo: getIt.get<CartRepo>()),
   );
 }

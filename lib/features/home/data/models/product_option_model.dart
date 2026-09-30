@@ -37,7 +37,7 @@ class ProductOptionModel {
   factory ProductOptionModel.fromMap(Map<String, dynamic> map) {
     return ProductOptionModel(
       id: map['id'] as int,
-      productId: map['product_id'] as int,
+      productId: map['id'] as int,
       name: map['name'] as String,
       image: map['image'] as String,
       price: map['price'] as int,

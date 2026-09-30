@@ -5,8 +5,8 @@ class CartEntity {
   final ProductEntity product;
   final int quantity;
   final int productId;
-  final num? spicy;
-  final num? totalPrice;
+  final num spicy;
+  final num totalPrice;
   final List<ProductOptionEntity> productOptions;
 
   CartEntity({

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
-import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
+import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
 
-class CustomCartItem extends StatelessWidget {
-  const CustomCartItem({
+class CartCard extends StatelessWidget {
+  final CartEntity cartEntity;
+  const CartCard({
     super.key,
     this.onAdd,
     this.onMin,
     required this.number,
+    required this.cartEntity,
   });
   final int number;
   final void Function()? onAdd;
@@ -27,21 +30,22 @@ class CustomCartItem extends StatelessWidget {
           children: [
             Column(
               children: [
-                Image.asset(
-                  Assets.splashLogo,
+                NetImage(
+                  imageUrl: cartEntity.product.image,
+
                   width: 111,
                   height: 102,
                 ),
                 Gap(3),
                 CustomText(
-                  text: "Hamburger",
+                  text: cartEntity.product.name,
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),
                 CustomText(
-                  text: "Veggie Burger",
+                  text: "${cartEntity.totalPrice} دينار عراقي",
                   fontSize: 14,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.bold,
                 ),
               ],
             ),
