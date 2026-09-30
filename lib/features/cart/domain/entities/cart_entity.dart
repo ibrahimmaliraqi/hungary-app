@@ -2,6 +2,8 @@ import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/domain/entities/product_option_entity.dart';
 
 class CartEntity {
+  final int? id;
+
   final ProductEntity product;
   final int quantity;
   final int productId;
@@ -11,6 +13,7 @@ class CartEntity {
 
   CartEntity({
     required this.product,
+    this.id,
     required this.productId,
     required this.quantity,
     required this.spicy,

@@ -3,6 +3,8 @@ import 'package:hungry_app/features/home/data/models/product_option_model.dart';
 import 'package:hungry_app/features/home/data/models/products_model.dart';
 
 class CartModel {
+  final int? id;
+
   final ProductsModel product;
   final int quantity;
   final int productId;
@@ -11,6 +13,7 @@ class CartModel {
   final List<ProductOptionModel> productOptions;
 
   CartModel({
+    this.id,
     required this.product,
     required this.productId,
     required this.quantity,
@@ -20,6 +23,7 @@ class CartModel {
   });
   factory CartModel.fromEntity(CartEntity entity) {
     return CartModel(
+      id: entity.id,
       product: ProductsModel.fromEntity(entity.product),
       productId: entity.productId,
       quantity: entity.quantity,
@@ -34,7 +38,6 @@ class CartModel {
     return <String, dynamic>{
       'user_id': userId,
       'product_id': productId,
-
       'product': product.toMap(),
       'quantity': quantity,
       'spicy': spicy,
@@ -45,6 +48,7 @@ class CartModel {
 
   CartEntity toEntity() {
     return CartEntity(
+      id: id,
       productId: productId,
       product: product.toEntity(),
       quantity: quantity,
@@ -56,6 +60,7 @@ class CartModel {
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
+      id: map['id'] as int,
       product: ProductsModel.fromMap(map['product'] as Map<String, dynamic>),
       quantity: map['quantity'] as int,
       productId: map['product_id'] as int,

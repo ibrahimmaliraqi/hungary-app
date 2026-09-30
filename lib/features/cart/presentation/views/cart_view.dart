@@ -6,6 +6,7 @@ import 'package:hungry_app/core/demo/demo_cart.dart';
 import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/features/cart/domain/use_cases/delete_item_from_cart_usecase.dart';
 import 'package:hungry_app/features/cart/domain/use_cases/get_cart_items_usecase.dart';
 import 'package:hungry_app/features/cart/presentation/manager/get_cart_items/get_cart_items_cubit.dart';
 import 'package:hungry_app/features/cart/presentation/widgets/cart_view_body.dart';
@@ -24,6 +25,7 @@ class _CartViewState extends State<CartView> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GetCartItemsCubit(
+        deleteItemFromCartUsecase: getIt.get<DeleteItemFromCartUsecase>(),
         getCartItemsUsecase: getIt.get<GetCartItemsUsecase>(),
       ),
       child: Scaffold(
