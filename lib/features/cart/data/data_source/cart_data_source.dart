@@ -1,4 +1,5 @@
 import 'package:hungry_app/core/error/app_exceptions.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/network/dio_client.dart';
 import 'package:hungry_app/features/cart/data/model/cart_model.dart';
 
@@ -13,9 +14,16 @@ class ApiCartDataSourceImpl implements CartDataSource {
   @override
   Future<void> addToCart({required CartModel cart}) async {
     try {
+      final user = PrefsHelper.getUser();
+
+      if (user?.id == null) {
+        throw ServerException(
+          errMessage: "المستخدم غير مسجل الدخول",
+        );
+      }
       final res = await dioClient.post(
         "cart/add_cart.php",
-        data: cart.toMap(userId: 133),
+        data: cart.toMap(userId: user!.id!),
       );
 
       if (res['success'] == true) {

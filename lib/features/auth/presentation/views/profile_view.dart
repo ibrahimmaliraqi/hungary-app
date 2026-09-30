@@ -7,11 +7,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
-import 'package:hungry_app/core/utils/pref_helpers.dart';
 import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_profile_cubit.dart';
 import 'package:hungry_app/features/auth/presentation/manager/get_profile/get_profile_data_cubit.dart';
 import 'package:hungry_app/features/auth/presentation/widgets/profile_text_field.dart';
@@ -48,8 +48,8 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<String> getId() async {
-    String? id = await PrefHelpers.getToken();
-    return id ?? "";
+    int? id = PrefsHelper.getUser()?.id;
+    return id.toString();
   }
 
   Future<void> pickImage() async {

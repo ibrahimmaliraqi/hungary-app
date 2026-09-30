@@ -1,5 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hungry_app/core/constants/app_colors.dart';
 
 class NetImage extends StatelessWidget {
   final String imageUrl;
@@ -24,8 +26,10 @@ class NetImage extends StatelessWidget {
         width: width,
         height: height,
         fit: fit,
-        placeholder: (context, url) => const Center(
-          child: CircularProgressIndicator(),
+        placeholder: (context, url) => Center(
+          child: CupertinoActivityIndicator(
+            color: AppColors.primary,
+          ),
         ),
         errorWidget: (context, url, error) => const Icon(
           Icons.image_not_supported_outlined,

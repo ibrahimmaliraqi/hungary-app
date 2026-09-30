@@ -3,7 +3,9 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
 import 'package:hungry_app/features/home/presentation/views/wayl.dart';
 
 class UserHeader extends StatelessWidget {
@@ -11,6 +13,7 @@ class UserHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userData = PrefsHelper.getUser();
     return Row(
       children: [
         Column(
@@ -23,7 +26,7 @@ class UserHeader extends StatelessWidget {
             ),
             Gap(5),
             CustomText(
-              text: "مرحباً، إبراهيم محمد",
+              text: "مرحباً، ${userData?.name ?? "قم بتسحيل الدخول"}",
               fontSize: 15,
               fontWeight: FontWeight.w400,
               color: Colors.blueGrey.shade500,
@@ -52,8 +55,9 @@ class UserHeader extends StatelessWidget {
                   ),
                 );
               },
-              child: Image.asset(
-                "assets/test/test.jpg",
+              child: NetImage(
+                imageUrl: userData!.image!,
+
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
