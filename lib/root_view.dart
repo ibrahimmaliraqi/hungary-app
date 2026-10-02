@@ -4,7 +4,7 @@ import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/features/auth/presentation/views/profile_view.dart';
 import 'package:hungry_app/features/cart/presentation/views/cart_view.dart';
 import 'package:hungry_app/features/home/presentation/views/home_view.dart';
-import 'package:hungry_app/features/orderHistory/presentation/views/order_history_view.dart';
+import 'package:hungry_app/features/order/presentation/views/order_history_view.dart';
 
 class RootView extends StatefulWidget {
   const RootView({super.key});
@@ -23,7 +23,7 @@ class _RootViewState extends State<RootView> {
       HomeView(),
       CartView(),
 
-      OrderHistoryView(),
+      OrderView(),
       ProfileView(),
     ];
     controller = PageController(initialPage: currentIndex);
