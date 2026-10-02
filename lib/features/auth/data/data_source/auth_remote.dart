@@ -10,6 +10,7 @@ abstract class AuthRemote {
     String email,
     String password,
   );
+  Future<UserModel?> getProfileData({required String id});
 }
 
 class ApiAuthRemoteImpl implements AuthRemote {
@@ -81,6 +82,33 @@ class ApiAuthRemoteImpl implements AuthRemote {
       print("eeeeeeeeeeeeee: $e");
       throw ServerException(
         errMessage: "حدث خطأ أثناء إنشاء الحساب",
+      );
+    }
+  }
+
+  @override
+  Future<UserModel?> getProfileData({required String id}) async {
+    try {
+      final res = await dioClient.post(
+        "auth/get_profile.php",
+        data: {
+          "user_id": id,
+        },
+      );
+
+      if (res['success'] == true) {
+        return UserModel.fromMap(res['data']);
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء جلب بيانات الحساب",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("eeeeeeeeeeeeee: $e");
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء جلب بيانات الحساب",
       );
     }
   }
