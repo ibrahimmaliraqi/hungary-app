@@ -6,7 +6,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
-import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/custom_text_form_field.dart';
@@ -75,10 +74,11 @@ class _SignUpViewState extends State<SignUpView> {
                         child: BlocListener<RegisterCubit, RegisterState>(
                           listener: (context, state) {
                             if (state is RegisterSuccess) {
-                              PrefsHelper.saveUser(state.user);
-                              final res = PrefsHelper.getUser();
-                              print("SaveUser");
-                              print(res!.id);
+                              Snack.show(
+                                context,
+                                message: "تم إنشاء الحساب بنجاح",
+                                isError: false,
+                              );
                               GoRouter.of(context).push(AppRouter.login);
                             }
                             if (state is RegisterFailure) {

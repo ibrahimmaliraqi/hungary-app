@@ -9,7 +9,7 @@ abstract class AuthRepo {
     String email,
     String password,
   );
-
+  Future<void> saveUserData({required UserEntity user});
   Future<Either<Failure, UserEntity>> updateProfileData({
     required String name,
     required String id,

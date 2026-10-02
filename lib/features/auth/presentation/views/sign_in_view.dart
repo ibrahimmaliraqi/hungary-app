@@ -6,7 +6,6 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
-import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/custom_text_form_field.dart';
@@ -96,11 +95,11 @@ class _SignInViewState extends State<SignInView> {
                             BlocListener<LoginCubit, LoginState>(
                               listener: (context, state) async {
                                 if (state is LoginSuccess) {
-                                  PrefsHelper.saveUser(state.user);
-                                  final res = PrefsHelper.getUser();
-                                  print("SaveUser");
-                                  print(res!.id);
-
+                                  Snack.show(
+                                    context,
+                                    message: "تم تسجيل الدخول بنجاح",
+                                    isError: false,
+                                  );
                                   GoRouter.of(context).push(AppRouter.rootView);
                                 } else if (state is LoginFailure) {
                                   Snack.show(

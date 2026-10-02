@@ -66,6 +66,8 @@ class PrefsHelper {
       image: user.image,
       address: user.address,
       visa: user.visa,
+      createdAt: user.createdAt,
+      phoneNumber: user.phoneNumber,
     );
 
     return await _prefs.setString(

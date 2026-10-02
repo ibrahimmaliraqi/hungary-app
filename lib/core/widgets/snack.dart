@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hungry_app/core/constants/app_colors.dart';
 
 class Snack {
   static void show(
@@ -30,7 +31,7 @@ class Snack {
         ),
         backgroundColor: isError
             ? Colors.red.shade700
-            : const Color(0xFF0F7542), // Red for error, Green for success
+            : AppColors.primary, // Red for error, Green for success
         behavior:
             SnackBarBehavior.floating, // Makes it float above the bottom edge
         shape: RoundedRectangleBorder(

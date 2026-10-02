@@ -9,8 +9,11 @@ class UserModel {
   String? image;
   String? address;
   String? visa;
-
+  String? phoneNumber;
+  String? createdAt;
   UserModel({
+    this.phoneNumber,
+    this.createdAt,
     this.id,
     this.name,
     this.email,
@@ -18,8 +21,22 @@ class UserModel {
     this.address,
     this.visa,
   });
+  factory UserModel.fromEntity(UserEntity entity) {
+    return UserModel(
+      id: entity.id,
+      name: entity.name,
+      email: entity.email,
+      image: entity.image,
+      address: entity.address,
+      visa: entity.visa,
+      phoneNumber: entity.phoneNumber,
+      createdAt: entity.createdAt,
+    );
+  }
   UserEntity toEntity() {
     return UserEntity(
+      createdAt: createdAt,
+      phoneNumber: phoneNumber,
       id: id,
       name: name,
       email: email,
@@ -34,7 +51,9 @@ class UserModel {
       'id': id,
       'name': name,
       'email': email,
+      'phone_number': phoneNumber,
       'image': image,
+      "created_at": createdAt,
       'address': address,
       'visa': visa,
     };
@@ -42,6 +61,11 @@ class UserModel {
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
+      phoneNumber: map['phone_number'] != null
+          ? map['phone_number'] as String
+          : null,
+
+      createdAt: map['created_at'] != null ? map['created_at'] as String : null,
       id: map['id'] != null ? map['id'] as int : null,
       name: map['name'] != null ? map['name'] as String : null,
       email: map['email'] != null ? map['email'] as String : null,

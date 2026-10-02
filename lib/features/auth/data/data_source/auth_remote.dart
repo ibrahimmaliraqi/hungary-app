@@ -1,4 +1,5 @@
 import 'package:hungry_app/core/error/app_exceptions.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/network/dio_client.dart';
 import 'package:hungry_app/features/auth/data/models/user_model.dart';
 
@@ -10,6 +11,7 @@ abstract class AuthRemote {
     String email,
     String password,
   );
+  Future<void> saveUserData({required UserModel user});
 }
 
 class ApiAuthRemoteImpl implements AuthRemote {
@@ -34,6 +36,8 @@ class ApiAuthRemoteImpl implements AuthRemote {
       );
 
       if (res['success'] == true) {
+        print("res['data']");
+        print(res['data']);
         return UserModel.fromMap(res['data']);
       }
 
@@ -83,5 +87,10 @@ class ApiAuthRemoteImpl implements AuthRemote {
         errMessage: "حدث خطأ أثناء إنشاء الحساب",
       );
     }
+  }
+
+  @override
+  Future<void> saveUserData({required UserModel user}) async {
+    PrefsHelper.saveUser(user.toEntity());
   }
 }
