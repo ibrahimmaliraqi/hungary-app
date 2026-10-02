@@ -10,19 +10,6 @@ class OrderView extends StatelessWidget {
       backgroundColor: const Color(
         0xFFF8F9FA,
       ), // Off-white background for contrast
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        title: const Text(
-          "My Orders",
-          style: TextStyle(
-            color: Colors.black87,
-            fontWeight: FontWeight.bold,
-            fontSize: 24,
-          ),
-        ),
-        centerTitle: false,
-      ),
       body: SafeArea(
         child: ListView.builder(
           physics: const BouncingScrollPhysics(),
