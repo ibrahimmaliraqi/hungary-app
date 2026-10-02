@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:hungry_app/core/assets/assets.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
 class ProfileViewBody extends StatefulWidget {
@@ -12,19 +13,24 @@ class ProfileViewBody extends StatefulWidget {
 }
 
 class _ProfileViewBodyState extends State<ProfileViewBody> {
-  final TextEditingController name = TextEditingController(text: "أحمد محمد");
+  final users = PrefsHelper.getUser();
+  final TextEditingController name = TextEditingController();
 
-  final TextEditingController email = TextEditingController(
-    text: "ahmed@example.com",
-  );
+  final TextEditingController email = TextEditingController();
+  final TextEditingController phoneNumber = TextEditingController();
 
-  final TextEditingController address = TextEditingController(
-    text: "بغداد، المنصور",
-  );
+  final TextEditingController address = TextEditingController();
 
-  final TextEditingController visaCon = TextEditingController(
-    text: "**** **** **** 3456",
-  );
+  final TextEditingController visaCon = TextEditingController();
+  @override
+  void initState() {
+    name.text = users?.name ?? '';
+    phoneNumber.text = users?.phoneNumber ?? '';
+    email.text = users?.email ?? '';
+    address.text = users?.address ?? '';
+    visaCon.text = users?.visa ?? '';
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -85,9 +91,9 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                   ),
                 ],
               ),
-              child: const CircleAvatar(
-                backgroundImage: AssetImage(
-                  Assets.assetsImagesColdIcon,
+              child: CircleAvatar(
+                backgroundImage: CachedNetworkImageProvider(
+                  users?.image ?? "",
                 ),
                 backgroundColor: Color(0xFFF4F6F8),
               ),
@@ -128,30 +134,13 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
 
         const Gap(16),
 
-        const CustomText(
-          text: "أحمد محمد",
+        CustomText(
+          text: users?.name ?? '',
           fontSize: 21,
           fontWeight: FontWeight.bold,
         ),
 
         const Gap(6),
-
-        Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 5,
-          ),
-          decoration: BoxDecoration(
-            color: AppColors.primary.withOpacity(0.08),
-            borderRadius: BorderRadius.circular(20),
-          ),
-          child: CustomText(
-            text: "عضو ذهبي",
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-            color: AppColors.primary,
-          ),
-        ),
       ],
     );
   }
@@ -199,6 +188,11 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             icon: Icons.email_outlined,
             label: "البريد الإلكتروني",
             controller: email,
+          ),
+          _buildInfoField(
+            icon: Icons.phone_outlined,
+            label: "رقم الهاتف",
+            controller: phoneNumber,
           ),
 
           const Gap(12),
@@ -330,7 +324,9 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 const Gap(5),
 
                 CustomText(
-                  text: "**** **** **** 3456",
+                  text: users?.visa != null && users!.visa!.length >= 4
+                      ? '${users!.visa!.substring(0, 2)}********${users!.visa!.substring(users!.visa!.length - 2)}'
+                      : users?.visa ?? '',
                   fontSize: 13,
                   color: Colors.grey.shade600,
                 ),

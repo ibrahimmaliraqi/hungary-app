@@ -56,7 +56,7 @@ class UserHeader extends StatelessWidget {
                 );
               },
               child: NetImage(
-                imageUrl: userData!.image!,
+                imageUrl: userData!.image ?? "",
 
                 width: 60,
                 height: 60,
