@@ -11,11 +11,6 @@ abstract class AuthRepo {
   );
   Future<void> saveUserData({required UserEntity user});
   Future<Either<Failure, UserEntity>> updateProfileData({
-    required String name,
-    required String id,
-    required String email,
-    required String address,
-    String? visa,
-    String? imagePath,
+    required UserEntity user,
   });
 }

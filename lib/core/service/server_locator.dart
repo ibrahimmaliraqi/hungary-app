@@ -5,6 +5,7 @@ import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
 import 'package:hungry_app/features/auth/domain/use_case/login_user_usecase.dart';
 import 'package:hungry_app/features/auth/domain/use_case/register_user_usecase.dart';
+import 'package:hungry_app/features/auth/domain/use_case/update_user_usecase.dart';
 import 'package:hungry_app/features/cart/data/data_source/cart_data_source.dart';
 import 'package:hungry_app/features/cart/data/repo/cart_repo_impl.dart';
 import 'package:hungry_app/features/cart/domain/repo/cart_repo.dart';
@@ -77,5 +78,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<ClearCartUsecase>(
     ClearCartUsecase(cartRepo: getIt.get<CartRepo>()),
+  );
+  getIt.registerSingleton<UpdateUserUsecase>(
+    UpdateUserUsecase(authRepo: getIt.get<AuthRepo>()),
   );
 }

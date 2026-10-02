@@ -12,6 +12,9 @@ abstract class AuthRemote {
     String password,
   );
   Future<void> saveUserData({required UserModel user});
+  Future<UserModel> updateProfileData({
+    required UserModel user,
+  });
 }
 
 class ApiAuthRemoteImpl implements AuthRemote {
@@ -92,5 +95,30 @@ class ApiAuthRemoteImpl implements AuthRemote {
   @override
   Future<void> saveUserData({required UserModel user}) async {
     PrefsHelper.saveUser(user.toEntity());
+  }
+
+  @override
+  Future<UserModel> updateProfileData({required UserModel user}) async {
+    try {
+      final res = await dioClient.post(
+        "auth/update_account.php",
+        data: user.toMap(),
+      );
+
+      if (res['success'] == true) {
+        return UserModel.fromMap(res['data']);
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء تحديث بيانات الحساب",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("eeeeeeeeeeeeee: $e");
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء تحديث بيانات الحساب",
+      );
+    }
   }
 }

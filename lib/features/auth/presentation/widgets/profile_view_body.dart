@@ -25,10 +25,10 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
   @override
   void initState() {
     name.text = users?.name ?? '';
-    phoneNumber.text = users?.phoneNumber ?? '';
+    phoneNumber.text = users?.phoneNumber ?? 'لا يوجد';
     email.text = users?.email ?? '';
-    address.text = users?.address ?? '';
-    visaCon.text = users?.visa ?? '';
+    address.text = users?.address ?? 'لا يوجد';
+    visaCon.text = users?.visa ?? 'لا يوجد';
     super.initState();
   }
 

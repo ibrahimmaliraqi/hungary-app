@@ -5,9 +5,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
-import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
-import 'package:hungry_app/features/auth/presentation/manager/edit_profile/edit_profile_cubit.dart';
-import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
 import 'package:hungry_app/observer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -41,12 +38,6 @@ class HungryApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AddProductCubit(),
-        ),
-
-        BlocProvider(
-          create: (context) => EditProfileCubit(
-            AuthRepoImpl(authRemote: getIt.get<AuthRemote>()),
-          ),
         ),
       ],
       child: MaterialApp.router(

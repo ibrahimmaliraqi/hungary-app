@@ -42,20 +42,23 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserEntity>> updateProfileData({
-    required String name,
-    required String id,
-    required String email,
-    required String address,
-    String? visa,
-    String? imagePath,
-  }) {
-    // TODO: implement updateProfileData
-    throw UnimplementedError();
+  Future<void> saveUserData({required UserEntity user}) async {
+    await authRemote.saveUserData(user: UserModel.fromEntity(user));
   }
 
   @override
-  Future<void> saveUserData({required UserEntity user}) async {
-    await authRemote.saveUserData(user: UserModel.fromEntity(user));
+  Future<Either<Failure, UserEntity>> updateProfileData({
+    required UserEntity user,
+  }) async {
+    try {
+      final res = await authRemote.updateProfileData(
+        user: UserModel.fromEntity(user),
+      );
+
+      await saveUserData(user: res.toEntity());
+      return right(res.toEntity());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
   }
 }
