@@ -20,6 +20,10 @@ import 'package:hungry_app/features/home/domain/use_case/get_categories_usecase.
 import 'package:hungry_app/features/home/domain/use_case/get_products_usecase.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_side_option_usecase.dart';
 import 'package:hungry_app/features/home/domain/use_case/get_toppings_usecase.dart';
+import 'package:hungry_app/features/order/data/remote/order_remote.dart';
+import 'package:hungry_app/features/order/data/repo/order_repo_impl.dart';
+import 'package:hungry_app/features/order/domain/repo/order_repo.dart';
+import 'package:hungry_app/features/order/domain/use_cases/create_order.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -36,6 +40,9 @@ void setupLocator() {
   getIt.registerSingleton<CartDataSource>(
     ApiCartDataSourceImpl(dioClient: getIt.get<DioClient>()),
   );
+  getIt.registerSingleton<OrderRemote>(
+    ApiOrderRemoteImpl(dioClient: getIt.get<DioClient>()),
+  );
 
   //repo
   getIt.registerSingleton<AuthRepo>(
@@ -46,6 +53,9 @@ void setupLocator() {
   );
   getIt.registerSingleton<CartRepo>(
     CartRepoImpl(cartDataSource: getIt.get<CartDataSource>()),
+  );
+  getIt.registerSingleton<OrderRepo>(
+    OrderRepoImpl(orderRemote: getIt.get<OrderRemote>()),
   );
 
   //use case
@@ -81,5 +91,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<UpdateUserUsecase>(
     UpdateUserUsecase(authRepo: getIt.get<AuthRepo>()),
+  );
+  getIt.registerSingleton<CreateOrderUseCase>(
+    CreateOrderUseCase(orderRepo: getIt.get<OrderRepo>()),
   );
 }
