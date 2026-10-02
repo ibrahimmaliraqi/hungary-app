@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/core/assets/assets.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
@@ -86,7 +87,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
               ),
               child: const CircleAvatar(
                 backgroundImage: AssetImage(
-                  "assets/images/profile.png",
+                  Assets.assetsImagesColdIcon,
                 ),
                 backgroundColor: Color(0xFFF4F6F8),
               ),
