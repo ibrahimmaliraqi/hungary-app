@@ -10,7 +10,6 @@ abstract class AuthRepo {
     String password,
   );
 
-  Future<Either<Failure, UserEntity?>> getProfileData({required String id});
   Future<Either<Failure, UserEntity>> updateProfileData({
     required String name,
     required String id,

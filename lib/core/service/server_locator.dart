@@ -3,7 +3,6 @@ import 'package:hungry_app/core/network/dio_client.dart';
 import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:hungry_app/features/auth/domain/repo/auth_repo.dart';
-import 'package:hungry_app/features/auth/domain/use_case/get_user_profile_usecase.dart';
 import 'package:hungry_app/features/auth/domain/use_case/login_user_usecase.dart';
 import 'package:hungry_app/features/auth/domain/use_case/register_user_usecase.dart';
 import 'package:hungry_app/features/cart/data/data_source/cart_data_source.dart';
@@ -78,8 +77,5 @@ void setupLocator() {
   );
   getIt.registerSingleton<ClearCartUsecase>(
     ClearCartUsecase(cartRepo: getIt.get<CartRepo>()),
-  );
-  getIt.registerSingleton<GetUserProfileUsecase>(
-    GetUserProfileUsecase(authRepo: getIt.get<AuthRepo>()),
   );
 }

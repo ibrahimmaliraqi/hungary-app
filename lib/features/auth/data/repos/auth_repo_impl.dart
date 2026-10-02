@@ -39,19 +39,6 @@ class AuthRepoImpl implements AuthRepo {
   }
 
   @override
-  Future<Either<Failure, UserEntity?>> getProfileData({
-    required String id,
-  }) async {
-    try {
-      final res = await authRemote.getProfileData(id: id);
-
-      return right(res?.toEntity());
-    } on AppExceptions catch (e) {
-      return left(ServerFailure(message: e.errMessage));
-    }
-  }
-
-  @override
   Future<Either<Failure, UserEntity>> updateProfileData({
     required String name,
     required String id,
