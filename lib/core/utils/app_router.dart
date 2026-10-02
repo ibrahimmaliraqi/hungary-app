@@ -1,6 +1,8 @@
 import 'package:go_router/go_router.dart';
+import 'package:hungry_app/features/auth/domain/entities/user_entity.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_up_view.dart';
+import 'package:hungry_app/features/auth/presentation/views/update_profile_view.dart';
 import 'package:hungry_app/features/cart/presentation/views/cart_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/views/product_details_view.dart';
@@ -14,6 +16,7 @@ class AppRouter {
   static const register = '/register';
   static const productView = '/productView';
   static const cartView = '/cartView';
+  static const editPrefileView = '/editPrefileView';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -35,6 +38,14 @@ class AppRouter {
       GoRoute(
         path: cartView,
         builder: (context, state) => CartView(),
+      ),
+      GoRoute(
+        path: editPrefileView,
+        builder: (context, state) {
+          final UserEntity data = state.extra as UserEntity;
+
+          return UpdateProfileView(user: data);
+        },
       ),
       GoRoute(
         path: productView,

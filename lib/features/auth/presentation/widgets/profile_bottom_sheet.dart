@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
@@ -37,7 +38,12 @@ class ProfileBottomSheet extends StatelessWidget {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    onTap: () async {},
+                    onTap: () async {
+                      GoRouter.of(context).push(
+                        AppRouter.editPrefileView,
+                        extra: PrefsHelper.getUser()!,
+                      );
+                    },
                     borderRadius: BorderRadius.circular(16),
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 14),
