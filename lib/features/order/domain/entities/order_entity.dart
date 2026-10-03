@@ -9,10 +9,10 @@ class OrderEntity {
   final String address;
   final String paymentStatus;
   final String orderStatus;
-  final double totalPrice;
+  final num totalPrice;
   final PaymentMethod paymentMethod;
   final List<CartEntity> orderItems;
-  final DateTime? createdAt;
+  final String? createdAt;
 
   const OrderEntity({
     this.id,

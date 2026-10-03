@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hungry_app/core/constants/assets.dart';
+import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 
-class CustomAgainItem extends StatelessWidget {
+class OrderCard extends StatelessWidget {
+  final OrderEntity order;
   // متغير لتحديد نوع الدفع (أونلاين أو كاش) - يمكنك تمريره من قاعدة البيانات
   final bool isOnlinePayment;
 
-  const CustomAgainItem({
+  const OrderCard({
     super.key,
-    this.isOnlinePayment = true, // افتراضياً أونلاين للتجربة
+    this.isOnlinePayment = true,
+    required this.order, // افتراضياً أونلاين للتجربة
   });
 
   @override

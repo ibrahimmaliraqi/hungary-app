@@ -60,14 +60,15 @@ class CartModel {
 
   factory CartModel.fromMap(Map<String, dynamic> map) {
     return CartModel(
-      id: map['id'] as int,
+      id: map['id'] != null ? (map['id'] as num).toInt() : null,
+
       product: ProductsModel.fromMap(map['product'] as Map<String, dynamic>),
       quantity: map['quantity'] as int,
       productId: map['product_id'] as int,
 
       spicy: map['spicy'] as num,
-      totalPrice: map['totalPrice'] as num,
-      productOptions: (map['productOptions'] as List<dynamic>)
+      totalPrice: map['total_price'] as num,
+      productOptions: (map['product_options'] as List<dynamic>)
           .map(
             (e) => ProductOptionModel.fromMap(
               e as Map<String, dynamic>,

@@ -11,10 +11,10 @@ class OrderModel {
   final String address;
   final String paymentStatus;
   final String orderStatus;
-  final double totalPrice;
+  final num totalPrice;
   final PaymentMethod paymentMethod;
   final List<CartModel> orderItems;
-  final DateTime? createdAt;
+  final String? createdAt;
 
   OrderModel({
     required this.id,
@@ -80,29 +80,26 @@ class OrderModel {
       'order_items': orderItems
           .map((x) => x.toMap(userId: PrefsHelper.getUser()!.id!))
           .toList(),
-      'created_at': createdAt?.millisecondsSinceEpoch,
     };
   }
 
   factory OrderModel.fromMap(Map<String, dynamic> map) {
+    final orderItems = map['order_items'] as List;
+    final re = orderItems.map((e) => CartModel.fromMap(e)).toList();
     return OrderModel(
-      id: map['id'] != null ? map['id'] as int : null,
+      id: map['id'] != null ? (map['id'] as num).toInt() : null,
       userId: map['user_id'] as int,
       name: map['name'] as String,
       phone: map['phone'] as String,
       address: map['address'] as String,
       paymentStatus: map['payment_status'] as String,
       orderStatus: map['order_status'] as String,
-      totalPrice: map['total_price'] as double,
-      paymentMethod: map["payment_method"],
-      orderItems: List<CartModel>.from(
-        (map['orderItems'] as List<int>).map<CartModel>(
-          (x) => CartModel.fromMap(x as Map<String, dynamic>),
-        ),
-      ),
-      createdAt: map['createdAt'] != null
-          ? DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int)
-          : null,
+      totalPrice: map['total_price'] as num,
+      paymentMethod: map["payment_method"] == "cash"
+          ? PaymentMethod.cash
+          : PaymentMethod.card,
+      orderItems: re,
+      createdAt: map['created_at'],
     );
   }
 }
