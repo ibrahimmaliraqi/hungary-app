@@ -4,4 +4,5 @@ import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 
 abstract class OrderRepo {
   Future<Either<Failure, void>> createOrder({required OrderEntity order});
+  Future<Either<Failure, List<OrderEntity>>> getOrders({required int userId});
 }

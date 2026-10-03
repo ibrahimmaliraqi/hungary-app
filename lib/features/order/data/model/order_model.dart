@@ -29,6 +29,22 @@ class OrderModel {
     required this.orderItems,
     required this.createdAt,
   });
+  OrderEntity toEntity() {
+    return OrderEntity(
+      id: id,
+      userId: userId,
+      name: name,
+      phone: phone,
+      address: address,
+      paymentStatus: paymentStatus,
+      orderStatus: orderStatus,
+      totalPrice: totalPrice,
+      paymentMethod: paymentMethod,
+      orderItems: orderItems.map((e) => e.toEntity()).toList(),
+      createdAt: createdAt,
+    );
+  }
+
   factory OrderModel.fromEntity(OrderEntity entity) {
     return OrderModel(
       id: entity.id,

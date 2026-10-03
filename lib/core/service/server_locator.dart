@@ -24,6 +24,7 @@ import 'package:hungry_app/features/order/data/remote/order_remote.dart';
 import 'package:hungry_app/features/order/data/repo/order_repo_impl.dart';
 import 'package:hungry_app/features/order/domain/repo/order_repo.dart';
 import 'package:hungry_app/features/order/domain/use_cases/create_order.dart';
+import 'package:hungry_app/features/order/domain/use_cases/get_orders_usecase.dart';
 
 GetIt getIt = GetIt.instance;
 
@@ -94,5 +95,8 @@ void setupLocator() {
   );
   getIt.registerSingleton<CreateOrderUseCase>(
     CreateOrderUseCase(orderRepo: getIt.get<OrderRepo>()),
+  );
+  getIt.registerSingleton<GetOrdersUsecase>(
+    GetOrdersUsecase(orderRepo: getIt.get<OrderRepo>()),
   );
 }

@@ -21,4 +21,16 @@ class OrderRepoImpl implements OrderRepo {
       return left(ServerFailure(message: e.errMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<OrderEntity>>> getOrders({
+    required int userId,
+  }) async {
+    try {
+      final res = await orderRemote.getOrders(userId: userId);
+      return right(res.map((e) => e.toEntity()).toList());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
 }
