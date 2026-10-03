@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hungry_app/core/functions/order_state_function.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
-import 'package:hungry_app/features/order/domain/enums/payment_enum.dart';
 import 'package:hungry_app/features/order/presentation/widgets/order_card.dart';
 
 class OrdersList extends StatelessWidget {
@@ -35,11 +33,7 @@ class OrdersList extends StatelessWidget {
             );
           },
           child: OrderCard(
-            orderStatus: getOrderState(order: orders[index]),
             order: orders[index],
-            isOnlinePayment: orders[index].paymentMethod == PaymentMethod.card
-                ? true
-                : false,
           ),
         );
       },

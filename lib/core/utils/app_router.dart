@@ -7,6 +7,8 @@ import 'package:hungry_app/features/auth/presentation/views/update_profile_view.
 import 'package:hungry_app/features/cart/presentation/views/cart_view.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/views/product_details_view.dart';
+import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
+import 'package:hungry_app/features/order/presentation/views/order_details_view.dart';
 import 'package:hungry_app/root_view.dart';
 import 'package:hungry_app/splash_view.dart';
 
@@ -19,6 +21,7 @@ class AppRouter {
   static const cartView = '/cartView';
   static const editPrefileView = '/editPrefileView';
   static const prefileView = '/prefileView';
+  static const orderDetailsView = '/orderDetailsView';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -44,6 +47,14 @@ class AppRouter {
       GoRoute(
         path: cartView,
         builder: (context, state) => CartView(),
+      ),
+      GoRoute(
+        path: orderDetailsView,
+        builder: (context, state) {
+          final OrderEntity data = state.extra as OrderEntity;
+
+          return OrderDetailsView(order: data);
+        },
       ),
       GoRoute(
         path: editPrefileView,
