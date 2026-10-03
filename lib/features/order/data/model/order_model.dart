@@ -70,11 +70,11 @@ class OrderModel {
       'phone': phone,
       'address': address,
       'payment_status': paymentMethod == PaymentMethod.cash
-          ? "UNPAID"
-          : "PROCESSING",
+          ? "unpaid"
+          : "processing",
       'order_status': paymentMethod == PaymentMethod.cash
-          ? "PENDING"
-          : "PENDING",
+          ? "pending"
+          : "pending",
       'total_price': totalPrice,
       'payment_method': paymentMethod == PaymentMethod.cash ? 'cash' : 'card',
       'order_items': orderItems

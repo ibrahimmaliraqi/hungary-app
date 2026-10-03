@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:hungry_app/core/constants/assets.dart';
+import 'package:hungry_app/core/widgets/net_image.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 
 class OrderCard extends StatelessWidget {
   final OrderEntity order;
-  // متغير لتحديد نوع الدفع (أونلاين أو كاش) - يمكنك تمريره من قاعدة البيانات
+  final String orderStatus;
   final bool isOnlinePayment;
 
   const OrderCard({
     super.key,
     this.isOnlinePayment = true,
-    required this.order, // افتراضياً أونلاين للتجربة
+    required this.order,
+    required this.orderStatus, // افتراضياً أونلاين للتجربة
   });
 
   @override
@@ -53,8 +54,8 @@ class OrderCard extends StatelessWidget {
                     color: Colors.green.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    "تم التوصيل",
+                  child: Text(
+                    orderStatus,
                     style: TextStyle(
                       color: Colors.green,
                       fontSize: 12,
@@ -67,15 +68,16 @@ class OrderCard extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            // الصف الثاني: الصورة، التفاصيل، وطريقة الدفع
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // صورة الوجبة
                 ClipRRect(
                   borderRadius: BorderRadius.circular(16),
-                  child: Image.asset(
-                    Assets.splashLogo,
+                  child: NetImage(
+                    imageUrl: order.orderItems.isNotEmpty
+                        ? order.orderItems.first.product.image
+                        : '',
                     width: 80,
                     height: 80,
                     fit: BoxFit.cover,
@@ -88,8 +90,8 @@ class OrderCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        "همبرغر وسلطة",
+                      Text(
+                        order.name,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w800,
@@ -110,7 +112,7 @@ class OrderCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(6),
                             ),
                             child: Text(
-                              "الكمية: 3",
+                              "عدد الايتمات داخل الطلب: ${order.orderItems.length}",
                               style: TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
@@ -126,11 +128,11 @@ class OrderCard extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            r"$20.00",
+                          Text(
+                            "${order.totalPrice.toString()} دينار عراقي",
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
                               color: Colors.deepOrange,
                             ),
                           ),
@@ -217,9 +219,7 @@ class OrderCard extends StatelessWidget {
                 // زر اطلب مجدداً
                 Expanded(
                   child: ElevatedButton(
-                    onPressed: () {
-                      // TODO: Handle Order Again
-                    },
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.deepOrange,
                       foregroundColor: Colors.white,
