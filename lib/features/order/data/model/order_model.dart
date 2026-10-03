@@ -53,8 +53,12 @@ class OrderModel {
       'name': name,
       'phone': phone,
       'address': address,
-      'payment_status': paymentStatus,
-      'order_status': orderStatus,
+      'payment_status': paymentMethod == PaymentMethod.cash
+          ? "UNPAID"
+          : "PROCESSING",
+      'order_status': paymentMethod == PaymentMethod.cash
+          ? "PENDING"
+          : "PENDING",
       'total_price': totalPrice,
       'payment_method': paymentMethod == PaymentMethod.cash ? 'cash' : 'card',
       'order_items': orderItems

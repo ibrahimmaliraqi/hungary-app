@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/functions/app_price.dart';
-import 'package:hungry_app/core/widgets/custom_button.dart';
+import 'package:hungry_app/core/functions/show_cash_bottom_sheet.dart';
+import 'package:hungry_app/core/functions/show_success_dialog.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
+import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
-import 'package:hungry_app/main.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:hungry_app/features/order/domain/enums/payment_enum.dart';
+import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class CheckoutView extends StatefulWidget {
   final List<CartEntity> carts;
@@ -61,140 +65,161 @@ class _CheckoutViewState extends State<CheckoutView> {
         ),
       ),
 
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 10,
-          bottom: 120,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomText(
-              text: "ملخص الطلب", // Order Summary
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
-            const Gap(16),
-
-            // بطاقة الفاتورة (Receipt Card)
-            Container(
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.04),
-                    blurRadius: 24,
-                    offset: const Offset(0, 8),
-                  ),
-                ],
+      body: BlocConsumer<CreateOrderCubit, CreateOrderState>(
+        listener: (context, state) {
+          if (state is CreateOrderSuccess) {
+            // Snack.show(context, message: "تم إنشاء الطلب بنجاح");
+            showSuccessDialog(context);
+          }
+          if (state is CreateOrderFailure) {
+            Snack.show(context, message: state.errMessage, isError: true);
+          }
+        },
+        builder: (context, state) {
+          return ModalProgressHUD(
+            inAsyncCall: state is CreateOrderLoading,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                left: 20,
+                right: 20,
+                top: 10,
+                bottom: 120,
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _orderMoneyRow(
-                    name: "الطلب",
-                    price:
-                        "${AppPrice.cartTotalPrice(product: widget.carts)} دينار",
+                  const CustomText(
+                    text: "ملخص الطلب", // Order Summary
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
                   ),
-                  const Gap(12),
-                  _orderMoneyRow(name: "الضرائب", price: "لا يوجد"),
-                  const Gap(12),
-                  _orderMoneyRow(name: "رسوم التوصيل", price: "2000 دينار"),
                   const Gap(16),
 
-                  // خط متقطع (Dashed Divider)
-                  Row(
-                    children: List.generate(
-                      30,
-                      (index) => Expanded(
-                        child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 2),
-                          height: 1.5,
-                          color: Colors.grey.shade300,
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const Gap(16),
-                  _orderMoneyRow(
-                    name: "الإجمالي",
-                    price:
-                        "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
-                    isBold: true,
-                    size: 20,
-                  ),
-
-                  const Gap(16),
+                  // بطاقة الفاتورة (Receipt Card)
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 10,
-                    ),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColors.primary.withOpacity(0.08),
-                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.04),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
+                        ),
+                      ],
                     ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                    child: Column(
                       children: [
-                        Icon(
-                          Icons.timer_outlined,
-                          color: AppColors.primary,
-                          size: 18,
+                        _orderMoneyRow(
+                          name: "الطلب",
+                          price:
+                              "${AppPrice.cartTotalPrice(product: widget.carts)} دينار",
                         ),
-                        const Gap(8),
-                        CustomText(
-                          text: "الوقت المتوقع للتوصيل: ",
-                          fontSize: 13,
-                          color: Colors.grey.shade700,
+                        const Gap(12),
+                        _orderMoneyRow(name: "الضرائب", price: "لا يوجد"),
+                        const Gap(12),
+                        _orderMoneyRow(
+                          name: "رسوم التوصيل",
+                          price: "2000 دينار",
                         ),
-                        CustomText(
-                          text: "30 دقيقة - ساعة",
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.primary,
+                        const Gap(16),
+
+                        // خط متقطع (Dashed Divider)
+                        Row(
+                          children: List.generate(
+                            30,
+                            (index) => Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.symmetric(
+                                  horizontal: 2,
+                                ),
+                                height: 1.5,
+                                color: Colors.grey.shade300,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const Gap(16),
+                        _orderMoneyRow(
+                          name: "الإجمالي",
+                          price:
+                              "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
+                          isBold: true,
+                          size: 20,
+                        ),
+
+                        const Gap(16),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.primary.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.timer_outlined,
+                                color: AppColors.primary,
+                                size: 18,
+                              ),
+                              const Gap(8),
+                              CustomText(
+                                text: "الوقت المتوقع للتوصيل: ",
+                                fontSize: 13,
+                                color: Colors.grey.shade700,
+                              ),
+                              CustomText(
+                                text: "30 دقيقة - ساعة",
+                                fontSize: 13,
+                                fontWeight: FontWeight.bold,
+                                color: AppColors.primary,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
                   ),
+
+                  const Gap(32),
+
+                  const CustomText(
+                    text: "طرق الدفع", // Payment Methods
+                    fontSize: 20,
+                    fontWeight: FontWeight.w800,
+                  ),
+                  const Gap(16),
+
+                  // خيار الدفع كاش
+                  _buildPaymentCard(
+                    title: "الدفع عند الاستلام",
+                    subtitle: "ادفع نقداً عند استلام طلبك",
+                    value: "Cash",
+                    imagePath: "assets/payout/image.png",
+                    icon: Icons.payments_rounded,
+                  ),
+
+                  const Gap(16),
+
+                  // خيار بطاقة الدفع
+                  _buildPaymentCard(
+                    title: "بطاقة الدفع",
+                    subtitle: "3566 **** **** 0505",
+                    value: "debit",
+                    imagePath: "assets/payout/visa.png",
+                    icon: Icons.credit_card_rounded,
+                  ),
                 ],
               ),
             ),
-
-            const Gap(32),
-
-            const CustomText(
-              text: "طرق الدفع", // Payment Methods
-              fontSize: 20,
-              fontWeight: FontWeight.w800,
-            ),
-            const Gap(16),
-
-            // خيار الدفع كاش
-            _buildPaymentCard(
-              title: "الدفع عند الاستلام",
-              subtitle: "ادفع نقداً عند استلام طلبك",
-              value: "Cash",
-              imagePath: "assets/payout/image.png",
-              icon: Icons.payments_rounded,
-            ),
-
-            const Gap(16),
-
-            // خيار بطاقة الدفع
-            _buildPaymentCard(
-              title: "بطاقة الدفع",
-              subtitle: "3566 **** **** 0505",
-              value: "debit",
-              imagePath: "assets/payout/visa.png",
-              icon: Icons.credit_card_rounded,
-            ),
-          ],
-        ),
+          );
+        },
       ),
 
       // شريط الدفع السفلي
@@ -247,23 +272,25 @@ class _CheckoutViewState extends State<CheckoutView> {
                   child: InkWell(
                     onTap: () async {
                       if (selectedMethod == "debit") {
-                        final res = await supabase.functions.invoke(
-                          "create-wayl-payment",
-                          body: {
-                            'amount':
-                                AppPrice.cartTotalPrice(product: widget.carts) +
-                                2000,
+                        showPaymentBottomSheet(
+                          orderItems: widget.carts,
+                          paymentMethod: PaymentMethod.card,
+                          totalPrice:
+                              AppPrice.cartTotalPrice(product: widget.carts) +
+                              2000,
 
-                            'customerName': 'ابراهيم علي',
-
-                            'customerPhone': '964770543214',
-                          },
+                          context,
                         );
-                        final data = res.data;
-                        final checkoutUrl = data['checkoutUrl'];
-                        launchUrl(Uri.parse(checkoutUrl));
                       } else {
-                        _showSuccessDialog(context);
+                        showPaymentBottomSheet(
+                          orderItems: widget.carts,
+                          paymentMethod: PaymentMethod.cash,
+                          totalPrice:
+                              AppPrice.cartTotalPrice(product: widget.carts) +
+                              2000,
+
+                          context,
+                        );
                       }
                       print(selectedMethod);
                     },
@@ -427,91 +454,4 @@ class _CheckoutViewState extends State<CheckoutView> {
   }
 
   // نافذة النجاح ثلاثية الأبعاد (Pop-out effect)
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Dialog(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          child: Stack(
-            clipBehavior: Clip.none,
-            alignment: Alignment.topCenter,
-            children: [
-              Container(
-                margin: const EdgeInsets.only(top: 30),
-                padding: const EdgeInsets.only(
-                  top: 50,
-                  left: 24,
-                  right: 24,
-                  bottom: 24,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(28),
-                ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const CustomText(
-                      text: "تمت العملية بنجاح!",
-                      fontSize: 24,
-                      fontWeight: FontWeight.w900,
-                      color: Colors.black87,
-                    ),
-                    const Gap(12),
-                    CustomText(
-                      text:
-                          "تم دفع طلبك بنجاح.\nلقد أرسلنا إيصال الشراء إلى\nبريدك الإلكتروني.",
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
-                      textAlign: TextAlign.center,
-                    ),
-                    const Gap(32),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomButton(
-                        width: double.infinity,
-                        text: "العودة للرئيسية",
-                        hight: 55,
-                        onTap: () {
-                          Navigator.pop(context); // يغلق النافذة
-                          Navigator.pop(context); // يعود للصفحة السابقة
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // أيقونة الصح البارزة من أعلى النافذة
-              Positioned(
-                top: -15,
-                child: Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary,
-                    shape: BoxShape.circle,
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.primary.withOpacity(0.4),
-                        blurRadius: 16,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                    border: Border.all(color: Colors.white, width: 4),
-                  ),
-                  child: const Icon(
-                    Icons.check_rounded,
-                    color: Colors.white,
-                    size: 40,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }

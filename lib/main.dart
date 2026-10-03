@@ -6,6 +6,8 @@ import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
+import 'package:hungry_app/features/order/domain/use_cases/create_order.dart';
+import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
 import 'package:hungry_app/observer.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -38,6 +40,11 @@ class HungryApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => AddProductCubit(),
+        ),
+        BlocProvider(
+          create: (context) => CreateOrderCubit(
+            createOrderUseCase: getIt.get<CreateOrderUseCase>(),
+          ),
         ),
       ],
       child: MaterialApp.router(
