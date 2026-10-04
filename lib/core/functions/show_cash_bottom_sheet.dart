@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
+import 'package:hungry_app/core/helper/url_launacher.dart';
 import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
+import 'package:hungry_app/features/order/domain/entities/payment_entity.dart';
 import 'package:hungry_app/features/order/domain/enums/payment_enum.dart';
 import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
+import 'package:hungry_app/features/order/presentation/manager/create_payment/create_payment_cubit.dart';
 
 void showPaymentBottomSheet(
   BuildContext context, {
@@ -150,56 +153,91 @@ void showPaymentBottomSheet(
 
               const SizedBox(height: 32),
 
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  onPressed: () {
-                    final paymentStatus = isCash ? "UNPAID" : "PROCESSING";
+              BlocListener<CreatePaymentCubit, CreatePaymentState>(
+                listener: (context, state) async {
+                  if (state is CreatePaymentSuccess) {
+                    await openLink(link: state.paymentUrl);
+                  }
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      if (isCash) {
+                        final paymentStatus = isCash ? "UNPAID" : "PROCESSING";
 
-                    const orderStatus = "PENDING";
+                        const orderStatus = "PENDING";
 
-                    final order = OrderEntity(
-                      userId: user.id!,
-                      name: user.name!,
-                      phone: user.phoneNumber!,
-                      address: user.address!,
-                      totalPrice: totalPrice,
-                      paymentMethod: paymentMethod,
-                      paymentStatus: paymentStatus,
-                      orderStatus: orderStatus,
-                      orderItems: orderItems,
-                    );
+                        final order = OrderEntity(
+                          userId: user.id!,
+                          name: user.name!,
+                          phone: user.phoneNumber!,
+                          address: user.address!,
+                          totalPrice: totalPrice,
+                          paymentMethod: paymentMethod,
+                          paymentStatus: paymentStatus,
+                          orderStatus: orderStatus,
+                          orderItems: orderItems,
+                        );
 
-                    Navigator.pop(context);
+                        Navigator.pop(context);
 
-                    context.read<CreateOrderCubit>().createOrder(order: order);
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primary,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                        context.read<CreateOrderCubit>().createOrder(
+                          order: order,
+                        );
+                      } else {
+                        final order = OrderEntity(
+                          userId: user.id!,
+                          name: user.name!,
+                          phone: user.phoneNumber!,
+                          address: user.address!,
+                          totalPrice: totalPrice,
+                          paymentMethod: paymentMethod,
+                          paymentStatus: "PROCESSING",
+                          orderStatus: "PENDING",
+                          orderItems: orderItems,
+                        );
+
+                        final payment = PaymentEntity(
+                          amount: totalPrice,
+                          name: user.name!,
+                          phone: user.phoneNumber!,
+                          address: user.address!,
+                        );
+
+                        context.read<CreatePaymentCubit>().createPayment(
+                          order: order,
+                          payment: payment,
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.primary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      elevation: 0,
                     ),
-                    elevation: 0,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        isCash ? "تأكيد الطلب الآن" : "متابعة الدفع",
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          isCash ? "تأكيد الطلب الآن" : "متابعة الدفع",
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 8),
-                      const Icon(
-                        Icons.arrow_forward_ios_rounded,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                    ],
+                        const SizedBox(width: 8),
+                        const Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          color: Colors.white,
+                          size: 16,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

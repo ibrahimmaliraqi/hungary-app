@@ -10,15 +10,19 @@ import 'package:hungry_app/features/order/domain/repo/order_repo.dart';
 
 class OrderRepoImpl implements OrderRepo {
   final OrderRemote orderRemote;
-
+  late int orderId;
+  OrderModel? orderr;
   OrderRepoImpl({required this.orderRemote});
   @override
-  Future<Either<Failure, void>> createOrder({
+  Future<Either<Failure, int>> createOrder({
     required OrderEntity order,
   }) async {
+    orderr = OrderModel.fromEntity(order);
     try {
-      await orderRemote.createOrder(order: OrderModel.fromEntity(order));
-      return right(null);
+      orderId = await orderRemote.createOrder(
+        order: orderr!,
+      );
+      return right(orderId);
     } on AppExceptions catch (e) {
       return left(ServerFailure(message: e.errMessage));
     }
@@ -38,13 +42,19 @@ class OrderRepoImpl implements OrderRepo {
 
   @override
   Future<Either<Failure, String>> createPayment({
+    required OrderEntity order,
+
     required PaymentEntity payment,
   }) async {
     try {
-      final res = await orderRemote.createPayment(
-        payment: PaymentModel.fromEntity(payment),
+      final orderId = await orderRemote.createOrder(
+        order: OrderModel.fromEntity(order),
       );
-      return right(res);
+      final paymetnUrl = await orderRemote.createPayment(
+        payment: PaymentModel.fromEntity(payment).copyWith(orderId: orderId),
+      );
+
+      return right(paymetnUrl);
     } on AppExceptions catch (e) {
       return left(ServerFailure(message: e.errMessage));
     }

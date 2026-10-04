@@ -7,7 +7,11 @@ final class CreatePaymentInitial extends CreatePaymentState {}
 
 final class CreatePaymentLoading extends CreatePaymentState {}
 
-final class CreatePaymentSuccess extends CreatePaymentState {}
+final class CreatePaymentSuccess extends CreatePaymentState {
+  final String paymentUrl;
+
+  CreatePaymentSuccess({required this.paymentUrl});
+}
 
 final class CreatePaymentFailure extends CreatePaymentState {
   final String errMessage;

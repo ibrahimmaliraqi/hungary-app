@@ -7,7 +7,7 @@ class CreateOrderUseCase {
   final OrderRepo orderRepo;
 
   CreateOrderUseCase({required this.orderRepo});
-  Future<Either<Failure, void>> call({required OrderEntity order}) async {
+  Future<Either<Failure, int>> call({required OrderEntity order}) async {
     return await orderRepo.createOrder(order: order);
   }
 }

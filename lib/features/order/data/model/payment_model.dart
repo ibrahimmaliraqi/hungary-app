@@ -4,7 +4,7 @@ import 'package:hungry_app/features/order/domain/entities/payment_entity.dart';
 
 class PaymentModel {
   final int? id;
-  final int orderId;
+  final int? orderId;
   final double amount;
   final String name;
   final String phone;
@@ -16,7 +16,7 @@ class PaymentModel {
 
   PaymentModel({
     required this.id,
-    required this.orderId,
+    this.orderId,
     required this.amount,
     required this.name,
     required this.phone,
@@ -70,6 +70,32 @@ class PaymentModel {
           ? map['payment_url'] as String
           : null,
       createdAt: map['created_at'],
+    );
+  }
+
+  PaymentModel copyWith({
+    int? id,
+    int? orderId,
+    double? amount,
+    String? name,
+    String? phone,
+    String? address,
+    String? status,
+    String? transactionId,
+    String? paymentUrl,
+    DateTime? createdAt,
+  }) {
+    return PaymentModel(
+      id: id ?? this.id,
+      orderId: orderId ?? this.orderId,
+      amount: amount ?? this.amount,
+      name: name ?? this.name,
+      phone: phone ?? this.phone,
+      address: address ?? this.address,
+      status: status ?? this.status,
+      transactionId: transactionId ?? this.transactionId,
+      paymentUrl: paymentUrl ?? this.paymentUrl,
+      createdAt: createdAt ?? this.createdAt,
     );
   }
 }

@@ -1,6 +1,6 @@
 class PaymentEntity {
   final int? id;
-  final int orderId;
+  final int? orderId;
   final double amount;
   final String name;
   final String phone;
@@ -12,7 +12,7 @@ class PaymentEntity {
 
   const PaymentEntity({
     this.id,
-    required this.orderId,
+    this.orderId,
     required this.amount,
     required this.name,
     required this.phone,

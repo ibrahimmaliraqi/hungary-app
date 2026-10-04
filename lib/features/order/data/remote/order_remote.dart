@@ -5,7 +5,7 @@ import 'package:hungry_app/features/order/data/model/order_model.dart';
 import 'package:hungry_app/features/order/data/model/payment_model.dart';
 
 abstract class OrderRemote {
-  Future<void> createOrder({required OrderModel order});
+  Future<int> createOrder({required OrderModel order});
   Future<List<OrderModel>> getOrders({required int userId});
   Future<String> createPayment({required PaymentModel payment});
 }
@@ -15,15 +15,16 @@ class ApiOrderRemoteImpl implements OrderRemote {
 
   ApiOrderRemoteImpl({required this.dioClient});
   @override
-  Future<void> createOrder({required OrderModel order}) async {
+  Future<int> createOrder({required OrderModel order}) async {
     try {
       final res = await dioClient.post(
         "orders/create_order.php",
+
         data: order.toMap(),
       );
 
       if (res['success'] == true) {
-        return;
+        return res['order_id'];
       }
 
       throw ServerException(
@@ -45,6 +46,7 @@ class ApiOrderRemoteImpl implements OrderRemote {
     try {
       final res = await dioClient.post(
         "orders/get_orders.php",
+
         data: {"user_id": userId},
       );
 
@@ -72,6 +74,11 @@ class ApiOrderRemoteImpl implements OrderRemote {
     try {
       final res = await Dio().post(
         "https://api.swiftpayiq.com/api/v1/payment-links",
+        options: Options(
+          headers: {
+            "Authorization": "Bearer spi_test_6q5HM8qP9W6LvuvF2znLIwu5M5FawXY7",
+          },
+        ),
         data: {
           "title": payment.name,
           "amount": payment.amount,
