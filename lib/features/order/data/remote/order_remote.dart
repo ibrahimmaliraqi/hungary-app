@@ -1,10 +1,13 @@
+import 'package:dio/dio.dart';
 import 'package:hungry_app/core/error/app_exceptions.dart';
 import 'package:hungry_app/core/network/dio_client.dart';
 import 'package:hungry_app/features/order/data/model/order_model.dart';
+import 'package:hungry_app/features/order/data/model/payment_model.dart';
 
 abstract class OrderRemote {
   Future<void> createOrder({required OrderModel order});
   Future<List<OrderModel>> getOrders({required int userId});
+  Future<String> createPayment({required PaymentModel payment});
 }
 
 class ApiOrderRemoteImpl implements OrderRemote {
@@ -52,6 +55,59 @@ class ApiOrderRemoteImpl implements OrderRemote {
 
       throw ServerException(
         errMessage: res['message'] ?? "حدث خطأ أثناء جلب الطلبات",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCartItems error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء جلب الطلبات",
+      );
+    }
+  }
+
+  @override
+  Future<String> createPayment({required PaymentModel payment}) async {
+    try {
+      final res = await Dio().post(
+        "https://api.swiftpayiq.com/api/v1/payment-links",
+        data: {
+          "title": payment.name,
+          "amount": payment.amount,
+          "isReusable": false,
+          "customerName": payment.name,
+          "customerPhone": payment.phone,
+        },
+      );
+      Map<String, dynamic> resData = res.data;
+      final transId = resData["id"];
+      final payPageUrl = resData["payPageUrl"];
+      final res2 = await dioClient.post(
+        "payment/create_payment.php",
+        data: {
+          "order_id": payment.orderId,
+          "amount": payment.amount,
+          "name": payment.name,
+          "phone": payment.phone,
+          "address": payment.address,
+          "payment_method": "CARD",
+          "transaction_id": transId,
+          "payment_url": payPageUrl,
+        },
+      );
+      if (resData.containsKey("statusCode")) {
+        throw ServerException(
+          errMessage:
+              res2['error'] ?? "حدث خطأ أثناء انشاء دفع الكتروني من ويل",
+        );
+      }
+      if (res2['success'] == true) {
+        return payPageUrl;
+      }
+
+      throw ServerException(
+        errMessage: res2['message'] ?? "حدث خطأ أثناء جلب الطلبات",
       );
     } on ServerException {
       rethrow;
