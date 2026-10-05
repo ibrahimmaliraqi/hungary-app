@@ -56,7 +56,7 @@ class OrderRepoImpl implements OrderRepo {
   }
 
   @override
-  Future<Either<Failure, String>> createPayment({
+  Future<Either<Failure, Map<String, dynamic>>> createPayment({
     required OrderEntity order,
     required PaymentEntity payment,
   }) async {

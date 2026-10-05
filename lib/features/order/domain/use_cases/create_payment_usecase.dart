@@ -9,7 +9,7 @@ class CreatePaymentUsecase {
 
   CreatePaymentUsecase({required this.orderRepo});
 
-  Future<Either<Failure, String>> call({
+  Future<Either<Failure, Map<String, dynamic>>> call({
     required PaymentEntity payment,
     required OrderEntity order,
   }) async {

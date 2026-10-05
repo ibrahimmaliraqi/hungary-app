@@ -37,7 +37,8 @@ class CreatePaymentCubit extends Cubit<CreatePaymentState> {
 
         emit(
           CreatePaymentSuccess(
-            paymentLink: paymentLink,
+            paymentLink: paymentLink['url'],
+            orderId: paymentLink["orderId"],
           ),
         );
       },

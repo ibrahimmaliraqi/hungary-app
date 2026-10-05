@@ -9,9 +9,11 @@ final class CreatePaymentLoading extends CreatePaymentState {}
 
 final class CreatePaymentSuccess extends CreatePaymentState {
   final String paymentLink;
+  final int orderId;
 
   CreatePaymentSuccess({
     required this.paymentLink,
+    required this.orderId,
   });
 }
 

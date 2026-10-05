@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/functions/app_price.dart';
 import 'package:hungry_app/core/functions/show_cash_bottom_sheet.dart';
 import 'package:hungry_app/core/functions/show_success_dialog.dart';
 import 'package:hungry_app/core/helper/url_launacher.dart';
+import 'package:hungry_app/core/service/local_notification_service.dart';
+import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
@@ -72,9 +75,7 @@ class _CheckoutViewState extends State<CheckoutView> {
         listener: (context, state) {
           if (state is CreateOrderSuccess) {
             // Snack.show(context, message: "تم إنشاء الطلب بنجاح");
-            context.read<CheckPaymentStatusCubit>().checkPaymentStatus(
-              orderId: state.orderId.toString(),
-            );
+
             showSuccessDialog(context);
           }
           if (state is CreateOrderFailure) {
@@ -276,6 +277,11 @@ class _CheckoutViewState extends State<CheckoutView> {
                 BlocListener<CreatePaymentCubit, CreatePaymentState>(
                   listener: (context, state) async {
                     if (state is CreatePaymentSuccess) {
+                      context
+                          .read<CheckPaymentStatusCubit>()
+                          .checkPaymentStatus(
+                            orderId: state.orderId.toString(),
+                          );
                       await openLink(link: state.paymentLink);
                     }
                     if (state is CreatePaymentFailure) {
@@ -286,69 +292,111 @@ class _CheckoutViewState extends State<CheckoutView> {
                       );
                     }
                   },
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: () async {
-                        if (selectedMethod == "debit") {
-                          showPaymentBottomSheet(
-                            orderItems: widget.carts,
-                            paymentMethod: PaymentMethod.card,
-                            totalPrice:
-                                AppPrice.cartTotalPrice(product: widget.carts) +
-                                2000,
+                  child:
+                      BlocListener<
+                        CheckPaymentStatusCubit,
+                        CheckPaymentStatusState
+                      >(
+                        listener: (context, state) async {
+                          print("listener: (context, state)");
+                          print(state);
 
-                            context,
-                          );
-                        } else {
-                          showPaymentBottomSheet(
-                            orderItems: widget.carts,
-                            paymentMethod: PaymentMethod.cash,
-                            totalPrice:
-                                AppPrice.cartTotalPrice(product: widget.carts) +
-                                2000,
+                          if (state is CheckPaymentStatusPaid) {
+                            print("CheckPaymentStatusPaid ss");
+                            print(state.isPaid);
+                            if (state.isPaid) {
+                              await LocalNotificationService.instance
+                                  .showLocalNotification(
+                                    title: 'تم الدفع بنجاح',
+                                    body:
+                                        'تم استلام طلبك بنجاح، راجع صفحة الطلبات لمتابعة حالة طلبك.',
+                                  );
+                              GoRouter.of(
+                                context,
+                              ).pushReplacement(AppRouter.rootView);
+                            }
+                          }
+                          if (state is CheckPaymentStatusPaid) {
+                            print("CheckPaymentStatusPaid ss");
+                            print(state.isPaid);
+                            if (state.isPaid) {
+                              await LocalNotificationService.instance
+                                  .showLocalNotification(
+                                    title: 'تم الدفع بنجاح',
+                                    body:
+                                        'تم استلام دفعتك بنجاح، وجاري تجهيز طلبك.',
+                                  );
+                            }
+                          }
+                        },
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () async {
+                              if (selectedMethod == "debit") {
+                                showPaymentBottomSheet(
+                                  orderItems: widget.carts,
+                                  paymentMethod: PaymentMethod.card,
+                                  totalPrice:
+                                      AppPrice.cartTotalPrice(
+                                        product: widget.carts,
+                                      ) +
+                                      2000,
 
-                            context,
-                          );
-                        }
-                        print(selectedMethod);
-                      },
-                      borderRadius: BorderRadius.circular(20),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 28,
-                          vertical: 16,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.primary,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: AppColors.primary.withOpacity(0.3),
-                              blurRadius: 12,
-                              offset: const Offset(0, 6),
+                                  context,
+                                );
+                              } else {
+                                showPaymentBottomSheet(
+                                  orderItems: widget.carts,
+                                  paymentMethod: PaymentMethod.cash,
+                                  totalPrice:
+                                      AppPrice.cartTotalPrice(
+                                        product: widget.carts,
+                                      ) +
+                                      2000,
+
+                                  context,
+                                );
+                              }
+                              print(selectedMethod);
+                            },
+                            borderRadius: BorderRadius.circular(20),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 28,
+                                vertical: 16,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primary,
+                                borderRadius: BorderRadius.circular(20),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.primary.withOpacity(0.3),
+                                    blurRadius: 12,
+                                    offset: const Offset(0, 6),
+                                  ),
+                                ],
+                              ),
+                              child: const Row(
+                                children: [
+                                  CustomText(
+                                    text: "ادفع الآن",
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  Gap(8),
+                                  Icon(
+                                    Icons.lock_outline_rounded,
+                                    color: Colors.white,
+                                    size: 18,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ],
-                        ),
-                        child: const Row(
-                          children: [
-                            CustomText(
-                              text: "ادفع الآن",
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            Gap(8),
-                            Icon(
-                              Icons.lock_outline_rounded,
-                              color: Colors.white,
-                              size: 18,
-                            ),
-                          ],
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                 ),
               ],
             ),

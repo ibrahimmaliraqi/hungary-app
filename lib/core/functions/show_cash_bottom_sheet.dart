@@ -16,6 +16,12 @@ void showPaymentBottomSheet(
   required List<CartEntity> orderItems,
 }) {
   final user = PrefsHelper.getUser()!;
+  final TextEditingController addressController = TextEditingController(
+    text: user.address,
+  );
+  final TextEditingController phoneController = TextEditingController(
+    text: user.phoneNumber,
+  );
 
   showModalBottomSheet(
     context: context,
@@ -96,9 +102,7 @@ void showPaymentBottomSheet(
 
               TextField(
                 keyboardType: TextInputType.phone,
-                controller: TextEditingController(
-                  text: user.phoneNumber ?? '',
-                ),
+                controller: phoneController,
                 decoration: InputDecoration(
                   labelText: "رقم الهاتف",
                   prefixIcon: Icon(
@@ -124,9 +128,7 @@ void showPaymentBottomSheet(
               const SizedBox(height: 16),
 
               TextField(
-                controller: TextEditingController(
-                  text: user.address ?? '',
-                ),
+                controller: addressController,
                 decoration: InputDecoration(
                   labelText: "الموقع التفصيلي",
                   hintText: "مثال: حي المنصور، شارع 14، منزل 5",
@@ -164,8 +166,8 @@ void showPaymentBottomSheet(
                       final order = OrderEntity(
                         userId: user.id!,
                         name: user.name!,
-                        phone: user.phoneNumber!,
-                        address: user.address!,
+                        phone: phoneController.text,
+                        address: addressController.text,
                         totalPrice: totalPrice,
                         paymentMethod: paymentMethod,
                         paymentStatus: paymentStatus,
@@ -182,8 +184,8 @@ void showPaymentBottomSheet(
                       final order = OrderEntity(
                         userId: user.id!,
                         name: user.name!,
-                        phone: user.phoneNumber!,
-                        address: user.address!,
+                        phone: phoneController.text,
+                        address: addressController.text,
                         totalPrice: totalPrice,
                         paymentMethod: paymentMethod,
                         paymentStatus: "PROCESSING",
@@ -194,8 +196,8 @@ void showPaymentBottomSheet(
                       final payment = PaymentEntity(
                         amount: totalPrice,
                         name: user.name!,
-                        phone: user.phoneNumber!,
-                        address: user.address!,
+                        phone: phoneController.text,
+                        address: addressController.text,
                       );
 
                       Navigator.pop(context);

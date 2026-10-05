@@ -9,7 +9,7 @@ import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 abstract class OrderRemote {
   Future<int> createOrder({required OrderModel order});
   Future<List<OrderModel>> getOrders({required int userId});
-  Future<String> createPayment({
+  Future<Map<String, dynamic>> createPayment({
     required PaymentModel payment,
 
     required OrderEntity order,
@@ -76,7 +76,7 @@ class ApiOrderRemoteImpl implements OrderRemote {
   }
 
   @override
-  Future<String> createPayment({
+  Future<Map<String, dynamic>> createPayment({
     required PaymentModel payment,
 
     required OrderEntity order,
@@ -120,7 +120,10 @@ class ApiOrderRemoteImpl implements OrderRemote {
       }
 
       if (res2['success'] == true) {
-        return res2['data']["payment_url"];
+        return {
+          "url": res2['data']["payment_url"],
+          "orderId": payment.orderId,
+        };
       }
 
       throw ServerException(
@@ -150,11 +153,9 @@ class ApiOrderRemoteImpl implements OrderRemote {
         print(res['data']['is_paid']);
 
         return res['data']['is_paid'];
+      } else {
+        return false;
       }
-
-      throw ServerException(
-        errMessage: res['message'] ?? "حدث خطأ أثناء انشاء الأوردر",
-      );
     } on ServerException {
       rethrow;
     } catch (e) {
