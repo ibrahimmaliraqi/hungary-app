@@ -10,6 +10,7 @@ import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';
 import 'package:hungry_app/features/order/domain/enums/payment_enum.dart';
+import 'package:hungry_app/features/order/presentation/manager/check_payment_status/check_payment_status_cubit.dart';
 import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
 import 'package:hungry_app/features/order/presentation/manager/create_payment/create_payment_cubit.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -71,6 +72,9 @@ class _CheckoutViewState extends State<CheckoutView> {
         listener: (context, state) {
           if (state is CreateOrderSuccess) {
             // Snack.show(context, message: "تم إنشاء الطلب بنجاح");
+            context.read<CheckPaymentStatusCubit>().checkPaymentStatus(
+              orderId: state.orderId.toString(),
+            );
             showSuccessDialog(context);
           }
           if (state is CreateOrderFailure) {

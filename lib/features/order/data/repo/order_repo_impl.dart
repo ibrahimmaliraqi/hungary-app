@@ -85,8 +85,19 @@ class OrderRepoImpl implements OrderRepo {
   }
 
   @override
-  Future<Either<Failure, bool>> checkPaymentStatus({required String orderId}) {
-    // TODO: implement checkPaymentStatus
-    throw UnimplementedError();
+  Future<Either<Failure, bool>> checkPaymentStatus({
+    required String orderId,
+  }) async {
+    try {
+      final res = await orderRemote.checkPaymentStatus(orderId: orderId);
+
+      return right(res);
+    } on AppExceptions catch (e) {
+      return left(
+        ServerFailure(
+          message: e.errMessage,
+        ),
+      );
+    }
   }
 }

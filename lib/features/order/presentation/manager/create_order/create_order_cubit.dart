@@ -14,7 +14,7 @@ class CreateOrderCubit extends Cubit<CreateOrderState> {
     final res = await createOrderUseCase.call(order: order);
     res.fold(
       (l) => emit(CreateOrderFailure(errMessage: l.message)),
-      (r) => emit(CreateOrderSuccess()),
+      (r) => emit(CreateOrderSuccess(orderId: r)),
     );
   }
 }

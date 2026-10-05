@@ -14,11 +14,11 @@ abstract class OrderRemote {
 
     required OrderEntity order,
   });
+  Future<bool> checkPaymentStatus({required String orderId});
 }
 
 class ApiOrderRemoteImpl implements OrderRemote {
   final DioClient dioClient;
-
   ApiOrderRemoteImpl({required this.dioClient});
   @override
   Future<int> createOrder({required OrderModel order}) async {
@@ -133,6 +133,35 @@ class ApiOrderRemoteImpl implements OrderRemote {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء جلب الطلبات",
+      );
+    }
+  }
+
+  @override
+  Future<bool> checkPaymentStatus({required String orderId}) async {
+    try {
+      final res = await dioClient.post(
+        "payment/check_payment_status.php",
+
+        data: {"order_id": orderId},
+      );
+      if (res['success'] == true) {
+        print("res['data']['is_paid']");
+        print(res['data']['is_paid']);
+
+        return res['data']['is_paid'];
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء انشاء الأوردر",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCartItems error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء انشاء الأوردر",
       );
     }
   }

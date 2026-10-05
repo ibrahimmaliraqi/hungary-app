@@ -5,7 +5,11 @@ sealed class CreateOrderState {}
 
 final class CreateOrderInitial extends CreateOrderState {}
 
-final class CreateOrderSuccess extends CreateOrderState {}
+final class CreateOrderSuccess extends CreateOrderState {
+  final int orderId;
+
+  CreateOrderSuccess({required this.orderId});
+}
 
 final class CreateOrderFailure extends CreateOrderState {
   final String errMessage;
