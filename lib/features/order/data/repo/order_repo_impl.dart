@@ -10,21 +10,27 @@ import 'package:hungry_app/features/order/domain/repo/order_repo.dart';
 
 class OrderRepoImpl implements OrderRepo {
   final OrderRemote orderRemote;
-  late int orderId;
-  OrderModel? orderr;
-  OrderRepoImpl({required this.orderRemote});
+
+  OrderRepoImpl({
+    required this.orderRemote,
+  });
+
   @override
   Future<Either<Failure, int>> createOrder({
     required OrderEntity order,
   }) async {
-    orderr = OrderModel.fromEntity(order);
     try {
-      orderId = await orderRemote.createOrder(
-        order: orderr!,
+      final res = await orderRemote.createOrder(
+        order: OrderModel.fromEntity(order),
       );
-      return right(orderId);
+
+      return right(res);
     } on AppExceptions catch (e) {
-      return left(ServerFailure(message: e.errMessage));
+      return left(
+        ServerFailure(
+          message: e.errMessage,
+        ),
+      );
     }
   }
 
@@ -33,30 +39,54 @@ class OrderRepoImpl implements OrderRepo {
     required int userId,
   }) async {
     try {
-      final res = await orderRemote.getOrders(userId: userId);
-      return right(res.map((e) => e.toEntity()).toList());
+      final res = await orderRemote.getOrders(
+        userId: userId,
+      );
+
+      return right(
+        res.map((e) => e.toEntity()).toList(),
+      );
     } on AppExceptions catch (e) {
-      return left(ServerFailure(message: e.errMessage));
+      return left(
+        ServerFailure(
+          message: e.errMessage,
+        ),
+      );
     }
   }
 
   @override
   Future<Either<Failure, String>> createPayment({
     required OrderEntity order,
-
     required PaymentEntity payment,
   }) async {
     try {
+      // أولاً ننشئ الطلب
       final orderId = await orderRemote.createOrder(
         order: OrderModel.fromEntity(order),
       );
-      final paymetnUrl = await orderRemote.createPayment(
-        payment: PaymentModel.fromEntity(payment).copyWith(orderId: orderId),
+
+      // بعدها ننشئ عملية الدفع ونربطها بالطلب
+      final paymentUrl = await orderRemote.createPayment(
+        order: order,
+        payment: PaymentModel.fromEntity(payment).copyWith(
+          orderId: orderId,
+        ),
       );
 
-      return right(paymetnUrl);
+      return right(paymentUrl);
     } on AppExceptions catch (e) {
-      return left(ServerFailure(message: e.errMessage));
+      return left(
+        ServerFailure(
+          message: e.errMessage,
+        ),
+      );
     }
+  }
+
+  @override
+  Future<Either<Failure, bool>> checkPaymentStatus({required String orderId}) {
+    // TODO: implement checkPaymentStatus
+    throw UnimplementedError();
   }
 }

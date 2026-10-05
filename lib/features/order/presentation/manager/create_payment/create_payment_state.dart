@@ -8,13 +8,17 @@ final class CreatePaymentInitial extends CreatePaymentState {}
 final class CreatePaymentLoading extends CreatePaymentState {}
 
 final class CreatePaymentSuccess extends CreatePaymentState {
-  final String paymentUrl;
+  final String paymentLink;
 
-  CreatePaymentSuccess({required this.paymentUrl});
+  CreatePaymentSuccess({
+    required this.paymentLink,
+  });
 }
 
 final class CreatePaymentFailure extends CreatePaymentState {
   final String errMessage;
 
-  CreatePaymentFailure({required this.errMessage});
+  CreatePaymentFailure({
+    required this.errMessage,
+  });
 }

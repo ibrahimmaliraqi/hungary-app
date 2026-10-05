@@ -8,11 +8,14 @@ class CreatePaymentUsecase {
   final OrderRepo orderRepo;
 
   CreatePaymentUsecase({required this.orderRepo});
+
   Future<Either<Failure, String>> call({
     required PaymentEntity payment,
-
     required OrderEntity order,
   }) async {
-    return await orderRepo.createPayment(payment: payment, order: order);
+    return await orderRepo.createPayment(
+      payment: payment,
+      order: order,
+    );
   }
 }

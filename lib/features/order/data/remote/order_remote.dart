@@ -1,13 +1,19 @@
 import 'package:dio/dio.dart';
+import 'package:hungry_app/core/constants/secret_keys.dart';
 import 'package:hungry_app/core/error/app_exceptions.dart';
 import 'package:hungry_app/core/network/dio_client.dart';
 import 'package:hungry_app/features/order/data/model/order_model.dart';
 import 'package:hungry_app/features/order/data/model/payment_model.dart';
+import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 
 abstract class OrderRemote {
   Future<int> createOrder({required OrderModel order});
   Future<List<OrderModel>> getOrders({required int userId});
-  Future<String> createPayment({required PaymentModel payment});
+  Future<String> createPayment({
+    required PaymentModel payment,
+
+    required OrderEntity order,
+  });
 }
 
 class ApiOrderRemoteImpl implements OrderRemote {
@@ -70,15 +76,15 @@ class ApiOrderRemoteImpl implements OrderRemote {
   }
 
   @override
-  Future<String> createPayment({required PaymentModel payment}) async {
+  Future<String> createPayment({
+    required PaymentModel payment,
+
+    required OrderEntity order,
+  }) async {
     try {
       final res = await Dio().post(
         "https://api.swiftpayiq.com/api/v1/payment-links",
-        options: Options(
-          headers: {
-            "Authorization": "Bearer spi_test_6q5HM8qP9W6LvuvF2znLIwu5M5FawXY7",
-          },
-        ),
+
         data: {
           "title": payment.name,
           "amount": payment.amount,
@@ -86,10 +92,13 @@ class ApiOrderRemoteImpl implements OrderRemote {
           "customerName": payment.name,
           "customerPhone": payment.phone,
         },
+        options: Options(headers: {"Authorization": SecretKeys.SwiftpayiqKey}),
       );
       Map<String, dynamic> resData = res.data;
       final transId = resData["id"];
       final payPageUrl = resData["payPageUrl"];
+      print('      final payPageUrl = resData["payPageUrl"];');
+      print(payPageUrl);
       final res2 = await dioClient.post(
         "payment/create_payment.php",
         data: {
@@ -99,7 +108,7 @@ class ApiOrderRemoteImpl implements OrderRemote {
           "phone": payment.phone,
           "address": payment.address,
           "payment_method": "CARD",
-          "transaction_id": transId,
+          "payment_link_id": transId,
           "payment_url": payPageUrl,
         },
       );
@@ -109,8 +118,9 @@ class ApiOrderRemoteImpl implements OrderRemote {
               res2['error'] ?? "حدث خطأ أثناء انشاء دفع الكتروني من ويل",
         );
       }
+
       if (res2['success'] == true) {
-        return payPageUrl;
+        return res2['data']["payment_url"];
       }
 
       throw ServerException(

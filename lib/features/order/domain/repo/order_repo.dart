@@ -11,4 +11,5 @@ abstract class OrderRepo {
 
     required PaymentEntity payment,
   });
+  Future<Either<Failure, bool>> checkPaymentStatus({required String orderId});
 }

@@ -8,17 +8,39 @@ part 'create_payment_state.dart';
 
 class CreatePaymentCubit extends Cubit<CreatePaymentState> {
   final CreatePaymentUsecase createPaymentUsecase;
-  CreatePaymentCubit({required this.createPaymentUsecase})
-    : super(CreatePaymentInitial());
-  Future createPayment({
+
+  CreatePaymentCubit({
+    required this.createPaymentUsecase,
+  }) : super(CreatePaymentInitial());
+
+  Future<void> createPayment({
     required PaymentEntity payment,
     required OrderEntity order,
   }) async {
     emit(CreatePaymentLoading());
-    final res = await createPaymentUsecase.call(payment: payment, order: order);
+
+    final res = await createPaymentUsecase.call(
+      payment: payment,
+      order: order,
+    );
+
     res.fold(
-      (l) => emit(CreatePaymentFailure(errMessage: l.message)),
-      (r) => emit(CreatePaymentSuccess(paymentUrl: r)),
+      (failure) {
+        emit(
+          CreatePaymentFailure(
+            errMessage: failure.message,
+          ),
+        );
+      },
+      (paymentLink) {
+        print("Payment Link: $paymentLink");
+
+        emit(
+          CreatePaymentSuccess(
+            paymentLink: paymentLink,
+          ),
+        );
+      },
     );
   }
 }

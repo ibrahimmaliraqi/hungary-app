@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
+import 'package:hungry_app/core/service/local_notification_service.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/utils/app_router.dart';
 import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
@@ -18,6 +19,7 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]);
+  await LocalNotificationService.instance.initialize();
   await PrefsHelper.init();
   await Supabase.initialize(
     url: 'https://ihlcguvkkmghordsncsp.supabase.co',
