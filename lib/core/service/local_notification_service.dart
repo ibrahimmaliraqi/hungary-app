@@ -11,7 +11,7 @@ class LocalNotificationService {
   Future<void> initialize() async {
     const settings = InitializationSettings(
       android: AndroidInitializationSettings(
-        '@mipmap/ic_launcher',
+        '@mipmap/launcher_icon',
       ),
       windows: WindowsInitializationSettings(
         appName: 'Hungry',

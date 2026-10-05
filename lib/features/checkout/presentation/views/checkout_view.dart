@@ -309,7 +309,7 @@ class _CheckoutViewState extends State<CheckoutView> {
                                   .showLocalNotification(
                                     title: 'تم الدفع بنجاح',
                                     body:
-                                        'تم استلام طلبك بنجاح، راجع صفحة الطلبات لمتابعة حالة طلبك.',
+                                        'تم دفع مبلغ طلبك بنجاح، ويمكنك متابعة طلبك من صفحة الطلبات.',
                                   );
                               GoRouter.of(
                                 context,
