@@ -6,7 +6,6 @@ import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/net_image.dart';
-import 'package:hungry_app/features/home/presentation/views/wayl.dart';
 
 class UserHeader extends StatelessWidget {
   const UserHeader({super.key});
@@ -47,14 +46,7 @@ class UserHeader extends StatelessWidget {
             borderRadius: BorderRadiusGeometry.circular(300),
 
             child: InkWell(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => WaylPaymentPage(),
-                  ),
-                );
-              },
+              onTap: () {},
               child: NetImage(
                 imageUrl: userData!.image ?? "",
 

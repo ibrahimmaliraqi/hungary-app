@@ -14,7 +14,6 @@ import 'package:hungry_app/features/order/presentation/manager/check_payment_sta
 import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
 import 'package:hungry_app/features/order/presentation/manager/create_payment/create_payment_cubit.dart';
 import 'package:hungry_app/observer.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,19 +22,13 @@ Future<void> main() async {
   ]);
   await LocalNotificationService.instance.initialize();
   await PrefsHelper.init();
-  await Supabase.initialize(
-    url: 'https://ihlcguvkkmghordsncsp.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlobGNndXZra21naG9yZHNuY3NwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc2MzAzNzEzNiwiZXhwIjoyMDc4NjEzMTM2fQ.aR7jGVFyGnO46ZdtXGdLu0PidsmUyZ51W4pL-nST-OM',
-  );
+
   setupLocator();
 
   Bloc.observer = MyBlocObserver();
 
   runApp(HungryApp());
 }
-
-final supabase = Supabase.instance.client;
 
 class HungryApp extends StatelessWidget {
   const HungryApp({super.key});
