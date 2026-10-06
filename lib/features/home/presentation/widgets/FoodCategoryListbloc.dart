@@ -40,7 +40,7 @@ class _FoodCategoryListBlocState extends State<FoodCategoryListBloc> {
           return Skeletonizer(
             enabled: true,
             child: FoodCategoryList(
-              categories: demoProducts,
+              categories: demoCategories,
 
               // قيمة مؤقتة أثناء التحميل
               selectedIndex: 0,

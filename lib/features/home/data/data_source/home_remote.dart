@@ -143,15 +143,15 @@ class ApiHomeRemoteImpl implements HomeRemote {
   }) async {
     try {
       final res = await dioClient.post(
-        "get_products_by_category.php?category_id=$categoryId",
+        "products/get_products_by_category.php?category_id=$categoryId",
       );
 
       if (res['success'] == true) {
         final data = res['data'] as List;
+        print(data);
 
         return data.map((e) => ProductsModel.fromMap(e)).toList();
       }
-
       throw ServerException(
         errMessage: res['message'] ?? "حدث خطأ أثناء منتجات القسم",
       );
