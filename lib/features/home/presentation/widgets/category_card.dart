@@ -6,13 +6,11 @@ import 'package:hungry_app/features/home/domain/entities/category_entity.dart';
 
 class CategoryCard extends StatelessWidget {
   final CategoryEntity category;
-  final bool isSelected;
   final VoidCallback onTap;
 
   const CategoryCard({
     super.key,
     required this.category,
-    required this.isSelected,
     required this.onTap,
   });
 
@@ -27,14 +25,14 @@ class CategoryCard extends StatelessWidget {
           horizontal: 25,
         ),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.primary : Color(0xffF3F4F6),
+          color: AppColors.primary,
           borderRadius: BorderRadius.circular(20),
         ),
         child: CustomText(
           text: category.name,
-          color: isSelected ? Colors.white : const Color(0xff6A6A6A),
+          color: Colors.white,
           fontSize: 16,
-          fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
+          fontWeight: FontWeight.w600,
         ),
       ),
     );

@@ -8,7 +8,7 @@ import 'package:hungry_app/core/functions/show_cash_bottom_sheet.dart';
 import 'package:hungry_app/core/functions/show_success_dialog.dart';
 import 'package:hungry_app/core/helper/url_launacher.dart';
 import 'package:hungry_app/core/service/local_notification_service.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/snack.dart';
 import 'package:hungry_app/features/cart/domain/entities/cart_entity.dart';

@@ -1,8 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/functions/app_price.dart';
@@ -12,107 +9,102 @@ import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 
 class ProductCard extends StatelessWidget {
   final ProductEntity product;
-  final void Function()? onTap;
+  final VoidCallback? onTap;
+
   const ProductCard({
     super.key,
-
-    this.onTap,
     required this.product,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: Card(
-        elevation: 4,
-        color: Colors.white,
+    // Cleaner logic to check if a discount exists
+    final bool hasDiscount = product.disCount != null && product.disCount != 0;
+
+    return Card(
+      elevation: 4,
+      color: Colors.white,
+      clipBehavior: Clip
+          .antiAlias, // Ensures the InkWell ripple stays inside the rounded corners
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: InkWell(
+        onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Stack(
-            clipBehavior: Clip.none,
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Positioned(
-                right: 0,
-                left: -8,
-                top: 95,
-                child: ImageFiltered(
-                  imageFilter: ImageFilter.blur(
-                    sigmaX: 5,
-                    sigmaY: 5,
-                  ),
-                  child: SvgPicture.asset(
-                    "assets/logo/shado.svg",
-                  ),
+              // 1. Image
+              Center(
+                child: NetImage(
+                  height: 120,
+                  width: 120,
+                  imageUrl: product.image,
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: NetImage(
-                      height: 120,
-                      width: 120,
-                      imageUrl: product.image,
-                    ),
-                  ),
-                  Gap(9),
-                  CustomText(
-                    text: product.name,
-                    fontSize: 16,
-                    color: Color(0xff3C2F2F),
-                    fontWeight: FontWeight.w600,
-                  ),
-                  Gap(9),
+              const Gap(12),
 
-                  CustomText(
-                    text:
-                        "${AppPrice.currentPrice(product: product)} دينار عراقي",
-                    fontSize: 14,
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  Gap(2),
-                  product.disCount != 0 || product.disCount == null
-                      ? CustomText(
-                          isCaption: true,
-                          lineThrough: true,
-                          text: "${product.price} دينار عراقي",
-                          fontSize: 12,
-                          color: AppColors.discount,
-                          fontWeight: FontWeight.w500,
-                        )
-                      : const SizedBox(
-                          height: 18,
-                        ),
-                  Gap(9),
+              // 2. Product Name
+              CustomText(
+                text: product.name,
+                fontSize: 16,
+                color: const Color(0xff3C2F2F),
+                fontWeight: FontWeight.w600,
+              ),
+              const Gap(6),
+
+              // 3. Current Price
+              CustomText(
+                text: "${AppPrice.currentPrice(product: product)} دينار عراقي",
+                fontSize: 14,
+                color: AppColors.primary,
+                fontWeight: FontWeight.bold,
+              ),
+              const Gap(2),
+
+              // 4. Discount / Old Price
+              if (hasDiscount)
+                CustomText(
+                  isCaption: true,
+                  lineThrough: true,
+                  text: "${product.price} دينار عراقي",
+                  fontSize: 12,
+                  color: AppColors.discount,
+                  fontWeight: FontWeight.w500,
+                )
+              else
+                const SizedBox(
+                  height: 18,
+                ), // Keeps layout height stable when no discount
+
+              const Gap(12),
+
+              // 5. Rating and Favorite Icon
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
                   Row(
                     children: [
-                      Row(
-                        children: [
-                          Image.asset(
-                            "assets/product/star.png",
-                            width: 17,
-                            height: 17,
-                          ),
-                          Gap(8),
-
-                          CustomText(
-                            text: "${product.rating}",
-                            fontSize: 14,
-
-                            color: Color(0xff3C2F2F),
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ],
+                      const Icon(
+                        Icons.star_rounded,
+                        color: Colors.amber,
+                        size: 20,
                       ),
-                      Spacer(),
-
-                      Icon(
-                        CupertinoIcons.heart,
-                        color: AppColors.primary,
+                      const Gap(4),
+                      CustomText(
+                        text: "${product.rating}",
+                        fontSize: 14,
+                        color: const Color(0xff3C2F2F),
+                        fontWeight: FontWeight.w400,
                       ),
                     ],
+                  ),
+                  const Icon(
+                    CupertinoIcons.heart,
+                    color: AppColors.primary,
                   ),
                 ],
               ),

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/constants/assets.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/features/auth/domain/entities/user_entity.dart';
 
 class SplashView extends StatefulWidget {

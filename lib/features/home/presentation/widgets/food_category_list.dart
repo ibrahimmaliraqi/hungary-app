@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/features/home/domain/entities/category_entity.dart';
 import 'package:hungry_app/features/home/presentation/widgets/category_card.dart';
 
@@ -24,8 +26,9 @@ class FoodCategoryList extends StatelessWidget {
         itemBuilder: (context, index) {
           return CategoryCard(
             category: categories[index],
-            isSelected: selectedIndex == index,
-            onTap: () => onCategorySelected(index),
+            onTap: () => GoRouter.of(
+              context,
+            ).push(AppRouter.productsByCategoryView, extra: categories[index]),
           );
         },
       ),

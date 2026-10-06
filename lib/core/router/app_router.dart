@@ -5,8 +5,10 @@ import 'package:hungry_app/features/auth/presentation/views/sign_in_view.dart';
 import 'package:hungry_app/features/auth/presentation/views/sign_up_view.dart';
 import 'package:hungry_app/features/auth/presentation/views/update_profile_view.dart';
 import 'package:hungry_app/features/cart/presentation/views/cart_view.dart';
+import 'package:hungry_app/features/home/domain/entities/category_entity.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/views/product_details_view.dart';
+import 'package:hungry_app/features/home/presentation/views/products_by_category_view.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 import 'package:hungry_app/features/order/presentation/views/order_details_view.dart';
 import 'package:hungry_app/root_view.dart';
@@ -22,6 +24,7 @@ class AppRouter {
   static const editPrefileView = '/editPrefileView';
   static const prefileView = '/prefileView';
   static const orderDetailsView = '/orderDetailsView';
+  static const productsByCategoryView = '/productsByCategoryView';
   static final router = GoRouter(
     routes: [
       GoRoute(
@@ -35,6 +38,16 @@ class AppRouter {
       GoRoute(
         path: login,
         builder: (context, state) => SignInView(),
+      ),
+      GoRoute(
+        path: productsByCategoryView,
+        builder: (context, state) {
+          final CategoryEntity data = state.extra as CategoryEntity;
+
+          return ProductsByCategoryView(
+            categoryEntity: data,
+          );
+        },
       ),
       GoRoute(
         path: rootView,

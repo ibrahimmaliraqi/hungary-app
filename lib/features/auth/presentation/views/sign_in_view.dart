@@ -10,7 +10,7 @@ import 'package:hungry_app/core/service/server_locator.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/custom_text_form_field.dart';
 import 'package:hungry_app/core/widgets/snack.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/features/auth/data/data_source/auth_remote.dart';
 import 'package:hungry_app/features/auth/presentation/manager/login/login_cubit.dart';
 import 'package:hungry_app/features/auth/data/repos/auth_repo_impl.dart';

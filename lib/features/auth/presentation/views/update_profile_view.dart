@@ -4,7 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/core/widgets/custom_button.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 import 'package:hungry_app/core/widgets/loading.dart';

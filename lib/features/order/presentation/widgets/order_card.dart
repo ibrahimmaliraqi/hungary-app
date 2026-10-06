@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hungry_app/features/checkout/presentation/views/checkout_view.dart';
 import 'package:intl/intl.dart';
 import 'package:hungry_app/core/functions/order_state_function.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/core/widgets/net_image.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 import 'package:hungry_app/features/order/domain/enums/payment_enum.dart';

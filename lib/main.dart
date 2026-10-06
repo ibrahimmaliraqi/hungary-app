@@ -5,7 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/service/local_notification_service.dart';
 import 'package:hungry_app/core/service/server_locator.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/features/home/presentation/manager/add_product_cubit.dart';
 import 'package:hungry_app/features/order/domain/use_cases/check_payment_status_usecase.dart';
 import 'package:hungry_app/features/order/domain/use_cases/create_order.dart';

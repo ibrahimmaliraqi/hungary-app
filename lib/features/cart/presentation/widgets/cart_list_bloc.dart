@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hungry_app/core/demo/demo_cart.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
-import 'package:hungry_app/core/utils/app_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/core/widgets/error_widget.dart';
 import 'package:hungry_app/core/widgets/not_data_found.dart';
 import 'package:hungry_app/features/cart/presentation/manager/get_cart_items/get_cart_items_cubit.dart';
