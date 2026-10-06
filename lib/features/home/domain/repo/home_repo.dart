@@ -14,4 +14,7 @@ abstract class HomeRepo {
   Future<Either<Failure, List<ProductOptionEntity>>> getSideOptions({
     required int productId,
   });
+  Future<Either<Failure, List<ProductEntity>>> getProductsByCategory({
+    required int categoryId,
+  });
 }

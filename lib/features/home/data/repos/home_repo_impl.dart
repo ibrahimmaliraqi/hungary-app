@@ -59,4 +59,19 @@ class HomeRepoImpl implements HomeRepo {
       return left(ServerFailure(message: e.errMessage));
     }
   }
+
+  @override
+  Future<Either<Failure, List<ProductEntity>>> getProductsByCategory({
+    required int categoryId,
+  }) async {
+    try {
+      final res = await homeRemote.getProductsByCategory(
+        categoryId: categoryId,
+      );
+
+      return right(res.map((e) => e.toEntity()).toList());
+    } on AppExceptions catch (e) {
+      return left(ServerFailure(message: e.errMessage));
+    }
+  }
 }

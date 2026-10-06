@@ -13,6 +13,9 @@ abstract class HomeRemote {
   Future<List<ProductOptionModel>> getSideOptions({
     required int productId,
   });
+  Future<List<ProductsModel>> getProductsByCategory({
+    required int categoryId,
+  });
 }
 
 class ApiHomeRemoteImpl implements HomeRemote {
@@ -130,6 +133,35 @@ class ApiHomeRemoteImpl implements HomeRemote {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء جلب الإضافات",
+      );
+    }
+  }
+
+  @override
+  Future<List<ProductsModel>> getProductsByCategory({
+    required int categoryId,
+  }) async {
+    try {
+      final res = await dioClient.post(
+        "get_products_by_category.php?category_id=$categoryId",
+      );
+
+      if (res['success'] == true) {
+        final data = res['data'] as List;
+
+        return data.map((e) => ProductsModel.fromMap(e)).toList();
+      }
+
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء منتجات القسم",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCategories error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء منتجات القسم",
       );
     }
   }
