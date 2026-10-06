@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/widgets/product_card.dart';
 
@@ -20,7 +22,12 @@ class ProductByCategoryList extends StatelessWidget {
         crossAxisSpacing: 16,
       ),
       itemBuilder: (context, index) {
-        return ProductCard(product: prodcuts[index]);
+        return ProductCard(
+          onTap: () => GoRouter.of(
+            context,
+          ).push(AppRouter.productView, extra: prodcuts[index]),
+          product: prodcuts[index],
+        );
       },
     );
   }

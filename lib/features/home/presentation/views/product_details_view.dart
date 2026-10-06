@@ -133,7 +133,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                       message: "تمت إضافة المنتج إلى السلة",
                     );
 
-                    context.go(AppRouter.cartView);
+                    GoRouter.of(context).push(AppRouter.cartView);
                   }
                 },
                 builder: (context, state) {
