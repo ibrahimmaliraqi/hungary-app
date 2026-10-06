@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
+import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_categories/get_categories_cubit.dart';
 import 'package:hungry_app/features/home/presentation/manager/get_products/get_products_cubit.dart';
 import 'package:hungry_app/features/home/presentation/widgets/FoodCategoryListbloc.dart';
@@ -27,6 +28,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
+      color: AppColors.primary,
+      backgroundColor: Colors.white,
       onRefresh: () async {
         context.read<GetProductsCubit>().getProduct();
       },

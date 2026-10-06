@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hungry_app/core/constants/app_colors.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/features/cart/presentation/manager/get_cart_items/get_cart_items_cubit.dart';
 import 'package:hungry_app/features/cart/presentation/widgets/cart_list_bloc.dart';
@@ -22,14 +23,21 @@ class _CartViewBodyState extends State<CartViewBody> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        children: [
-          Expanded(
-            child: CartListBloc(),
-          ),
-        ],
+    return RefreshIndicator(
+      color: AppColors.primary,
+      backgroundColor: Colors.white,
+      onRefresh: () => context.read<GetCartItemsCubit>().getCartItem(
+        userId: PrefsHelper.getUser()!.id!,
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          children: [
+            Expanded(
+              child: CartListBloc(),
+            ),
+          ],
+        ),
       ),
     );
   }
