@@ -16,6 +16,9 @@ abstract class HomeRemote {
   Future<List<ProductsModel>> getProductsByCategory({
     required int categoryId,
   });
+  Future<List<ProductsModel>> getProductsByTitle({
+    required String query,
+  });
 }
 
 class ApiHomeRemoteImpl implements HomeRemote {
@@ -162,6 +165,35 @@ class ApiHomeRemoteImpl implements HomeRemote {
 
       throw ServerException(
         errMessage: "حدث خطأ أثناء منتجات القسم",
+      );
+    }
+  }
+
+  @override
+  Future<List<ProductsModel>> getProductsByTitle({
+    required String query,
+  }) async {
+    try {
+      final res = await dioClient.post(
+        "products/search_products.php?query=$query",
+      );
+
+      if (res['success'] == true) {
+        final data = res['data'] as List;
+        print(data);
+
+        return data.map((e) => ProductsModel.fromMap(e)).toList();
+      }
+      throw ServerException(
+        errMessage: res['message'] ?? "حدث خطأ أثناء البحث",
+      );
+    } on ServerException {
+      rethrow;
+    } catch (e) {
+      print("getCategories error: $e");
+
+      throw ServerException(
+        errMessage: "حدث خطأ أثناء البحث",
       );
     }
   }
