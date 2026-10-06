@@ -14,6 +14,7 @@ import 'package:hungry_app/features/order/presentation/manager/check_payment_sta
 import 'package:hungry_app/features/order/presentation/manager/create_order/create_order_cubit.dart';
 import 'package:hungry_app/features/order/presentation/manager/create_payment/create_payment_cubit.dart';
 import 'package:hungry_app/observer.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,6 +23,7 @@ Future<void> main() async {
   ]);
   await LocalNotificationService.instance.initialize();
   await PrefsHelper.init();
+  timeago.setLocaleMessages('ar', timeago.ArMessages());
 
   setupLocator();
 

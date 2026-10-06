@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:hungry_app/core/constants/app_colors.dart';
+import 'package:hungry_app/core/functions/get_time_ago.dart';
 import 'package:hungry_app/core/helper/prefs_helper.dart';
 import 'package:hungry_app/core/widgets/custom_text.dart';
 
@@ -22,6 +23,9 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
   final TextEditingController address = TextEditingController();
 
   final TextEditingController visaCon = TextEditingController();
+  final TextEditingController accountCreated = TextEditingController(
+    text: getTimeAgo(PrefsHelper.getUser()!.createdAt),
+  );
   @override
   void initState() {
     name.text = users?.name ?? '';
@@ -38,6 +42,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
     email.dispose();
     address.dispose();
     visaCon.dispose();
+    accountCreated.dispose();
     super.dispose();
   }
 
@@ -189,6 +194,8 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             label: "البريد الإلكتروني",
             controller: email,
           ),
+          const Gap(12),
+
           _buildInfoField(
             icon: Icons.phone_outlined,
             label: "رقم الهاتف",
@@ -201,6 +208,13 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
             icon: Icons.location_on_outlined,
             label: "عنوان التوصيل",
             controller: address,
+          ),
+          const Gap(12),
+
+          _buildInfoField(
+            icon: Icons.time_to_leave_outlined,
+            label: "تاريخ انشاء الحساب",
+            controller: accountCreated,
           ),
         ],
       ),
@@ -256,6 +270,7 @@ class _ProfileViewBodyState extends State<ProfileViewBody> {
                 const Gap(3),
 
                 TextField(
+                  enabled: false,
                   controller: controller,
                   style: const TextStyle(
                     fontSize: 14,

@@ -67,6 +67,7 @@ class PrefsHelper {
       address: user.address,
       visa: user.visa,
       createdAt: user.createdAt,
+
       phoneNumber: user.phoneNumber,
     );
 

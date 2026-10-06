@@ -25,6 +25,7 @@ class UserModel {
     return UserModel(
       id: entity.id,
       name: entity.name,
+
       email: entity.email,
       image: entity.image,
       address: entity.address,
@@ -37,6 +38,7 @@ class UserModel {
     return UserEntity(
       createdAt: createdAt,
       phoneNumber: phoneNumber,
+
       id: id,
       name: name,
       email: email,
@@ -48,13 +50,14 @@ class UserModel {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
+      'id': id,
       'email': email,
       'phone_number': phoneNumber,
       'image': image,
-      "created_at": createdAt,
       'address': address,
+      'created_at': createdAt,
+
       'visa': visa,
     };
   }
