@@ -9,6 +9,7 @@ import 'package:hungry_app/features/home/domain/entities/category_entity.dart';
 import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
 import 'package:hungry_app/features/home/presentation/views/product_details_view.dart';
 import 'package:hungry_app/features/home/presentation/views/products_by_category_view.dart';
+import 'package:hungry_app/features/home/presentation/views/search_view.dart';
 import 'package:hungry_app/features/order/domain/entities/order_entity.dart';
 import 'package:hungry_app/features/order/presentation/views/order_details_view.dart';
 import 'package:hungry_app/root_view.dart';
@@ -25,11 +26,16 @@ class AppRouter {
   static const prefileView = '/prefileView';
   static const orderDetailsView = '/orderDetailsView';
   static const productsByCategoryView = '/productsByCategoryView';
+  static const searchView = '/searchView';
   static final router = GoRouter(
     routes: [
       GoRoute(
         path: splashView,
         builder: (context, state) => SplashView(),
+      ),
+      GoRoute(
+        path: searchView,
+        builder: (context, state) => SearchView(),
       ),
       GoRoute(
         path: prefileView,

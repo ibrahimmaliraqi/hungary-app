@@ -3,11 +3,8 @@ import 'package:flutter/material.dart';
 class CountOfProductInCategory extends StatelessWidget {
   const CountOfProductInCategory({
     super.key,
-    required this.categoryName,
     required this.itemCount,
   });
-
-  final String categoryName;
   final String itemCount;
 
   @override

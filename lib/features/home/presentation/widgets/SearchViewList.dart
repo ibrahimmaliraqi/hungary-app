@@ -1,0 +1,31 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:hungry_app/core/router/app_router.dart';
+import 'package:hungry_app/features/home/domain/entities/product_entity.dart';
+import 'package:hungry_app/features/home/presentation/widgets/product_card.dart';
+
+class SearchViewList extends StatelessWidget {
+  final List<ProductEntity> prodcuts;
+  const SearchViewList({super.key, required this.prodcuts});
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      itemCount: prodcuts.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        childAspectRatio: 130 / 200,
+        crossAxisCount: 2,
+        mainAxisSpacing: 10,
+        crossAxisSpacing: 16,
+      ),
+      itemBuilder: (context, index) {
+        return ProductCard(
+          onTap: () => GoRouter.of(
+            context,
+          ).push(AppRouter.productView, extra: prodcuts[index]),
+          product: prodcuts[index],
+        );
+      },
+    );
+  }
+}

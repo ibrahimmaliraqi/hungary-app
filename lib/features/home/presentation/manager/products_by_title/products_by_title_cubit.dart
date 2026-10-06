@@ -17,4 +17,8 @@ class ProductsByTitleCubit extends Cubit<ProductsByTitleState> {
       (r) => emit(ProductsByTitleSuccess(products: r)),
     );
   }
+
+  void stopSearch() {
+    emit(ProductsByTitleInitial());
+  }
 }

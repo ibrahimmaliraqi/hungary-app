@@ -33,7 +33,6 @@ class ProductsByCategoryViewBody extends StatelessWidget {
                     return Skeletonizer(
                       enabled: true,
                       child: CountOfProductInCategory(
-                        categoryName: categoryEntity.name,
                         itemCount: "123",
                       ),
                     );
@@ -41,12 +40,10 @@ class ProductsByCategoryViewBody extends StatelessWidget {
                   if (state is ProductsByCategorySuccess) {
                     if (state.products.isEmpty) {
                       return CountOfProductInCategory(
-                        categoryName: categoryEntity.name,
                         itemCount: "فارغ",
                       );
                     }
                     return CountOfProductInCategory(
-                      categoryName: categoryEntity.name,
                       itemCount: "${state.products.length} منتج",
                     );
                   }
