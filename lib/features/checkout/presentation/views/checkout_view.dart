@@ -72,159 +72,166 @@ class _CheckoutViewState extends State<CheckoutView> {
       ),
 
       body: BlocConsumer<CreateOrderCubit, CreateOrderState>(
-        listener: (context, state) {
-          if (state is CreateOrderSuccess) {
+        listener: (context, orderState) {
+          if (orderState is CreateOrderSuccess) {
             // Snack.show(context, message: "تم إنشاء الطلب بنجاح");
 
             showSuccessDialog(context);
           }
-          if (state is CreateOrderFailure) {
-            Snack.show(context, message: state.errMessage, isError: true);
+          if (orderState is CreateOrderFailure) {
+            Snack.show(context, message: orderState.errMessage, isError: true);
           }
         },
-        builder: (context, state) {
-          return ModalProgressHUD(
-            inAsyncCall: state is CreateOrderLoading,
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.only(
-                left: 20,
-                right: 20,
-                top: 10,
-                bottom: 120,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(
-                    text: "ملخص الطلب", // Order Summary
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
+        builder: (context, orderState) {
+          return BlocBuilder<CreatePaymentCubit, CreatePaymentState>(
+            builder: (context, paymentState) {
+              final isLoading =
+                  orderState is CreateOrderLoading ||
+                  paymentState is CreatePaymentLoading;
+              return ModalProgressHUD(
+                inAsyncCall: isLoading,
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                    top: 10,
+                    bottom: 120,
                   ),
-                  const Gap(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const CustomText(
+                        text: "ملخص الطلب", // Order Summary
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      const Gap(16),
 
-                  // بطاقة الفاتورة (Receipt Card)
-                  Container(
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
-                          blurRadius: 24,
-                          offset: const Offset(0, 8),
+                      // بطاقة الفاتورة (Receipt Card)
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(24),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.04),
+                              blurRadius: 24,
+                              offset: const Offset(0, 8),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        _orderMoneyRow(
-                          name: "الطلب",
-                          price:
-                              "${AppPrice.cartTotalPrice(product: widget.carts)} دينار",
-                        ),
-                        const Gap(12),
-                        _orderMoneyRow(name: "الضرائب", price: "لا يوجد"),
-                        const Gap(12),
-                        _orderMoneyRow(
-                          name: "رسوم التوصيل",
-                          price: "2000 دينار",
-                        ),
-                        const Gap(16),
+                        child: Column(
+                          children: [
+                            _orderMoneyRow(
+                              name: "الطلب",
+                              price:
+                                  "${AppPrice.cartTotalPrice(product: widget.carts)} دينار",
+                            ),
+                            const Gap(12),
+                            _orderMoneyRow(name: "الضرائب", price: "لا يوجد"),
+                            const Gap(12),
+                            _orderMoneyRow(
+                              name: "رسوم التوصيل",
+                              price: "2000 دينار",
+                            ),
+                            const Gap(16),
 
-                        // خط متقطع (Dashed Divider)
-                        Row(
-                          children: List.generate(
-                            30,
-                            (index) => Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.symmetric(
-                                  horizontal: 2,
+                            // خط متقطع (Dashed Divider)
+                            Row(
+                              children: List.generate(
+                                30,
+                                (index) => Expanded(
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                      horizontal: 2,
+                                    ),
+                                    height: 1.5,
+                                    color: Colors.grey.shade300,
+                                  ),
                                 ),
-                                height: 1.5,
-                                color: Colors.grey.shade300,
                               ),
                             ),
-                          ),
-                        ),
 
-                        const Gap(16),
-                        _orderMoneyRow(
-                          name: "الإجمالي",
-                          price:
-                              "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
-                          isBold: true,
-                          size: 20,
-                        ),
+                            const Gap(16),
+                            _orderMoneyRow(
+                              name: "الإجمالي",
+                              price:
+                                  "${AppPrice.cartTotalPrice(product: widget.carts) + 2000} دينار",
+                              isBold: true,
+                              size: 20,
+                            ),
 
-                        const Gap(16),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.primary.withOpacity(0.08),
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.timer_outlined,
-                                color: AppColors.primary,
-                                size: 18,
+                            const Gap(16),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
                               ),
-                              const Gap(8),
-                              CustomText(
-                                text: "الوقت المتوقع للتوصيل: ",
-                                fontSize: 13,
-                                color: Colors.grey.shade700,
+                              decoration: BoxDecoration(
+                                color: AppColors.primary.withOpacity(0.08),
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              CustomText(
-                                text: "30 دقيقة - ساعة",
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.timer_outlined,
+                                    color: AppColors.primary,
+                                    size: 18,
+                                  ),
+                                  const Gap(8),
+                                  CustomText(
+                                    text: "الوقت المتوقع للتوصيل: ",
+                                    fontSize: 13,
+                                    color: Colors.grey.shade700,
+                                  ),
+                                  CustomText(
+                                    text: "30 دقيقة - ساعة",
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppColors.primary,
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                      ),
+
+                      const Gap(32),
+
+                      const CustomText(
+                        text: "طرق الدفع", // Payment Methods
+                        fontSize: 20,
+                        fontWeight: FontWeight.w800,
+                      ),
+                      const Gap(16),
+
+                      // خيار الدفع كاش
+                      _buildPaymentCard(
+                        title: "الدفع عند الاستلام",
+                        subtitle: "ادفع نقداً عند استلام طلبك",
+                        value: "Cash",
+                        imagePath: "assets/payout/image.png",
+                        icon: Icons.payments_rounded,
+                      ),
+
+                      const Gap(16),
+
+                      // خيار بطاقة الدفع
+                      _buildPaymentCard(
+                        title: "بطاقة الدفع",
+                        subtitle: "3566 **** **** 0505",
+                        value: "debit",
+                        imagePath: "assets/payout/visa.png",
+                        icon: Icons.credit_card_rounded,
+                      ),
+                    ],
                   ),
-
-                  const Gap(32),
-
-                  const CustomText(
-                    text: "طرق الدفع", // Payment Methods
-                    fontSize: 20,
-                    fontWeight: FontWeight.w800,
-                  ),
-                  const Gap(16),
-
-                  // خيار الدفع كاش
-                  _buildPaymentCard(
-                    title: "الدفع عند الاستلام",
-                    subtitle: "ادفع نقداً عند استلام طلبك",
-                    value: "Cash",
-                    imagePath: "assets/payout/image.png",
-                    icon: Icons.payments_rounded,
-                  ),
-
-                  const Gap(16),
-
-                  // خيار بطاقة الدفع
-                  _buildPaymentCard(
-                    title: "بطاقة الدفع",
-                    subtitle: "3566 **** **** 0505",
-                    value: "debit",
-                    imagePath: "assets/payout/visa.png",
-                    icon: Icons.credit_card_rounded,
-                  ),
-                ],
-              ),
-            ),
+                ),
+              );
+            },
           );
         },
       ),
